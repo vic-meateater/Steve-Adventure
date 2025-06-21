@@ -43,11 +43,13 @@ public class PlayerMover : MonoBehaviour
     
     private IEnumerator Dash()
     {
+        Debug.Log("Dash activated");
         _isDashing = true;
         _playerSpeed = _dashSpeed;
         yield return new WaitForSeconds(_dashDuration);
         _isDashing = false;
         _playerSpeed = _moveSpeed;
+        Debug.Log("Dash deactivated");
     }
 
 }
