@@ -2,11 +2,12 @@
 
 namespace SteveAdventure
 {
-    [RequireComponent(typeof(InputHandler), typeof(PlayerMover))]
+    [RequireComponent(typeof(InputHandler), typeof(PlayerMover), typeof(PlayerAnimationController))]
     public class Player : MonoBehaviour
     {
         private InputHandler _inputHandler;
         private PlayerMover _playerMover;
+        private PlayerAnimationController _playerAnimation;
 
         private void Start()
         {
@@ -15,6 +16,7 @@ namespace SteveAdventure
             _inputHandler.OnMoveInputChanged += OnMoveInputHandler;
 
             _playerMover = GetComponent<PlayerMover>();
+            _playerAnimation = GetComponent<PlayerAnimationController>();
         }
 
         private void OnDestroy()
@@ -31,6 +33,7 @@ namespace SteveAdventure
         private void OnMoveInputHandler(Vector2 moveInput)
         {
             _playerMover.Moving(moveInput);
+            _playerAnimation.MoveAnimation(moveInput);
         }
     }
 }
