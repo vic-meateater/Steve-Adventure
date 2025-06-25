@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace SteveAdventure
 {
     [RequireComponent(typeof(InputHandler), typeof(PlayerMover), typeof(PlayerAnimationController))]
-    public class Player : MonoBehaviour
+    public sealed class Player : MonoBehaviour
     {
         private InputHandler _inputHandler;
         private PlayerMover _playerMover;
