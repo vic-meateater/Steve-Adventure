@@ -7,6 +7,7 @@ namespace SteveAdventure
     {
         public event Action OnSpacePressed;
         public event Action<Vector2> OnMoveInputChanged;
+        public event Action OnActionPressed;
         
         private Vector2 _moveInput;
 
@@ -22,6 +23,9 @@ namespace SteveAdventure
             
             if (Input.GetKeyDown(KeyCode.Space))
                 OnSpacePressed?.Invoke();
+            
+            if(Input.GetKeyDown(KeyCode.F))
+                OnActionPressed?.Invoke();
         }
 
         private void FixedUpdate()
