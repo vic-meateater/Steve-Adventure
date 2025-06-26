@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4862239758980561099}
   - component: {fileID: 7125957410252719062}
   m_Layer: 0
-  m_Name: Green_Pillar
+  m_Name: Red_Pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,7 +191,7 @@ Animator:
   m_GameObject: {fileID: 3182495981306725229}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a2b14bdc8fc864c75a002679dd84555a, type: 2}
+  m_Controller: {fileID: 9100000, guid: c14ec88bcb1194d68b13a646be2c3668, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
