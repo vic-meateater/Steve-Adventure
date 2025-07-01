@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SteveAdventure
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public sealed class PlayerMover : MonoBehaviour
+    public sealed class Mover : MonoBehaviour
     {
         private const float MOVE_SPEED_MULTIPLER = 50f;
 

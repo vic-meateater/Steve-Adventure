@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SteveAdventure
 {
-    public sealed class PlayerAnimationController : MonoBehaviour
+    public sealed class AnimatorController : MonoBehaviour
     {
         private static readonly int RunXAnimation = Animator.StringToHash("RunX");
         private static readonly int RunYAnimation = Animator.StringToHash("RunY");
