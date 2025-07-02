@@ -4,9 +4,9 @@ namespace SteveAdventure
 {
     public sealed class AnimatorController : MonoBehaviour
     {
-        private static readonly int RunXAnimation = Animator.StringToHash("RunX");
-        private static readonly int RunYAnimation = Animator.StringToHash("RunY");
-        private static readonly int Speed = Animator.StringToHash("Speed");
+        private static readonly int MoveX = Animator.StringToHash(nameof(MoveX));
+        private static readonly int MoveY = Animator.StringToHash(nameof(MoveY));
+        private static readonly int Speed = Animator.StringToHash(nameof(Speed));
 
         [SerializeField] private Animator _animator;
 
@@ -15,8 +15,8 @@ namespace SteveAdventure
             if (moveInput.magnitude > 1f)
                 moveInput.Normalize();
             
-            _animator.SetFloat(RunXAnimation, moveInput.x);
-            _animator.SetFloat(RunYAnimation, moveInput.y);
+            _animator.SetFloat(MoveX, moveInput.x);
+            _animator.SetFloat(MoveY, moveInput.y);
             _animator.SetFloat(Speed, moveInput.magnitude);
         }
     }

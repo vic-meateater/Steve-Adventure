@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SteveAdventure
 {
-    [RequireComponent(typeof(Mover))]
+    [RequireComponent(typeof(Mover), typeof(WaypointsMoveController))]
     public class Enemy : MonoBehaviour
     {
         [SerializeField] private EnemyStats _stats = new EnemyStats();

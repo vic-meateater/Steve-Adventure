@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace SteveAdventure
@@ -5,6 +6,8 @@ namespace SteveAdventure
     public class WaypointsMoveController : MonoBehaviour
     {
         private const int WAYPOINT_STEP = 1;
+
+        public bool IsWayPointReached => WayPointReached();
         
         [SerializeField] private Transform[] _waypoints;
         [SerializeField] private float _wayPointReachedOffset = .2f;
@@ -37,10 +40,17 @@ namespace SteveAdventure
 
             float distance = Vector2.Distance(colliderCenter, currentWaypoint.position);
 
-            if (distance < _wayPointReachedOffset)
+            //if (distance < _wayPointReachedOffset)
+            if (WayPointReached())
             {
                 _currentWaypointIndex = (_currentWaypointIndex + WAYPOINT_STEP) % _waypoints.Length;
             }
+        }
+
+        private bool WayPointReached()
+        {
+            float sqrDistance = (_collider.bounds.center - _waypoints[_currentWaypointIndex].position).sqrMagnitude;
+            return sqrDistance < _wayPointReachedOffset;
         }
     }
 }
