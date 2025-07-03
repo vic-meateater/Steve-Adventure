@@ -8,6 +8,7 @@ namespace SteveAdventure
         private const int WAYPOINT_STEP = 1;
 
         public bool IsWayPointReached => WayPointReached();
+        public Transform[] WayPoints => _waypoints;
         
         [SerializeField] private Transform[] _waypoints;
         [SerializeField] private float _wayPointReachedOffset = .2f;
@@ -26,7 +27,7 @@ namespace SteveAdventure
 
         private void Update()
         {
-            WayPointsMover();
+           // WayPointsMover();
         }
 
         private void WayPointsMover()
@@ -35,7 +36,7 @@ namespace SteveAdventure
             Vector2 colliderCenter = _collider.bounds.center;
             Vector2 direction = (currentWaypoint.position - (Vector3)colliderCenter).normalized;
             
-            _mover.Moving(direction);
+            //_mover.Moving(direction);
             _animator.MoveAnimation(direction);
 
             float distance = Vector2.Distance(colliderCenter, currentWaypoint.position);

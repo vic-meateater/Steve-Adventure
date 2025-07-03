@@ -6,26 +6,22 @@ namespace SteveAdventure
     [RequireComponent(typeof(Mover), typeof(WaypointsMoveController))]
     public class Enemy : MonoBehaviour
     {
-        [SerializeField] private EnemyStats _stats = new EnemyStats();
-        
-        private void OnValidate()
+        private EnemyStateMachine _stateMachine;
+        private Mover _mover;
+        private WaypointsMoveController _moveController;
+        private Collider2D _collider;
+
+        private void Start()
         {
-            _stats.Validate();
+            _mover = GetComponent<Mover>();
+            _moveController = GetComponent<WaypointsMoveController>();
+            _collider = GetComponent<Collider2D>();
+            _stateMachine = new EnemyStateMachine(_mover, _moveController.WayPoints, _collider);
         }
-    }
 
-
-    [Serializable]
-    public struct EnemyStats
-    {
-        //спорно
-        [Tooltip("Скорость передвижения врага")]
-        [Range(0.1f, 10f)]
-        public float Speed;
-
-        public void Validate()
+        private void FixedUpdate()
         {
-            Speed = Mathf.Max(Speed, 0.1f);
+            _stateMachine.Update();
         }
     }
 }
