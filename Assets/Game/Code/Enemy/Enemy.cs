@@ -6,22 +6,24 @@ namespace SteveAdventure
     [RequireComponent(typeof(Mover), typeof(WaypointsMoveController))]
     public class Enemy : MonoBehaviour
     {
-        private EnemyStateMachine _stateMachine;
+        [SerializeField] private float _waitDuration;
+        
         private Mover _mover;
         private WaypointsMoveController _moveController;
         private Collider2D _collider;
+        private EnemyBrain _enemyBrain;
 
         private void Start()
         {
             _mover = GetComponent<Mover>();
             _moveController = GetComponent<WaypointsMoveController>();
             _collider = GetComponent<Collider2D>();
-            _stateMachine = new EnemyStateMachine(_mover, _moveController.WayPoints, _collider);
+            _enemyBrain = new EnemyBrain(_mover, _moveController.WayPoints, _collider, _waitDuration);
         }
 
         private void FixedUpdate()
         {
-            _stateMachine.Update();
+            _enemyBrain.Update();
         }
     }
 }
