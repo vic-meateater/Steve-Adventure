@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace SteveAdventure
@@ -10,18 +11,18 @@ namespace SteveAdventure
         private Transform[] _waypoints;
         private Collider2D _collider;
         private EnemyVision _enemyVision;
-        private AnimatorController _animator;
+        private AnimatorController _animatorController;
         private float _wayPointReachedOffset = .2f;
         private int _currentWaypointIndex = 0;
 
         public PatrolState(EnemyBrain brain, Mover mover, Transform[] waypoints, Collider2D collider,
-            EnemyVision enemyVision, AnimatorController animator) : base(brain)
+            EnemyVision enemyVision, AnimatorController animatorController) : base(brain)
         {
             _mover = mover;
             _waypoints = waypoints;
             _collider = collider;
             _enemyVision = enemyVision;
-            _animator = animator;
+            _animatorController = animatorController;
         }
 
         public override void Enter()
@@ -45,23 +46,23 @@ namespace SteveAdventure
         {
             Transform currentWaypoint = _waypoints[_currentWaypointIndex];
             Vector2 colliderCenter = _collider.bounds.center;
-            Vector2 direction = (currentWaypoint.position - (Vector3) colliderCenter).normalized;
-            
-            _enemyVision.SetDirection(direction);
-            _animator.MoveAnimation(direction);
+            Vector2 direction = (currentWaypoint.position - (Vector3)colliderCenter).normalized;
+
+            _enemyVision.SetVisionDirection(direction);
+            _animatorController.MoveAnimation(direction);
             _mover.Moving(direction);
         }
 
-        public void ChangeWayPoint()
+        private void ChangeWayPoint()
         {
-            if(WayPointReached())
+            if (WayPointReached())
                 _currentWaypointIndex = (_currentWaypointIndex + WAYPOINT_STEP) % _waypoints.Length;
         }
 
         public bool WayPointReached()
         {
-            float sqrDistance = (_collider.bounds.center - _waypoints[_currentWaypointIndex].position).sqrMagnitude;
-            return sqrDistance < _wayPointReachedOffset;
+            float sqrDistance = (_waypoints[_currentWaypointIndex].position - _collider.bounds.center).sqrMagnitude;
+            return sqrDistance < _wayPointReachedOffset * _wayPointReachedOffset;
         }
     }
 }
