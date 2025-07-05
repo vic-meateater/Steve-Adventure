@@ -9,14 +9,19 @@ namespace SteveAdventure
         private Mover _mover;
         private Transform[] _waypoints;
         private Collider2D _collider;
+        private EnemyVision _enemyVision;
+        private AnimatorController _animator;
         private float _wayPointReachedOffset = .2f;
         private int _currentWaypointIndex = 0;
 
-        public PatrolState(EnemyBrain brain, Mover mover, Transform[] waypoints, Collider2D collider) : base(brain)
+        public PatrolState(EnemyBrain brain, Mover mover, Transform[] waypoints, Collider2D collider,
+            EnemyVision enemyVision, AnimatorController animator) : base(brain)
         {
             _mover = mover;
             _waypoints = waypoints;
             _collider = collider;
+            _enemyVision = enemyVision;
+            _animator = animator;
         }
 
         public override void Enter()
@@ -40,20 +45,17 @@ namespace SteveAdventure
         {
             Transform currentWaypoint = _waypoints[_currentWaypointIndex];
             Vector2 colliderCenter = _collider.bounds.center;
-            Vector2 direction = (currentWaypoint.position - (Vector3)colliderCenter).normalized;
-
-            //_animator.MoveAnimation(direction);
-                _mover.Moving(direction);
-
-            // if (!WayPointReached())
-            // {
-            //     //ChangeWayPoint();
-            // }
+            Vector2 direction = (currentWaypoint.position - (Vector3) colliderCenter).normalized;
+            
+            _enemyVision.SetDirection(direction);
+            _animator.MoveAnimation(direction);
+            _mover.Moving(direction);
         }
 
         public void ChangeWayPoint()
         {
-            _currentWaypointIndex = (_currentWaypointIndex + WAYPOINT_STEP) % _waypoints.Length;
+            if(WayPointReached())
+                _currentWaypointIndex = (_currentWaypointIndex + WAYPOINT_STEP) % _waypoints.Length;
         }
 
         public bool WayPointReached()
