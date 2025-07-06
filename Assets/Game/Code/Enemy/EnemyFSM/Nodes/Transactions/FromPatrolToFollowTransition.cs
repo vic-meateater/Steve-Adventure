@@ -1,6 +1,6 @@
 namespace SteveAdventure
 {
-    public class FromPatrolToFollowTransition : Transition
+    public sealed class FromPatrolToFollowTransition : Transition
     {
         private readonly EnemyVision _enemyVision;
         public FromPatrolToFollowTransition(EnemyBrain brain, EnemyVision enemyVision) : base(brain)
@@ -9,9 +9,9 @@ namespace SteveAdventure
         }
         public override bool ShouldTransition()
         {
-            if (Brain.GetCurrentState() is PatrolState patrolState)
+            if (Brain.GetCurrentState() is PatrolState _)
             {
-                return _enemyVision.TargetInRage;
+                return _enemyVision.IsTargetInDetectionRange();
             }
             return false;
         }

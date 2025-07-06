@@ -6,9 +6,9 @@ namespace SteveAdventure
     {
         private const float TARGET_REACHED_OFFSET = 0.7f;
         
-        private Mover _mover;
-        private EnemyVision _enemyVision;
-        private AnimatorController _animatorController;
+        private readonly Mover _mover;
+        private readonly EnemyVision _enemyVision;
+        private readonly AnimatorController _animatorController;
 
         public FollowState(EnemyBrain brain, Mover mover, EnemyVision enemyVision,
             AnimatorController animatorController) : base(brain)
@@ -28,9 +28,15 @@ namespace SteveAdventure
             FollowTarget();
         }
 
+        private bool WayPointReached(Vector2 targetPosition)
+        {
+            float sqrDistance = (targetPosition - (Vector2)_mover.transform.position).sqrMagnitude;
+            return sqrDistance < TARGET_REACHED_OFFSET * TARGET_REACHED_OFFSET;
+        }   
+
         private void FollowTarget()
         {
-            if (_enemyVision.GetTargetPosition(out Vector2 targetPosition) && _enemyVision.CanSeeTarget)
+            if (_enemyVision.TryGetTargetPosition(out Vector2 targetPosition) && _enemyVision.CanSeeTargetDirectly())
             {
                 Vector2 direction = (targetPosition - (Vector2) _mover.transform.position).normalized;
                 _mover.Moving(direction);
@@ -45,14 +51,7 @@ namespace SteveAdventure
             else
             {
                 _mover.Moving(Vector2.zero);
-                Debug.LogWarning("Target position not found in FollowState");
             }
         }
-        
-        public bool WayPointReached(Vector2 targetPosition)
-        {
-            float sqrDistance = (targetPosition - (Vector2)_mover.transform.position).sqrMagnitude;
-            return sqrDistance < TARGET_REACHED_OFFSET * TARGET_REACHED_OFFSET;
-        }   
     }
 }

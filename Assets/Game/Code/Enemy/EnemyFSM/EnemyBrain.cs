@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SteveAdventure
 {
-    public class EnemyBrain : BrainFSM
+    public sealed class EnemyBrain : BrainFSM
     {
         public EnemyBrain(Mover mover, Transform[] waypoints, Collider2D collider, EnemyVision enemyVision, 
             AnimatorController animatorController, float waitDuration)

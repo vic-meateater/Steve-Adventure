@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SteveAdventure
 {
-    public class InputHandler : MonoBehaviour
+    public sealed class InputHandler : MonoBehaviour
     {
         public event Action OnSpacePressed;
         public event Action<Vector2> OnMoveInputChanged;

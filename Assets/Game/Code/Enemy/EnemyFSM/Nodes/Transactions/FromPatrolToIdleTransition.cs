@@ -1,6 +1,6 @@
 namespace SteveAdventure
 {
-    public class FromPatrolToIdleTransition : Transition
+    public sealed class FromPatrolToIdleTransition : Transition
     {
         public FromPatrolToIdleTransition(EnemyBrain brain) : base(brain)
         {

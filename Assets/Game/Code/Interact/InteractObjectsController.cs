@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SteveAdventure
 {
-    public class InteractObjectsController : MonoBehaviour
+    public sealed class InteractObjectsController : MonoBehaviour
     {
         [SerializeField] private InteractToggleObject[] _interactObjects;
         [SerializeField] private InteractObject _interactObject;

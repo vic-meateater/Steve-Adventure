@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SteveAdventure
 {
-    public class IdleState : State
+    public sealed class IdleState : State
     {
         private readonly float _waitDuration;
         private float _endTime;

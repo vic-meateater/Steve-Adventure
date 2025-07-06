@@ -5,7 +5,7 @@ namespace SteveAdventure
 {
     [RequireComponent(typeof(Mover), typeof(Waypoints), typeof(AnimatorController))]
     [RequireComponent(typeof(Collider2D), typeof(EnemyVision))]
-    public class Enemy : MonoBehaviour
+    public sealed class Enemy : MonoBehaviour
     {
         private Mover _mover;
         private Waypoints _waypoints;
