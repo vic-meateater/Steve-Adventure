@@ -11,7 +11,7 @@ namespace SteveAdventure
         [SerializeField] private Vector2 _visionAreaSize;
         [SerializeField] private LayerMask _playerLayer;
 
-        private Vector2 _directionOffset = Vector2.right;
+        private Vector2 _directionOffset = Vector2.down;
         private Vector2 _targetPosition;
         private bool _targetInRange;
         private bool _canSeeTarget = true;
