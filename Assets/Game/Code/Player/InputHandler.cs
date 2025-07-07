@@ -9,6 +9,8 @@ namespace SteveAdventure
         public event Action<Vector2> OnMoveInputChanged;
         public event Action OnActionPressed;
         
+        public event Action OnAttackPressed;
+        
         private Vector2 _moveInput;
 
         private float _directionX;
@@ -26,6 +28,9 @@ namespace SteveAdventure
             
             if(Input.GetKeyDown(KeyCode.F))
                 OnActionPressed?.Invoke();
+            
+            if(Input.GetKeyDown(KeyCode.Mouse0))
+                OnAttackPressed?.Invoke();
         }
 
         private void FixedUpdate()

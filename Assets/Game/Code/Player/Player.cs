@@ -16,6 +16,7 @@ namespace SteveAdventure
             _inputHandler.OnSpacePressed += OnSpacePressedHandler;
             _inputHandler.OnMoveInputChanged += OnMoveInputHandler;
             _inputHandler.OnActionPressed += OnActionPressedHandler;
+            _inputHandler.OnAttackPressed += OnAttackPressedHandler;
 
             _mover = GetComponent<Mover>();
             _animator = GetComponent<AnimatorController>();
@@ -27,6 +28,11 @@ namespace SteveAdventure
             _inputHandler.OnSpacePressed -= OnSpacePressedHandler;
             _inputHandler.OnMoveInputChanged -= OnMoveInputHandler;
             _inputHandler.OnActionPressed -= OnActionPressedHandler;
+            _inputHandler.OnAttackPressed -= OnAttackPressedHandler;
+        }
+        private void OnAttackPressedHandler()
+        {
+            _animator.AttackAnimation();
         }
 
         private void OnActionPressedHandler()
@@ -34,7 +40,6 @@ namespace SteveAdventure
             if (_collisionHandler.CanInteract)
                 _collisionHandler.TryInteract();
         }
-
 
         private void OnSpacePressedHandler()
         {
