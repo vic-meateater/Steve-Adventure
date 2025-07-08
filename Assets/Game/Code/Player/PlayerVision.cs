@@ -12,7 +12,7 @@ namespace SteveAdventure
 
         private InputHandler _inputHandler;
         private Vector2 _directionOffset = Vector2.down;
-        private readonly List<Transform> _visibleTargets = new();
+        private readonly List<GameObject> _visibleTargets = new();
 
         private void Start()
         {
@@ -47,9 +47,9 @@ namespace SteveAdventure
                 _directionOffset = direction.normalized;
         }
         
-        public bool TryGetTargets(out List<Transform> targets)
+        public bool TryGetTargets(out List<GameObject> targets)
         {
-            targets = new List<Transform>();
+            targets = new List<GameObject>();
             if (_visibleTargets.Count > 0)
             {
                 targets = _visibleTargets;
@@ -79,7 +79,7 @@ namespace SteveAdventure
 
                     if (visionHit.collider != null && visionHit.collider == hit)
                     {
-                        _visibleTargets.Add(hit.transform);
+                        _visibleTargets.Add(hit.transform.gameObject);
 
                         Debug.DrawLine(transform.position, visionHit.point,
                             visionHit.collider == hit ? Color.blue : Color.magenta);

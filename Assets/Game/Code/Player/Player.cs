@@ -4,17 +4,19 @@ using UnityEngine;
 namespace SteveAdventure
 {
     [RequireComponent(typeof(InputHandler), typeof(Mover), typeof(AnimatorController))]
-    [RequireComponent(typeof(PlayerVision), typeof(CollisionHandler))]
+    [RequireComponent(typeof(PlayerVision), typeof(CollisionHandler), typeof(HealthComponent))]
     public sealed class Player : MonoBehaviour
     {
         [SerializeField] private AnimationHandler _animationHandler;
-        
+        [SerializeField] private float _damage = 10f;
+
         private InputHandler _inputHandler;
         private Mover _mover;
         private AnimatorController _animatorController;
         private CollisionHandler _collisionHandler;
         private PlayerVision _playerVision;
         private PlayerAttackController _playerAttackController;
+        private HealthComponent _health;
 
         private void Start()
         {
@@ -28,8 +30,9 @@ namespace SteveAdventure
             _animatorController = GetComponent<AnimatorController>();
             _collisionHandler = GetComponent<CollisionHandler>();
             _playerVision = GetComponent<PlayerVision>();
-            
-            _playerAttackController = new PlayerAttackController(_animationHandler, _animatorController, _playerVision);
+
+            _playerAttackController =
+                new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage);
         }
 
         private void OnDestroy()
@@ -39,6 +42,7 @@ namespace SteveAdventure
             _inputHandler.OnInteractPressed -= OnInteractPressedHandler;
             _inputHandler.OnAttackPressed -= OnAttackPressedHandler;
         }
+
         private void OnAttackPressedHandler()
         {
             _playerAttackController.AttackRequest();

@@ -1,20 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SteveAdventure
 {
-    public class PlayerAttackController : IDisposable
+    public sealed class PlayerAttackController : IDisposable
     {
         private AnimationHandler _animationHandler;
         private readonly AnimatorController _animatorController;
         private readonly PlayerVision _playerVision;
+        private readonly float _damage;
 
         public PlayerAttackController(AnimationHandler animationHandler, AnimatorController animatorController,
-            PlayerVision playerVision)
+            PlayerVision playerVision, float damage)
         {
             _animationHandler = animationHandler;
             _animatorController = animatorController;
             _playerVision = playerVision;
+            _damage = damage;
 
             _animationHandler.OnStartAttackFrame += OnStartAttackAction;
             _animationHandler.OnEndAttackFrame += OnEndAttackAction;
@@ -27,11 +30,12 @@ namespace SteveAdventure
 
         private void OnStartAttackAction()
         {
-            if (_playerVision.TryGetTargets(out var targets))
+            if (_playerVision.TryGetTargets(out List<GameObject> targets))
             {
                 foreach (var target in targets)
                 {
-                    Debug.LogWarning($"Target {target.name} damaged by player attack.");
+                    if(target.TryGetComponent<IDamageable>(out var damageable))
+                        damageable.TakeDamage(_damage);
                 }
             }
             else
