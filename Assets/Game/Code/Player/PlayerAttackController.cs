@@ -7,12 +7,15 @@ namespace SteveAdventure
     {
         private AnimationHandler _animationHandler;
         private readonly AnimatorController _animatorController;
+        private readonly PlayerVision _playerVision;
 
-        public PlayerAttackController(AnimationHandler animationHandler, AnimatorController animatorController)
+        public PlayerAttackController(AnimationHandler animationHandler, AnimatorController animatorController,
+            PlayerVision playerVision)
         {
             _animationHandler = animationHandler;
             _animatorController = animatorController;
-            
+            _playerVision = playerVision;
+
             _animationHandler.OnStartAttackFrame += OnStartAttackAction;
             _animationHandler.OnEndAttackFrame += OnEndAttackAction;
         }
@@ -24,12 +27,21 @@ namespace SteveAdventure
 
         private void OnStartAttackAction()
         {
-            Debug.Log("Start Attack Frame Triggered");
+            if (_playerVision.TryGetTargets(out var targets))
+            {
+                foreach (var target in targets)
+                {
+                    Debug.LogWarning($"Target {target.name} damaged by player attack.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No targets found for attack.");
+            }
         }
 
         private void OnEndAttackAction()
         {
-            Debug.Log("End Attack Frame Triggered");
         }
 
         public void Dispose()

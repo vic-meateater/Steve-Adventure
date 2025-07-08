@@ -4,6 +4,7 @@ using UnityEngine;
 namespace SteveAdventure
 {
     [RequireComponent(typeof(InputHandler), typeof(Mover), typeof(AnimatorController))]
+    [RequireComponent(typeof(PlayerVision), typeof(CollisionHandler))]
     public sealed class Player : MonoBehaviour
     {
         [SerializeField] private AnimationHandler _animationHandler;
@@ -11,13 +12,12 @@ namespace SteveAdventure
         private InputHandler _inputHandler;
         private Mover _mover;
         private AnimatorController _animatorController;
-        private PlayerAttackController _playerAttackController;
         private CollisionHandler _collisionHandler;
+        private PlayerVision _playerVision;
+        private PlayerAttackController _playerAttackController;
 
         private void Start()
         {
-            
-            
             _inputHandler = GetComponent<InputHandler>();
             _inputHandler.OnSpacePressed += OnSpacePressedHandler;
             _inputHandler.OnMoveInputChanged += OnMoveInputHandler;
@@ -27,9 +27,9 @@ namespace SteveAdventure
             _mover = GetComponent<Mover>();
             _animatorController = GetComponent<AnimatorController>();
             _collisionHandler = GetComponent<CollisionHandler>();
+            _playerVision = GetComponent<PlayerVision>();
             
-            _playerAttackController = new PlayerAttackController(_animationHandler, _animatorController);
-            
+            _playerAttackController = new PlayerAttackController(_animationHandler, _animatorController, _playerVision);
         }
 
         private void OnDestroy()
