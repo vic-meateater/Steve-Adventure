@@ -17,7 +17,7 @@ namespace SteveAdventure
             _health.TakeDamage(damage);
             if (_health.CurrentHealth <= 0f)
             {
-                Debug.Log("Entity died.");
+                Destroy(gameObject);
             }
         }
 
@@ -25,10 +25,10 @@ namespace SteveAdventure
         {
             _health.Heal(healAmount);
         }
-        
-        public void SetMaxHealth(float newMax)
-        {
-            _health.SetMaxHealth(newMax);
-        }
+
+        public void SetMaxHealth(float newMax) => _health.SetMaxHealth(newMax);
+
+        public float GetMaxHealth() => _health.MaxHealth;
+        public float GetCurrentHealth() => _health.CurrentHealth;
     }
 }

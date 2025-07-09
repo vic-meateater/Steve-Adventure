@@ -47,14 +47,4 @@ namespace SteveAdventure
             _currentHealth = Mathf.Clamp(_currentHealth + value, 0f, _maxHealth);
         }
     }
-
-    public interface IDamageable
-    {
-        void TakeDamage(float damage);
-    }
-
-    public interface IHealable
-    {
-        void Heal(float healAmount);
-    }
 }
