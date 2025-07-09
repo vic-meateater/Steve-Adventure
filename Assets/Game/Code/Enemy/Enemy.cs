@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SteveAdventure
 {
     [RequireComponent(typeof(Mover), typeof(Waypoints), typeof(AnimatorController))]
-    [RequireComponent(typeof(Collider2D), typeof(EnemyVision))]
+    [RequireComponent(typeof(Collider2D), typeof(EnemyVision), typeof(HealthComponent))]
     public sealed class Enemy : MonoBehaviour
     {
         private Mover _mover;
@@ -12,6 +12,7 @@ namespace SteveAdventure
         private Collider2D _collider;
         private EnemyVision _enemyVision;
         private AnimatorController _animatorController;
+        private HealthComponent _health;
         private EnemyBrain _enemyBrain;
 
         private void Start()
@@ -21,6 +22,7 @@ namespace SteveAdventure
             _collider = GetComponent<Collider2D>();
             _enemyVision = GetComponent<EnemyVision>();
             _animatorController = GetComponent<AnimatorController>();
+            _health = GetComponent<HealthComponent>();
             _enemyBrain = new EnemyBrain(_mover, _waypoints.WayPoints, _collider, _enemyVision, _animatorController,
                 _waypoints.WaitDuration);
         }
