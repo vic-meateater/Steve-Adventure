@@ -13,8 +13,9 @@ namespace SteveAdventure
 
         private Vector2 _directionOffset = Vector2.down;
         private Vector2 _targetPosition;
-        private bool _targetInRange;
+        private bool _isTargetInRange;
         private bool _canSeeTarget = true;
+        private GameObject _target;
 
         private void FixedUpdate()
         {
@@ -29,7 +30,7 @@ namespace SteveAdventure
 
         public bool TryGetTargetPosition(out Vector2 targetPosition)
         {
-            if (_targetInRange)
+            if (_isTargetInRange)
             {
                 targetPosition = _targetPosition;
                 return true;
@@ -39,9 +40,20 @@ namespace SteveAdventure
             return false;
         }
 
-        public bool IsTargetInDetectionRange() => _targetInRange;
+        public bool TryGetTargetInAttackRange(out GameObject target)
+        {
+            if (_target)
+            {
+                target = _target;
+                return true;
+            }
+            target = null;
+            return false;
+        }
 
-        public bool CanSeeTargetDirectly() => _targetInRange && _canSeeTarget;
+        public bool IsTargetInDetectionRange() => _isTargetInRange;
+
+        public bool CanSeeTargetDirectly() => _isTargetInRange && _canSeeTarget;
 
 
         private void FindTarget()
@@ -49,7 +61,7 @@ namespace SteveAdventure
             Vector2 origin = GetLookAreaOrigin();
             Collider2D hit = Physics2D.OverlapBox(origin, _visionAreaSize, 0f, _playerLayer);
 
-            if (hit != null)
+            if (hit)
             {
                 Vector2 direction = (hit.transform.position - transform.position).normalized;
                 RaycastHit2D visionHit = Physics2D.Raycast(
@@ -61,14 +73,15 @@ namespace SteveAdventure
                 Debug.DrawLine(transform.position, visionHit.point,
                     visionHit.collider == hit ? Color.red : Color.yellow);
 
-                _targetInRange = true;
+                _isTargetInRange = true;
                 _targetPosition = hit.transform.position;
                 _canSeeTarget = visionHit.collider == hit;
+                _target = hit.transform.gameObject;
             }
             else
             {
                 _canSeeTarget = false;
-                _targetInRange = false;
+                _isTargetInRange = false;
                 _targetPosition = Vector2.zero;
             }
         }
