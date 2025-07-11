@@ -5,26 +5,27 @@ namespace SteveAdventure
     public sealed class AttackState : State
     {
         private readonly EnemyVision _enemyVision;
-        private readonly float _waitDuration;
+        private readonly float _attackCooldown;
         private readonly float _damage;
         private float _endTime;
         
 
-        public AttackState(EnemyBrain brain, EnemyVision enemyVision, float damage) : base(brain)
+        public AttackState(EnemyBrain brain, EnemyVision enemyVision, float damage, float attackCooldown) : base(brain)
         {
             _enemyVision = enemyVision;
             _damage = damage;
+            _attackCooldown = attackCooldown;
         }
 
         public override void Enter()
         {
             Debug.Log("Enter to Attack State");
-            _endTime = Time.time + _waitDuration;
+            _endTime = Time.time + _attackCooldown;
         }
 
         public override void Update()
         {
-            if (IsTimeOver())
+            if (IsTimeOver() && _enemyVision.CanAttack())
             {
                 Attack();
             }
@@ -32,11 +33,14 @@ namespace SteveAdventure
 
         private void Attack()
         {
+            _endTime = Time.time + _attackCooldown;
+            
             if (_enemyVision.TryGetTargetInAttackRange(out var target))
             {
                 if (target.TryGetComponent<IDamageable>(out var damageable))
                 {
                     damageable.TakeDamage(_damage);
+                    Debug.Log($"Attacked {target.name} for {_damage} damage.");
                 }
             }
             else

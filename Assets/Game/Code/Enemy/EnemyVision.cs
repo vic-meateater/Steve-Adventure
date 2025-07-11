@@ -10,6 +10,7 @@ namespace SteveAdventure
 
         [SerializeField] private Vector2 _visionAreaSize;
         [SerializeField] private LayerMask _playerLayer;
+        [SerializeField] private float _attackRange;
 
         private Vector2 _directionOffset = Vector2.down;
         private Vector2 _targetPosition;
@@ -47,6 +48,7 @@ namespace SteveAdventure
                 target = _target;
                 return true;
             }
+
             target = null;
             return false;
         }
@@ -55,6 +57,11 @@ namespace SteveAdventure
 
         public bool CanSeeTargetDirectly() => _isTargetInRange && _canSeeTarget;
 
+        public bool CanAttack()
+        {
+            return CanSeeTargetDirectly() &&
+                   (_targetPosition - (Vector2)transform.position).magnitude < _attackRange;
+        }
 
         private void FindTarget()
         {

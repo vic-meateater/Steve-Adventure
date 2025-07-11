@@ -50,7 +50,7 @@ namespace SteveAdventure
 
         public void Dispose()
         {
-            if (_animationHandler != null)
+            if (_animationHandler)
             {
                 _animationHandler.OnStartAttackFrame -= OnStartAttackAction;
                 _animationHandler.OnEndAttackFrame -= OnEndAttackAction;
