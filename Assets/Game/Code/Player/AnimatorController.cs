@@ -4,10 +4,12 @@ namespace SteveAdventure
 {
     public sealed class AnimatorController : MonoBehaviour
     {
-        private static readonly int MoveX = Animator.StringToHash(nameof(MoveX));
-        private static readonly int MoveY = Animator.StringToHash(nameof(MoveY));
-        private static readonly int Speed = Animator.StringToHash(nameof(Speed));
-        private static readonly int AttackTrigger = Animator.StringToHash("Attack");
+        private readonly int _moveX = Animator.StringToHash("MoveX");
+        private readonly int _moveY = Animator.StringToHash("MoveY");
+        private readonly int _speed = Animator.StringToHash("Speed");
+        private readonly int _attackTrigger = Animator.StringToHash("Attack");
+        private Vector2 _moveInput;
+        
 
         [SerializeField] private Animator _animator;
         
@@ -15,22 +17,24 @@ namespace SteveAdventure
 
         public void MoveAnimation(Vector2 moveInput)
         {
-            Vector2 directionToUse = _lastDirection; //
+            _moveInput = moveInput;
+            Vector2 directionToUse = _lastDirection; 
 
-            if (moveInput.magnitude > 0.01f)
+            if (_moveInput.magnitude > 0.01f)
             {
-                directionToUse = moveInput.normalized;
+                directionToUse = _moveInput.normalized;
                 _lastDirection = directionToUse;
             }
 
-            _animator.SetFloat(MoveX, directionToUse.x);
-            _animator.SetFloat(MoveY, directionToUse.y);
-            _animator.SetFloat(Speed, moveInput.magnitude);
+            _animator.SetFloat(_moveX, directionToUse.x);
+            _animator.SetFloat(_moveY, directionToUse.y);
+            _animator.SetFloat(_speed, _moveInput.magnitude);
         }
         
         public void AttackAnimation()
         {
-            _animator.SetTrigger(AttackTrigger);
+            _animator.SetFloat(_speed, _moveInput.magnitude);
+            _animator.SetTrigger(_attackTrigger);
         }
     }
 }

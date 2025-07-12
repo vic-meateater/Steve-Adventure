@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace SteveAdventure
 {
     public sealed class FromPatrolToIdleTransition : Transition
@@ -18,6 +20,7 @@ namespace SteveAdventure
 
         public override void OnTransition()
         {
+            Debug.Log("Transitioning from Patrol to Idle State");
             Brain.ChangeState<IdleState>();
         }
     }

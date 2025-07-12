@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace SteveAdventure
 {
     public sealed class FromFollowToPatrolTransition : Transition
@@ -11,12 +13,14 @@ namespace SteveAdventure
         {
             if (Brain.GetCurrentState() is FollowState _)
             {
+                Debug.Log("Checking transition from Follow to Patrol State " + !_enemyVision.IsTargetInDetectionRange());
                 return !_enemyVision.IsTargetInDetectionRange();
             }
             return false;
         }
         public override void OnTransition()
         {
+            Debug.Log("Transitioning from Follow to Patrol State");
             Brain.ChangeState<PatrolState>();
         }
     }

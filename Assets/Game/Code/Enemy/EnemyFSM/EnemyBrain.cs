@@ -10,11 +10,11 @@ namespace SteveAdventure
             State patrolState = new PatrolState(this, mover, waypoints, collider, enemyVision, animatorController);
             State idleState = new IdleState(this, waitDuration);
             State followState = new FollowState(this, mover, enemyVision, animatorController);
-            State attackState = new AttackState(this, enemyVision, damage, attackCooldown);
+            State attackState = new AttackState(this, enemyVision, damage, attackCooldown, animatorController, mover);
 
             RegisterState(patrolState);
-            patrolState.AddTransition(new FromPatrolToIdleTransition(this));
             patrolState.AddTransition(new FromPatrolToFollowTransition(this, enemyVision));
+            patrolState.AddTransition(new FromPatrolToIdleTransition(this));
 
             RegisterState(idleState);
             idleState.AddTransition(new FromIdleToPatrolTransition(this));
