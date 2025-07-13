@@ -1,50 +1,40 @@
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace SteveAdventure
 {
     public abstract class BrainFSM
     {
         private State _currentState;
-        private Dictionary<Type, State> _states = new();
-       
+        private readonly List<State> _allStates = new();
+
         public void Update()
         {
             _currentState?.Update();
-            _currentState?.CheckTransitions();
+            var next = _currentState?.GetNextState();
+            if (next != null)
+                ChangeState(next);
         }
-        
-        public void ChangeState<TState>() where TState : State
+
+        protected void SetInitialState(State initial)
         {
-            Type stateType = typeof(TState);
+            _currentState = initial;
+            _currentState.Enter();
+        }
 
-            if (!_states.ContainsKey(stateType))
-            {
-                Debug.LogError($"State {stateType} не зарегистрировано в StateMachine");
-                return;
-            }
+        protected void AddState(State state)
+        {
+            if (!_allStates.Contains(state))
+                _allStates.Add(state);
+        }
 
-            if (_currentState?.GetType() == stateType)
+        private void ChangeState(State newState)
+        {
+            if (_currentState == newState)
                 return;
 
             _currentState?.Exit();
-            _currentState = _states[stateType];
+            _currentState = newState;
             _currentState.Enter();
         }
-        
-        public void RegisterState(State state)
-        {
-            Type type = state.GetType();
-            if (_states.ContainsKey(type))
-            {
-                Debug.LogWarning($"Состояние {type} уже зарегистрировано");
-                return;
-            }
-
-            _states.Add(type, state);
-        }
-
-        public State GetCurrentState() => _currentState;
     }
 }

@@ -5,13 +5,15 @@ namespace SteveAdventure
     public sealed class FollowState : State
     {
         private const float TARGET_REACHED_OFFSET = 0.7f;
+        private const float TARGET_LOST_DELAY = 0.5f;
         
         private readonly Mover _mover;
         private readonly EnemyVision _enemyVision;
         private readonly AnimatorController _animatorController;
+        private float _lastTargetSeenTime;
 
-        public FollowState(EnemyBrain brain, Mover mover, EnemyVision enemyVision,
-            AnimatorController animatorController) : base(brain)
+        public FollowState(Mover mover, EnemyVision enemyVision,
+            AnimatorController animatorController) 
         {
             _mover = mover;
             _enemyVision = enemyVision;
@@ -21,6 +23,7 @@ namespace SteveAdventure
         public override void Enter()
         {
             Debug.Log("Enter to Follow State");
+            _lastTargetSeenTime = Time.time;
         }
 
         public override void Update()
@@ -28,7 +31,17 @@ namespace SteveAdventure
             FollowTarget();
         }
 
-        private bool WayPointReached(Vector2 targetPosition)
+        public bool ShouldStopFollowing()
+        {
+            if (_enemyVision.IsTargetInDetectionRange())
+            {
+                _lastTargetSeenTime = Time.time;
+                return false;
+            }
+            return Time.time - _lastTargetSeenTime > TARGET_LOST_DELAY;
+        }
+
+        private bool TargetReached(Vector2 targetPosition)
         {
             float sqrDistance = (targetPosition - (Vector2)_mover.transform.position).sqrMagnitude;
             return sqrDistance < TARGET_REACHED_OFFSET * TARGET_REACHED_OFFSET;
@@ -42,7 +55,7 @@ namespace SteveAdventure
                 _mover.Moving(direction);
                 _enemyVision.SetVisionDirection(direction);
                 _animatorController.MoveAnimation(direction);
-                if (WayPointReached(targetPosition))
+                if (TargetReached(targetPosition))
                 {
                     Debug.Log("Target reached");
                     _mover.Moving(Vector2.zero);

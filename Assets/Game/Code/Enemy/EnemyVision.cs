@@ -11,12 +11,14 @@ namespace SteveAdventure
         [SerializeField] private Vector2 _visionAreaSize;
         [SerializeField] private LayerMask _playerLayer;
         [SerializeField] private float _attackRange;
-
+        [SerializeField] private float _targetLostDelay = .5f;
+        
         private Vector2 _directionOffset = Vector2.down;
         private Vector2 _targetPosition;
         private bool _isTargetInRange;
-        private bool _canSeeTarget = true;
+        private bool _canSeeTarget;
         private GameObject _target;
+        private float _lastTargetSeenTime;
 
         private void FixedUpdate()
         {
@@ -53,9 +55,17 @@ namespace SteveAdventure
             return false;
         }
 
-        public bool IsTargetInDetectionRange() => _isTargetInRange;
+        public bool IsTargetInDetectionRange()
+        {
+            Debug.Log($"IsTargetInDetectionRange: {_isTargetInRange}");
+            return _isTargetInRange;
+        }
 
-        public bool CanSeeTargetDirectly() => _isTargetInRange && _canSeeTarget;
+        public bool CanSeeTargetDirectly()
+        {
+            Debug.Log($"CanSeeTargetDirectly: {_canSeeTarget}");
+            return _canSeeTarget;
+        }
 
         public bool CanAttack()
         {
@@ -77,20 +87,34 @@ namespace SteveAdventure
                     _visionAreaSize.x,
                     ~(1 << gameObject.layer));
 
+                _canSeeTarget = visionHit.collider == hit;
+
+                if (_canSeeTarget)
+                {
+                    _isTargetInRange = true;
+                    _targetPosition = hit.transform.position;
+                    _target = hit.transform.gameObject;
+                    _lastTargetSeenTime = Time.time;
+                }
+                
                 Debug.DrawLine(transform.position, visionHit.point,
                     visionHit.collider == hit ? Color.red : Color.yellow);
-
-                _isTargetInRange = true;
-                _targetPosition = hit.transform.position;
-                _canSeeTarget = visionHit.collider == hit;
-                _target = hit.transform.gameObject;
+                
+                Debug.Log($"Target in range positive: {_isTargetInRange}");
+                Debug.Log($"Can see target positive: {_canSeeTarget}");
             }
             else
             {
-                _canSeeTarget = false;
-                _isTargetInRange = false;
-                _targetPosition = Vector2.zero;
+                if (Time.time - _lastTargetSeenTime > _targetLostDelay)
+                {
+                    _isTargetInRange = false;
+                    _target = null;
+                    _targetPosition = Vector2.zero;
+                }
+                Debug.Log($"Target in range negative: {_isTargetInRange}");
+                Debug.Log($"Can see target negative: {_canSeeTarget}");
             }
+
         }
 
         private Vector2 GetLookAreaOrigin()

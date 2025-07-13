@@ -12,8 +12,8 @@ namespace SteveAdventure
         private float _endTime;
 
 
-        public AttackState(EnemyBrain brain, EnemyVision enemyVision, float damage, float attackCooldown,
-            AnimatorController animatorController, Mover mover) : base(brain)
+        public AttackState(EnemyVision enemyVision, float damage, float attackCooldown,
+            AnimatorController animatorController, Mover mover)
         {
             _enemyVision = enemyVision;
             _damage = damage;
