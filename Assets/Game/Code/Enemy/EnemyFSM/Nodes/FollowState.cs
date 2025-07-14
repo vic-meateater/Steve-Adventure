@@ -22,7 +22,6 @@ namespace SteveAdventure
 
         public override void Enter()
         {
-            Debug.Log("Enter to Follow State");
             _lastTargetSeenTime = Time.time;
         }
 

@@ -12,8 +12,9 @@ namespace SteveAdventure
         private float _endTime;
 
 
-        public AttackState(EnemyVision enemyVision, float damage, float attackCooldown,
-            AnimatorController animatorController, Mover mover)
+        public AttackState(Mover mover, EnemyVision enemyVision, AnimatorController animatorController, float damage,
+            float attackCooldown)
+
         {
             _enemyVision = enemyVision;
             _damage = damage;
@@ -27,6 +28,7 @@ namespace SteveAdventure
             Debug.Log("Enter to Attack State");
             _endTime = Time.time + _attackCooldown;
             _mover.Moving(Vector2.zero);
+            _animatorController.MoveAnimation(Vector2.zero);
         }
 
         public override void Update()
@@ -43,10 +45,10 @@ namespace SteveAdventure
 
             if (_enemyVision.TryGetTargetInAttackRange(out var target))
             {
-                if (target.TryGetComponent<IDamageable>(out var damageable))
+                if (target.TryGetComponent(out IDamageable damageable))
                 {
-                    damageable.TakeDamage(_damage);
                     _animatorController.AttackAnimation();
+                    damageable.TakeDamage(_damage);
                     Debug.Log($"Attacked {target.name} for {_damage} damage.");
                 }
             }

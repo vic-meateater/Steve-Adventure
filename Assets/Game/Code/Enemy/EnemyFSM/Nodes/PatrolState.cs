@@ -9,7 +9,6 @@ namespace SteveAdventure
 
         private readonly Mover _mover;
         private readonly Transform[] _waypoints;
-        private readonly Transform _enemyTransform;
         private readonly Collider2D _collider;
         private readonly EnemyVision _enemyVision;
         private readonly AnimatorController _animatorController;
@@ -21,7 +20,6 @@ namespace SteveAdventure
         {
             _mover = mover;
             _waypoints = waypoints;
-            _enemyTransform = enemyTransform;
             _collider = collider;
             _enemyVision = enemyVision;
             _animatorController = animatorController;
@@ -29,21 +27,16 @@ namespace SteveAdventure
 
         public override void Enter()
         {
-            Debug.Log("Enter to Patrol State");
-            //WayPointsMover();
+            ChangeWayPoint();
         }
 
         public override void Update()
         {
-            if(WayPointReached())
-                ChangeWayPoint();
-            else
                 WayPointsMover();
         }
 
         public override void Exit()
         {
-            Debug.Log("Exit from Patrol State");
             _mover.Moving(Vector2.zero);
             _animatorController.MoveAnimation(Vector2.zero);
         }
@@ -51,17 +44,12 @@ namespace SteveAdventure
         public bool WayPointReached()
         {
             float sqrDistance = (_waypoints[_currentWaypointIndex].position - _collider.bounds.center).sqrMagnitude;
-            //float sqrDistance = (_waypoints[_currentWaypointIndex].position - _enemyTransform.position).sqrMagnitude;
-            Debug.Log("Current Waypoint Index: " + _currentWaypointIndex);
-            Debug.Log("Checking if waypoint is reached in Patrol State " +
-                      (sqrDistance < _wayPointReachedOffset * _wayPointReachedOffset));
             return sqrDistance < _wayPointReachedOffset * _wayPointReachedOffset;
         }
 
         private void WayPointsMover()
         {
             Transform currentWaypoint = _waypoints[_currentWaypointIndex];
-            //Vector2 direction = (currentWaypoint.position - _enemyTransform.position).normalized;
             Vector2 direction = (currentWaypoint.position - _collider.bounds.center).normalized;
 
             _enemyVision.SetVisionDirection(direction);
@@ -71,7 +59,7 @@ namespace SteveAdventure
 
         private void ChangeWayPoint()
         {
-            //if (WayPointReached())
+            if (WayPointReached())
                 _currentWaypointIndex = (_currentWaypointIndex + WAYPOINT_STEP) % _waypoints.Length;
         }
     }

@@ -57,13 +57,11 @@ namespace SteveAdventure
 
         public bool IsTargetInDetectionRange()
         {
-            Debug.Log($"IsTargetInDetectionRange: {_isTargetInRange}");
             return _isTargetInRange;
         }
 
         public bool CanSeeTargetDirectly()
         {
-            Debug.Log($"CanSeeTargetDirectly: {_canSeeTarget}");
             return _canSeeTarget;
         }
 
@@ -99,9 +97,6 @@ namespace SteveAdventure
                 
                 Debug.DrawLine(transform.position, visionHit.point,
                     visionHit.collider == hit ? Color.red : Color.yellow);
-                
-                Debug.Log($"Target in range positive: {_isTargetInRange}");
-                Debug.Log($"Can see target positive: {_canSeeTarget}");
             }
             else
             {
@@ -111,8 +106,6 @@ namespace SteveAdventure
                     _target = null;
                     _targetPosition = Vector2.zero;
                 }
-                Debug.Log($"Target in range negative: {_isTargetInRange}");
-                Debug.Log($"Can see target negative: {_canSeeTarget}");
             }
 
         }
