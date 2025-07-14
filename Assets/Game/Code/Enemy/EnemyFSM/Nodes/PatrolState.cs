@@ -10,17 +10,19 @@ namespace SteveAdventure
         private readonly Mover _mover;
         private readonly Transform[] _waypoints;
         private readonly Transform _enemyTransform;
+        private readonly Collider2D _collider;
         private readonly EnemyVision _enemyVision;
         private readonly AnimatorController _animatorController;
         private readonly float _wayPointReachedOffset = .1f;
         private int _currentWaypointIndex = 0;
 
-        public PatrolState(Mover mover, Transform[] waypoints,
+        public PatrolState(Mover mover, Transform[] waypoints, Collider2D collider,
             EnemyVision enemyVision, AnimatorController animatorController, Transform enemyTransform)
         {
             _mover = mover;
             _waypoints = waypoints;
             _enemyTransform = enemyTransform;
+            _collider = collider;
             _enemyVision = enemyVision;
             _animatorController = animatorController;
         }
@@ -48,8 +50,8 @@ namespace SteveAdventure
 
         public bool WayPointReached()
         {
-            //float sqrDistance = (_waypoints[_currentWaypointIndex].position - _collider.bounds.center).sqrMagnitude;
-            float sqrDistance = (_waypoints[_currentWaypointIndex].position - _enemyTransform.position).sqrMagnitude;
+            float sqrDistance = (_waypoints[_currentWaypointIndex].position - _collider.bounds.center).sqrMagnitude;
+            //float sqrDistance = (_waypoints[_currentWaypointIndex].position - _enemyTransform.position).sqrMagnitude;
             Debug.Log("Current Waypoint Index: " + _currentWaypointIndex);
             Debug.Log("Checking if waypoint is reached in Patrol State " +
                       (sqrDistance < _wayPointReachedOffset * _wayPointReachedOffset));
@@ -59,7 +61,8 @@ namespace SteveAdventure
         private void WayPointsMover()
         {
             Transform currentWaypoint = _waypoints[_currentWaypointIndex];
-            Vector2 direction = (currentWaypoint.position - _enemyTransform.position).normalized;
+            //Vector2 direction = (currentWaypoint.position - _enemyTransform.position).normalized;
+            Vector2 direction = (currentWaypoint.position - _collider.bounds.center).normalized;
 
             _enemyVision.SetVisionDirection(direction);
             _animatorController.MoveAnimation(direction);

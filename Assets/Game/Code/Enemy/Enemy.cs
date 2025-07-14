@@ -16,6 +16,7 @@ namespace SteveAdventure
         private HealthComponent _health;
         private EnemyBrain _enemyBrain;
         private Transform _enemyTransform;
+        private Collider2D _collider;
 
 
         private void Start()
@@ -26,8 +27,9 @@ namespace SteveAdventure
             _animatorController = GetComponent<AnimatorController>();
             _health = GetComponent<HealthComponent>();
             _enemyTransform = transform;
+            _collider = GetComponent<Collider2D>();
             _enemyBrain = new EnemyBrain(_mover, _waypoints.WayPoints, _enemyVision, _animatorController,
-                _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform);
+                _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider);
         }
 
         private void FixedUpdate()
