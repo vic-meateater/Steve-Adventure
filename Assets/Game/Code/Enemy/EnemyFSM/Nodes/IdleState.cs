@@ -6,7 +6,7 @@ namespace SteveAdventure
     {
         private readonly float _waitDuration;
         private float _endTime;
-        public IdleState(EnemyBrain brain, float waitDuration) : base(brain)
+        public IdleState(float waitDuration)
         {
             _waitDuration = waitDuration;
         }
@@ -16,7 +16,12 @@ namespace SteveAdventure
             Debug.Log("Enter to Idle State");
             _endTime = Time.time + _waitDuration;
         }
-        
+
+        public override void Exit()
+        {
+            Debug.Log("Exit from Idle State");
+        }
+
         public bool IsTimeOver()
         {
             return Time.time >= _endTime;

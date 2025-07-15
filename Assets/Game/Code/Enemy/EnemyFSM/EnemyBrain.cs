@@ -4,24 +4,46 @@ namespace SteveAdventure
 {
     public sealed class EnemyBrain : BrainFSM
     {
-        public EnemyBrain(Mover mover, Transform[] waypoints, Collider2D collider, EnemyVision enemyVision, 
-            AnimatorController animatorController, float waitDuration)
+        private readonly EnemyVision _enemyVision;
+        private bool _canAttack;
+        private bool _targetInRange;
+
+        public EnemyBrain(Mover mover, Transform[] waypoints, EnemyVision enemyVision,
+            AnimatorController animatorController, float waitDuration, float damage, float attackCooldown,
+            Transform enemyTransform, Collider2D collider)
         {
-            State patrolState = new PatrolState(this, mover, waypoints, collider, enemyVision, animatorController);
-            State idleState = new IdleState(this, waitDuration);
-            State followState = new FollowState(this, mover, enemyVision, animatorController);
-
-            RegisterState(patrolState);
-            patrolState.AddTransition(new FromPatrolToIdleTransition(this));
-            patrolState.AddTransition(new FromPatrolToFollowTransition(this, enemyVision));
-
-            RegisterState(idleState);
-            idleState.AddTransition(new FromIdleToPatrolTransition(this));
+            _enemyVision = enemyVision;
             
-            RegisterState(followState);
-            followState.AddTransition(new FromFollowToPatrolTransition(this, enemyVision));
+            var idleState = new IdleState(waitDuration);
+            var patrolState = new PatrolState(mover, waypoints, collider, enemyVision, animatorController, enemyTransform);
+            var followState = new FollowState(mover, enemyVision, animatorController);
+            var attackState = new AttackState(mover, enemyVision, animatorController, damage, attackCooldown);
 
-            ChangeState<PatrolState>();
+            AddState(patrolState);
+            AddState(idleState);
+            AddState(followState);
+            AddState(attackState);
+
+            patrolState.AddTransition(new Transition(() => patrolState.WayPointReached(), idleState));
+            patrolState.AddTransition(new Transition(() => _targetInRange, followState));
+            
+            followState.AddTransition(new Transition(() => _canAttack, attackState));
+            followState.AddTransition(new Transition(() => followState.ShouldStopFollowing(), patrolState));
+            
+            attackState.AddTransition(new Transition(() => attackState.ShouldExitAttack(), patrolState));
+            
+            idleState.AddTransition(new Transition(() => idleState.IsTimeOver(), patrolState));
+            idleState.AddTransition(new Transition(() => _targetInRange, followState));
+
+            SetInitialState(idleState);
+        }
+
+        public override void Update()
+        {
+            _canAttack = _enemyVision.CanAttack();
+            _targetInRange = _enemyVision.IsTargetInDetectionRange();
+            
+            base.Update();
         }
     }
 }
