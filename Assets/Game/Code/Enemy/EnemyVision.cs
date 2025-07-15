@@ -7,7 +7,8 @@ namespace SteveAdventure
     public sealed class EnemyVision : MonoBehaviour
     {
         private const float VISION_OFFSET_MULTIPLIER = 2f;
-
+        private const float SEARCH_INTERVAL = 0.1f;
+        
         [SerializeField] private Vector2 _visionAreaSize;
         [SerializeField] private LayerMask _playerLayer;
         [SerializeField] private float _attackRange;
@@ -19,10 +20,15 @@ namespace SteveAdventure
         private bool _canSeeTarget;
         private GameObject _target;
         private float _lastTargetSeenTime;
+        private float _lastSearchTime;
 
         private void FixedUpdate()
         {
-            FindTarget();
+            if (Time.time - _lastSearchTime > SEARCH_INTERVAL)
+            {
+                FindTarget();
+                _lastSearchTime = Time.time;
+            }
         }
 
         public void SetVisionDirection(Vector2 direction)

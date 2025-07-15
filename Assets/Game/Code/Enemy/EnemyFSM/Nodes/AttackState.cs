@@ -38,6 +38,11 @@ namespace SteveAdventure
                 Attack();
             }
         }
+        
+        public bool ShouldExitAttack()
+        {
+            return !_enemyVision.CanAttack();
+        }
 
         private void Attack()
         {

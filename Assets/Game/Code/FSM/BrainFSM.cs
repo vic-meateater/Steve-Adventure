@@ -7,7 +7,7 @@ namespace SteveAdventure
         private State _currentState;
         private readonly List<State> _allStates = new();
 
-        public void Update()
+        public virtual void Update()
         {
             _currentState?.Update();
             var next = _currentState?.GetNextState();

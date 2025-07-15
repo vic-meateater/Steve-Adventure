@@ -58,14 +58,12 @@ namespace SteveAdventure
         {
             if (_enemyVision.TryGetTargetPosition(out Vector2 targetPosition) && _enemyVision.CanSeeTargetDirectly())
             {
-                Vector2 direction = (targetPosition - (Vector2)_mover.transform.position).normalized;
-                _mover.Moving(direction);
-                _enemyVision.SetVisionDirection(direction);
-                _animatorController.MoveAnimation(direction);
-                if (TargetReached(targetPosition))
+                if (!TargetReached(targetPosition))
                 {
-                    Debug.Log("Target reached");
-                    _mover.Moving(Vector2.zero);
+                    Vector2 direction = (targetPosition - (Vector2)_mover.transform.position).normalized;
+                    _mover.Moving(direction);
+                    _enemyVision.SetVisionDirection(direction);
+                    _animatorController.MoveAnimation(direction);
                 }
             }
             else

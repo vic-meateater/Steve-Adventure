@@ -14,6 +14,7 @@ namespace SteveAdventure
         private readonly AnimatorController _animatorController;
         private readonly float _wayPointReachedOffset = .1f;
         private int _currentWaypointIndex = 0;
+        private bool _waypointShouldChange = false;
 
         public PatrolState(Mover mover, Transform[] waypoints, Collider2D collider,
             EnemyVision enemyVision, AnimatorController animatorController, Transform enemyTransform)
@@ -27,16 +28,26 @@ namespace SteveAdventure
 
         public override void Enter()
         {
-            ChangeWayPoint();
+            Debug.Log("Entering Patrol State");
+            if (_waypointShouldChange)
+            {
+                ChangeWayPoint();
+                _waypointShouldChange = false;
+            }
+            else
+            {
+                FindNearestWaypoint();
+            }
         }
 
         public override void Update()
         {
-                WayPointsMover();
+            WayPointsMover();
         }
 
         public override void Exit()
         {
+            Debug.Log("Exiting Patrol State");
             _mover.Moving(Vector2.zero);
             _animatorController.MoveAnimation(Vector2.zero);
         }
@@ -44,7 +55,14 @@ namespace SteveAdventure
         public bool WayPointReached()
         {
             float sqrDistance = (_waypoints[_currentWaypointIndex].position - _collider.bounds.center).sqrMagnitude;
-            return sqrDistance < _wayPointReachedOffset * _wayPointReachedOffset;
+            bool reached = sqrDistance < _wayPointReachedOffset * _wayPointReachedOffset;
+
+            if (reached && !_waypointShouldChange)
+            {
+                _waypointShouldChange = true;
+            }
+
+            return reached;
         }
 
         private void WayPointsMover()
@@ -61,6 +79,28 @@ namespace SteveAdventure
         {
             if (WayPointReached())
                 _currentWaypointIndex = (_currentWaypointIndex + WAYPOINT_STEP) % _waypoints.Length;
+        }
+
+        private void FindNearestWaypoint()
+        {
+            if (_waypoints.Length == 0) return;
+
+            float minDistance = float.MaxValue;
+            int nearestIndex = 0;
+
+            Vector2 currentPosition = _collider.bounds.center;
+
+            for (int i = 0; i < _waypoints.Length; i++)
+            {
+                float distance = Vector2.SqrMagnitude(currentPosition - (Vector2)_waypoints[i].position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestIndex = i;
+                }
+            }
+
+            _currentWaypointIndex = nearestIndex;
         }
     }
 }

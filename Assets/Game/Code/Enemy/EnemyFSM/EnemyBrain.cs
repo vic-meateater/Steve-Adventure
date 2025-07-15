@@ -4,10 +4,16 @@ namespace SteveAdventure
 {
     public sealed class EnemyBrain : BrainFSM
     {
+        private readonly EnemyVision _enemyVision;
+        private bool _canAttack;
+        private bool _targetInRange;
+
         public EnemyBrain(Mover mover, Transform[] waypoints, EnemyVision enemyVision,
             AnimatorController animatorController, float waitDuration, float damage, float attackCooldown,
             Transform enemyTransform, Collider2D collider)
         {
+            _enemyVision = enemyVision;
+            
             var idleState = new IdleState(waitDuration);
             var patrolState = new PatrolState(mover, waypoints, collider, enemyVision, animatorController, enemyTransform);
             var followState = new FollowState(mover, enemyVision, animatorController);
@@ -19,13 +25,25 @@ namespace SteveAdventure
             AddState(attackState);
 
             patrolState.AddTransition(new Transition(() => patrolState.WayPointReached(), idleState));
-            patrolState.AddTransition(new Transition(() => enemyVision.IsTargetInDetectionRange(), followState));
+            patrolState.AddTransition(new Transition(() => _targetInRange, followState));
+            
+            followState.AddTransition(new Transition(() => _canAttack, attackState));
             followState.AddTransition(new Transition(() => followState.ShouldStopFollowing(), patrolState));
-            followState.AddTransition(new Transition(() => enemyVision.CanAttack(), attackState));
-            attackState.AddTransition(new Transition(() => !enemyVision.CanAttack(), patrolState));
+            
+            attackState.AddTransition(new Transition(() => attackState.ShouldExitAttack(), patrolState));
+            
             idleState.AddTransition(new Transition(() => idleState.IsTimeOver(), patrolState));
+            idleState.AddTransition(new Transition(() => _targetInRange, followState));
 
             SetInitialState(idleState);
+        }
+
+        public override void Update()
+        {
+            _canAttack = _enemyVision.CanAttack();
+            _targetInRange = _enemyVision.IsTargetInDetectionRange();
+            
+            base.Update();
         }
     }
 }
