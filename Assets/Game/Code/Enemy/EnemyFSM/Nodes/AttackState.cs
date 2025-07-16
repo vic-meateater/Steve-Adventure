@@ -4,23 +4,25 @@ namespace SteveAdventure
 {
     public sealed class AttackState : State
     {
+        private readonly Mover _mover;
         private readonly EnemyVision _enemyVision;
         private readonly AnimatorController _animatorController;
-        private readonly Mover _mover;
+        private readonly AnimationHandler _animatorHandler;
         private readonly float _attackCooldown;
         private readonly float _damage;
         private float _endTime;
 
 
         public AttackState(Mover mover, EnemyVision enemyVision, AnimatorController animatorController, float damage,
-            float attackCooldown)
+            float attackCooldown, AnimationHandler animationHandler)
 
         {
-            _enemyVision = enemyVision;
-            _damage = damage;
-            _attackCooldown = attackCooldown;
-            _animatorController = animatorController;
             _mover = mover;
+            _enemyVision = enemyVision;
+            _animatorController = animatorController;
+            _animatorHandler = animationHandler;
+            _attackCooldown = attackCooldown;
+            _damage = damage;
         }
 
         public override void Enter()
@@ -39,7 +41,7 @@ namespace SteveAdventure
             }
         }
         
-        public bool ShouldExitAttack()
+        public bool ShouldExitAttackState()
         {
             return !_enemyVision.CanAttack();
         }

@@ -8,6 +8,7 @@ namespace SteveAdventure
     {
         [SerializeField] private float _damage = 10f;
         [SerializeField] private float _attackCooldown = 1f;
+        [SerializeField] private AnimationHandler _animationHandler;
         
         private Mover _mover;
         private Waypoints _waypoints;
@@ -29,7 +30,7 @@ namespace SteveAdventure
             _enemyTransform = transform;
             _collider = GetComponent<Collider2D>();
             _enemyBrain = new EnemyBrain(_mover, _waypoints.WayPoints, _enemyVision, _animatorController,
-                _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider);
+                _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
         }
 
         private void FixedUpdate()
