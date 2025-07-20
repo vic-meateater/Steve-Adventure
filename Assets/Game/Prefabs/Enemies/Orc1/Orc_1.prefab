@@ -164,6 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 20
   _attackCooldown: 1
+  _animationHandler: {fileID: 8846451324214796930}
 --- !u!114 &6376230328853123925
 MonoBehaviour:
   m_ObjectHideFlags: 0
