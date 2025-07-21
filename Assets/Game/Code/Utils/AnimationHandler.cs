@@ -11,7 +11,6 @@ namespace SteveAdventure
         public void StartDamageFrame(string attackType)
         {
             if (attackType != "MeleeAttack") return;
-            Debug.Log("Start Damage Frame Triggered for Melee Attack");
             MeleeAttackStart?.Invoke();
             
         }

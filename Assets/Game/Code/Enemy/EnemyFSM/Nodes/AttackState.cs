@@ -12,7 +12,7 @@ namespace SteveAdventure
         private readonly float _damage;
         private float _endTime;
         private IDamageable _damageable;
-        private bool _inAttackAnimation = false;
+        private bool _inAttackAnimation;
 
 
         public AttackState(Mover mover, EnemyVision enemyVision, AnimatorController animatorController, float damage,
@@ -41,6 +41,8 @@ namespace SteveAdventure
         {
             _animatorHandler.MeleeAttackStart -= OnMeleeAttackStart;
             _animatorHandler.EndAttack -= OnEndAttack;
+
+            _inAttackAnimation = false;
         }
 
         public override void Update()
@@ -50,25 +52,26 @@ namespace SteveAdventure
                 Attack();
             }
         }
+
         private void OnMeleeAttackStart()
         {
             if (_damageable != null)
             {
-                _inAttackAnimation = true;
                 _damageable.TakeDamage(_damage);
-                Debug.Log("Melee attack executed.");
             }
             else
             {
                 Debug.LogWarning("No damageable target found for melee attack.");
             }
-            //Debug.Log($"Attacked {target.name} for {_damage} damage.");
         }
+
         private void OnEndAttack()
         {
             _inAttackAnimation = false;
+            _damageable = null;
+            _endTime = Time.time + _attackCooldown;
         }
-        
+
         public bool ShouldExitAttackState()
         {
             return !_enemyVision.CanAttack();
@@ -76,15 +79,13 @@ namespace SteveAdventure
 
         private void Attack()
         {
-            _endTime = Time.time + _attackCooldown;
-
             if (_enemyVision.TryGetTargetInAttackRange(out var target))
             {
                 if (target.TryGetComponent(out IDamageable damageable))
                 {
                     _damageable = damageable;
                     _animatorController.AttackAnimation();
-
+                    _inAttackAnimation = true;
                 }
             }
             else
