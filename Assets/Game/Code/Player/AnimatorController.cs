@@ -2,8 +2,9 @@ using UnityEngine;
 
 namespace SteveAdventure
 {
-    public sealed class AnimatorController : MonoBehaviour
+    public sealed class AnimatorController : MonoBehaviour, IAnimator
     {
+        private readonly int _hit = Animator.StringToHash("Hit");
         private readonly int _moveX = Animator.StringToHash("MoveX");
         private readonly int _moveY = Animator.StringToHash("MoveY");
         private readonly int _speed = Animator.StringToHash("Speed");
@@ -36,5 +37,17 @@ namespace SteveAdventure
             _animator.SetFloat(_speed, _moveInput.magnitude);
             _animator.SetTrigger(_attackTrigger);
         }
+
+        public void HitAnimation()
+        {
+            _animator.SetTrigger(_hit);
+        }
     }
+
+    public interface IAnimator
+    {
+        public void MoveAnimation(Vector2 moveInput);
+        public void AttackAnimation();
+        public void HitAnimation();
+    } 
 }

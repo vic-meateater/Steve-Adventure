@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace SteveAdventure
-{
+{ 
     public sealed class AttackState : State
     {
         private readonly Mover _mover;
@@ -34,13 +34,13 @@ namespace SteveAdventure
             _mover.Moving(Vector2.zero);
             _animatorController.MoveAnimation(Vector2.zero);
             _animatorHandler.MeleeAttackStart += OnMeleeAttackStart;
-            _animatorHandler.EndAttack += OnEndAttack;
+            _animatorHandler.AttackEnd += OnAttackEnd;
         }
 
         public override void Exit()
         {
             _animatorHandler.MeleeAttackStart -= OnMeleeAttackStart;
-            _animatorHandler.EndAttack -= OnEndAttack;
+            _animatorHandler.AttackEnd -= OnAttackEnd;
 
             _inAttackAnimation = false;
         }
@@ -65,7 +65,7 @@ namespace SteveAdventure
             }
         }
 
-        private void OnEndAttack()
+        private void OnAttackEnd()
         {
             _inAttackAnimation = false;
             _damageable = null;
@@ -87,6 +87,8 @@ namespace SteveAdventure
                     _animatorController.AttackAnimation();
                     _inAttackAnimation = true;
                 }
+                /*if(target.TryGetComponent(out IAnimator animator))
+                    animator.HitAnimation();*/
             }
             else
             {
