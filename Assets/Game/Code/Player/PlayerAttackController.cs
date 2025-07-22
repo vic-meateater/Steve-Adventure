@@ -19,8 +19,8 @@ namespace SteveAdventure
             _playerVision = playerVision;
             _damage = damage;
 
-            _animationHandler.OnStartAttackFrame += OnStartAttackAction;
-            _animationHandler.OnEndAttackFrame += OnEndAttackAction;
+            _animationHandler.MeleeAttackStart += OnMeleeAttackStart;
+            _animationHandler.AttackEnd += OnAttackEnd;
         }
 
         public void AttackRequest()
@@ -28,14 +28,17 @@ namespace SteveAdventure
             _animatorController.AttackAnimation();
         }
 
-        private void OnStartAttackAction()
+        private void OnMeleeAttackStart()
         {
             if (_playerVision.TryGetTargets(out List<GameObject> targets))
             {
                 foreach (var target in targets)
                 {
-                    if(target.TryGetComponent<IDamageable>(out var damageable))
+                    if(target.TryGetComponent(out IDamageable damageable))
                         damageable.TakeDamage(_damage);
+
+                    if (target.TryGetComponent(out IAnimator animator))
+                        animator.HitAnimation();
                 }
             }
             else
@@ -44,7 +47,7 @@ namespace SteveAdventure
             }
         }
 
-        private void OnEndAttackAction()
+        private void OnAttackEnd()
         {
         }
 
@@ -52,8 +55,8 @@ namespace SteveAdventure
         {
             if (_animationHandler)
             {
-                _animationHandler.OnStartAttackFrame -= OnStartAttackAction;
-                _animationHandler.OnEndAttackFrame -= OnEndAttackAction;
+                _animationHandler.MeleeAttackStart -= OnMeleeAttackStart;
+                _animationHandler.AttackEnd -= OnAttackEnd;
                 _animationHandler = null;
             }
         }

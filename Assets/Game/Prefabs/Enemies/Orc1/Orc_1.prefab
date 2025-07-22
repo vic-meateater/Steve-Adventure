@@ -32,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3034274375882245920}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  _waitDuration: 0.5
+  _waitDuration: 1.5
 --- !u!114 &5429746224435605183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,8 +162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8260913797e515747baebb84370c3948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 10
-  _attackCooldown: 2
+  _damage: 20
+  _attackCooldown: 1
+  _animationHandler: {fileID: 8846451324214796930}
 --- !u!114 &6376230328853123925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,11 +177,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 256fffe878144550a4425adae2dbb931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visionAreaSize: {x: 1.5, y: 1.5}
+  _visionAreaSize: {x: 2, y: 2}
   _playerLayer:
     serializedVersion: 2
     m_Bits: 64
   _attackRange: 1
+  _targetLostDelay: 0.5
 --- !u!114 &1792646871645850727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +207,7 @@ GameObject:
   - component: {fileID: 3634938502242897618}
   - component: {fileID: 9208987620553614548}
   - component: {fileID: 2699803542787185126}
+  - component: {fileID: 8846451324214796930}
   m_Layer: 0
   m_Name: model
   m_TagString: Untagged
@@ -292,7 +295,7 @@ Animator:
   m_GameObject: {fileID: 5130938779906434154}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cd19bebc00149bf49b580a931a49d8d3, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5e8cdb1a6337197418f221edc6281132, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -304,3 +307,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8846451324214796930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5130938779906434154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a41c6d742ad7463a9b472d9c5af1c7d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
