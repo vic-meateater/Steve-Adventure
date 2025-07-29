@@ -4,7 +4,7 @@ namespace SteveAdventure
 {
     [RequireComponent(typeof(Mover), typeof(Waypoints), typeof(AnimatorController))]
     [RequireComponent(typeof(Collider2D), typeof(EnemyVision), typeof(HealthComponent))]
-    public sealed class Enemy : MonoBehaviour
+    public sealed class Enemy : MonoBehaviour, IGameFixedUpdateListener
     {
         [SerializeField] private float _damage = 10f;
         [SerializeField] private float _attackCooldown = 1f;
@@ -34,6 +34,11 @@ namespace SteveAdventure
         }
 
         private void FixedUpdate()
+        {
+            //_enemyBrain.Update();
+        }
+
+        public void OnGameFixedUpdate(float fixedDeltaTime)
         {
             _enemyBrain.Update();
         }
