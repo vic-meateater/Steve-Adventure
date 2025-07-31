@@ -1,11 +1,17 @@
+using System;
 using System.Collections.Generic;
 
 namespace SteveAdventure
 {
-    public abstract class State
+    public abstract class State : IGamePauseListener, IGameResumeListener, IDisposable
     {
         private readonly List<Transition> _transitions = new();
 
+        protected State()
+        {
+            GameCycleService.Instance?.AddListener(this);
+        }
+        
         public void AddTransition(Transition transition)
         {
             _transitions.Add(transition);
@@ -25,5 +31,12 @@ namespace SteveAdventure
         public virtual void Enter() { }
         public virtual void Exit() { }
         public virtual void Update() { }
+        public virtual void OnGamePause() { }
+        public virtual void OnGameResume() { }
+
+        public void Dispose()
+        {
+            GameCycleService.Instance?.RemoveListener(this);
+        }
     }
 }

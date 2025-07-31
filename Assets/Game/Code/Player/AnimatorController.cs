@@ -9,11 +9,10 @@ namespace SteveAdventure
         private readonly int _moveY = Animator.StringToHash("MoveY");
         private readonly int _speed = Animator.StringToHash("Speed");
         private readonly int _attackTrigger = Animator.StringToHash("Attack");
-        private Vector2 _moveInput;
         
-
         [SerializeField] private Animator _animator;
         
+        private Vector2 _moveInput;
         private Vector2 _lastDirection = Vector2.down;
 
         public void MoveAnimation(Vector2 moveInput)

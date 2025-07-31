@@ -9,26 +9,27 @@ namespace SteveAdventure
 
         [SerializeField] private Vector2 _visionAreaSize;
         [SerializeField] private LayerMask _targetLayer;
+        [SerializeField] private InputHandler _inputHandler;
 
-        private InputHandler _inputHandler;
+        //private InputHandler _inputHandler;
         private Vector2 _directionOffset = Vector2.down;
         private readonly List<GameObject> _visibleTargets = new();
 
         private void Start()
         {
-            _inputHandler = GetComponent<InputHandler>();
-            _inputHandler.OnMoveInputChanged += OnMoveInputChangedHandler;
+            //_inputHandler = GetComponent<InputHandler>();
+            _inputHandler.MoveInputChanged += OnMoveInputChanged;
         }
 
         private void OnDestroy()
         {
             if (_inputHandler != null)
             {
-                _inputHandler.OnMoveInputChanged -= OnMoveInputChangedHandler;
+                _inputHandler.MoveInputChanged -= OnMoveInputChanged;
             }
         }
 
-        private void OnMoveInputChangedHandler(Vector2 direction)
+        private void OnMoveInputChanged(Vector2 direction)
         {
             if (direction.sqrMagnitude > 0.1f)
             {
