@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace SteveAdventure
@@ -31,11 +32,13 @@ namespace SteveAdventure
             _collider = GetComponent<Collider2D>();
             _enemyBrain = new EnemyBrain(_mover, _waypoints.WayPoints, _enemyVision, _animatorController,
                 _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
+            
+            GameCycleService.Instance?.AddListener(this);
         }
 
-        private void FixedUpdate()
+        private void OnDestroy()
         {
-            //_enemyBrain.Update();
+            GameCycleService.Instance?.RemoveListener(this);
         }
 
         public void OnGameFixedUpdate(float fixedDeltaTime)

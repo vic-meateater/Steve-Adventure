@@ -15,7 +15,6 @@ namespace SteveAdventure
         private void Awake()
         {
             _gameCycle = new GameCycle(_gameState);
-            _gameCycle.AddListener(_enemy);
             _gameCycle.AddListener(_moveController);
             _gameCycle.AddListener(_inputHandler);
             _gameCycle.AddListener(_player);
