@@ -17,6 +17,7 @@ namespace SteveAdventure
         private float _directionX;
         private float _directionY;
         private bool _isDashing;
+        private Vector2 _direction;
 
         private void Start()
         {
@@ -28,9 +29,10 @@ namespace SteveAdventure
 
         public void Moving(Vector2 moveInput)
         {
-            if (moveInput.sqrMagnitude > 0.01f)
+            _direction = moveInput;
+            if (_direction.sqrMagnitude > 0.01f)
             {
-                _rb2D.linearVelocity = moveInput * (_characterSpeed * Time.fixedDeltaTime);
+                _rb2D.linearVelocity = _direction * (_characterSpeed * Time.fixedDeltaTime);
             }
             else
             {

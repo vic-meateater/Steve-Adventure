@@ -15,6 +15,7 @@ namespace SteveAdventure
         private readonly float _wayPointReachedOffset = .1f;
         private int _currentWaypointIndex = 0;
         private bool _waypointShouldChange = false;
+        private Vector2 _savedDirection;
 
         public PatrolState(Mover mover, Transform[] waypoints, Collider2D collider,
             EnemyVision enemyVision, AnimatorController animatorController, Transform enemyTransform)
@@ -45,9 +46,22 @@ namespace SteveAdventure
             WayPointsMover();
         }
 
+        public override void OnGamePause()
+        {
+            Debug.Log("Game Paused, stopping movement in Patrol State");
+            var zeroDirection = Vector2.zero;
+            _mover.Moving(zeroDirection);
+            _animatorController.MoveAnimation(zeroDirection);
+        }
+
+        public override void OnGameResume()
+        {
+            _mover.Moving(_savedDirection);
+            _animatorController.MoveAnimation(_savedDirection);
+        }
+
         public override void Exit()
         {
-            Debug.Log("Exiting Patrol State");
             _mover.Moving(Vector2.zero);
             _animatorController.MoveAnimation(Vector2.zero);
         }
@@ -70,6 +84,7 @@ namespace SteveAdventure
             Transform currentWaypoint = _waypoints[_currentWaypointIndex];
             Vector2 direction = (currentWaypoint.position - _collider.bounds.center).normalized;
 
+            _savedDirection = direction;
             _enemyVision.SetVisionDirection(direction);
             _animatorController.MoveAnimation(direction);
             _mover.Moving(direction);

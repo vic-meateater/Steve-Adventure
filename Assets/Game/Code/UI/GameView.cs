@@ -10,19 +10,14 @@ namespace SteveAdventure
         
         private void OnEnable()
         {
-            _pauseButton.onClick.AddListener(OnPauseButtonClicked);
+            _pauseButton.onClick.AddListener(() => GameCycleService.Instance?.PauseGame());
             _playButton.onClick.AddListener(() => GameCycleService.Instance?.ResumeGame());
         }
         
         private void OnDisable()
         {
-            _pauseButton.onClick.RemoveListener(OnPauseButtonClicked);
+            _pauseButton.onClick.RemoveListener(() => GameCycleService.Instance?.PauseGame());
             _playButton.onClick.RemoveListener(() => GameCycleService.Instance?.ResumeGame());
-        }
-
-        private void OnPauseButtonClicked()
-        {
-            GameCycleService.Instance?.PauseGame();
         }
     }
 }

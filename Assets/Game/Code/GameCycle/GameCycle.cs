@@ -97,6 +97,21 @@ namespace SteveAdventure
             if (listener is IGameFixedUpdateListener gameFixedUpdateListener)
                 _gameFixedUpdateListeners.Add(gameFixedUpdateListener);
         }
+        
+        
+        public void RemoveListener(IGameListener listener)
+        {
+            if (listener == null || !_gameListeners.Contains(listener))
+                return;
+
+            _gameListeners.Remove(listener);
+
+            if (listener is IGameUpdateListener gameUpdateListener)
+                _gameUpdateListeners.Remove(gameUpdateListener);
+            
+            if (listener is IGameFixedUpdateListener gameFixedUpdateListener)
+                _gameFixedUpdateListeners.Remove(gameFixedUpdateListener);
+        }
 
         public void OnGameUpdate(float deltaTime)
         {

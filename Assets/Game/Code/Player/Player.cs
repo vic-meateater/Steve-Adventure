@@ -15,7 +15,7 @@ namespace SteveAdventure
         private PlayerVision _playerVision;
         private PlayerAttackController _playerAttackController;
         private HealthComponent _health;
-        private Vector2 _savedMoveInput;
+        private Vector2 _savedDirection;
 
         private void Start()
         {
@@ -44,15 +44,15 @@ namespace SteveAdventure
             _mover.Dashing();
         }
 
-        public void OnMoveInputChanged(Vector2 moveInput)
+        public void OnMoveInputChanged(Vector2 direction)
         {
-            _savedMoveInput = moveInput;
+            _savedDirection = direction;
             
-            if(moveInput == Vector2.zero)
-                Debug.Log("Player move input zero: " + moveInput.sqrMagnitude);
+            if(direction == Vector2.zero)
+                Debug.Log("Player move input zero: " + direction.sqrMagnitude);
             
-            _mover.Moving(moveInput);
-            _animatorController.MoveAnimation(moveInput);
+            _mover.Moving(direction);
+            _animatorController.MoveAnimation(direction);
         }
 
         public void OnGamePause()
@@ -64,8 +64,8 @@ namespace SteveAdventure
 
         public void OnGameResume()
         {
-            _mover.Moving(_savedMoveInput);
-            _animatorController.MoveAnimation(_savedMoveInput);
+            _mover.Moving(_savedDirection);
+            _animatorController.MoveAnimation(_savedDirection);
         }
     }
 }

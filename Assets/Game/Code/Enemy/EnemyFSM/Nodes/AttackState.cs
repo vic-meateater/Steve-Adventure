@@ -13,6 +13,7 @@ namespace SteveAdventure
         private float _endTime;
         private IDamageable _damageable;
         private bool _inAttackAnimation;
+        private Vector2 _savedDirection;
 
 
         public AttackState(Mover mover, EnemyVision enemyVision, AnimatorController animatorController, float damage,
@@ -29,7 +30,6 @@ namespace SteveAdventure
 
         public override void Enter()
         {
-            Debug.Log("Enter to Attack State");
             _endTime = Time.time + _attackCooldown;
             _mover.Moving(Vector2.zero);
             _animatorController.MoveAnimation(Vector2.zero);
@@ -39,6 +39,7 @@ namespace SteveAdventure
 
         public override void Exit()
         {
+            Debug.Log("Exiting Attack State");
             _animatorHandler.MeleeAttackStart -= OnMeleeAttackStart;
             _animatorHandler.AttackEnd -= OnAttackEnd;
 
@@ -51,6 +52,14 @@ namespace SteveAdventure
             {
                 Attack();
             }
+        }
+
+        public override void OnGameResume()
+        {
+            _endTime = Time.time + _attackCooldown;
+            var zeroDirection = Vector2.zero;
+            _mover.Moving(zeroDirection);
+            _animatorController.MoveAnimation(zeroDirection);
         }
 
         private void OnMeleeAttackStart()
