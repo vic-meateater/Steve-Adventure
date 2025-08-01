@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 namespace SteveAdventure
 {
     public sealed class Health
     {
+        public event Action DeathEvent;
+        public event Action<float> HealthChangedEvent;
         public float MaxHealth => _maxHealth;
         public float CurrentHealth => _currentHealth;
         
@@ -19,7 +22,7 @@ namespace SteveAdventure
         public void TakeDamage(float damage)
         {
             if (_currentHealth <= 0f)
-                return;
+                DeathEvent?.Invoke();
             ChangeValue(-damage);
             Debug.LogWarning($"Taking damage {damage} now {_currentHealth} HP left");
         }
@@ -40,11 +43,13 @@ namespace SteveAdventure
         {
             _maxHealth = newMax;
             _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
+            HealthChangedEvent?.Invoke(_currentHealth);
         } 
         
         private void ChangeValue(float value)
         {
             _currentHealth = Mathf.Clamp(_currentHealth + value, 0f, _maxHealth);
+            HealthChangedEvent?.Invoke(_currentHealth);
         }
     }
 }
