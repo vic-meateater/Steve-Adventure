@@ -48,6 +48,8 @@ namespace SteveAdventure
         {
             _savedDirection = direction;
             
+            Debug.Log("Player direction: " + _savedDirection);
+            
             if(direction == Vector2.zero)
                 Debug.Log("Player move input zero: " + direction.sqrMagnitude);
             

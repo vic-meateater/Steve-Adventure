@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace SteveAdventure
 {
@@ -9,16 +10,22 @@ namespace SteveAdventure
 
         [SerializeField] private Vector2 _visionAreaSize;
         [SerializeField] private LayerMask _targetLayer;
-        [SerializeField] private InputHandler _inputHandler;
+        //[SerializeField] private InputHandler _inputHandler;
 
-        //private InputHandler _inputHandler;
+        private InputHandler _inputHandler;
         private Vector2 _directionOffset = Vector2.down;
         private readonly List<GameObject> _visibleTargets = new();
+        
+        [Inject]
+        public void Construct(InputHandler inputHandler)
+        {
+            _inputHandler = inputHandler;
+            _inputHandler.MoveInputChanged += OnMoveInputChanged;
+        }
 
         private void Start()
         {
             //_inputHandler = GetComponent<InputHandler>();
-            _inputHandler.MoveInputChanged += OnMoveInputChanged;
         }
 
         private void OnDestroy()

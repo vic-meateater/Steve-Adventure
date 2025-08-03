@@ -1,4 +1,5 @@
 using System;
+using R3;
 using UnityEngine;
 
 namespace SteveAdventure
@@ -6,6 +7,7 @@ namespace SteveAdventure
     public sealed class HealthComponent : MonoBehaviour, IDamageable, IHealable
     {
         public event Action<float> HealthChangedEvent;
+        
         
         [SerializeField] private float _maxHealth = 100f;
         private Health _health;
@@ -20,6 +22,8 @@ namespace SteveAdventure
         {
             HealthChangedEvent?.Invoke(currentHealth);
         }
+
+        public ReadOnlyReactiveProperty<float> CurrentHealth { get; }
 
         public void TakeDamage(float damage)
         {
