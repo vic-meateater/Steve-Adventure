@@ -6,8 +6,8 @@ namespace SteveAdventure.Helpers
     {
         public override void InstallBindings()
         {
-            MoveControllerInstaller.Install(Container);
             InputHandlerInstaller.Install(Container);
+            MoveControllerInstaller.Install(Container);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace SteveAdventure
 {
@@ -13,18 +14,13 @@ namespace SteveAdventure
         Finished
     }
 
-    public class GameCycle
+    public class GameCycle : IInitializable, IDisposable
     {
         private List<IGameListener> _gameListeners = new();
         private List<IGameUpdateListener> _gameUpdateListeners = new();
         private List<IGameFixedUpdateListener> _gameFixedUpdateListeners = new();
 
         private GameState _gameState;
-
-        public GameCycle(GameState gameState)
-        {
-            _gameState = gameState;
-        }
 
         public void StartGame()
         {
@@ -131,6 +127,19 @@ namespace SteveAdventure
             {
                 gameFixedUpdateListener.OnGameFixedUpdate(fixedDeltaTime);
             }
+        }
+
+        public void Initialize()
+        {
+            Debug.Log("GameCycle Initialized");
+            _gameState = GameState.Starting;
+            StartGame();
+        }
+
+        public void Dispose()
+        {
+            _gameState = GameState.Finished;
+            FinishGame();
         }
     }
 }

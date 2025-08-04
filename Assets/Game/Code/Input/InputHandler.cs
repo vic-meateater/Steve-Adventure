@@ -13,7 +13,7 @@ namespace SteveAdventure
         public event Action AttackPressed;
         
         private Vector2 _moveInput;
-
+        
         private float _directionX;
         private float _directionY;
         
@@ -21,7 +21,8 @@ namespace SteveAdventure
         public void Construct()
         {
             Debug.Log("InputHandler constructed");
-            GameCycleService.Instance?.AddListener(this);
+
+            //GameCycleService.Instance?.AddListener(this);
         }
 
         

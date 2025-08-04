@@ -1,48 +1,43 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
+using Zenject;
 
 namespace SteveAdventure
 {
-    public class GameCycleInstaller : MonoBehaviour
+    public class GameCycleInstaller : MonoInstaller<GameCycleInstaller>
     {
         [SerializeField] private GameState _gameState = GameState.None;
-        [SerializeField] private Enemy _enemy;
-        [SerializeField] private MoveController _moveController;
-        [SerializeField] private InputHandler _inputHandler;
-        [SerializeField] private Player _player;
-        
         private GameCycle _gameCycle;
-        private void Awake()
+
+        public override void InstallBindings()
         {
-            _gameCycle = new GameCycle(_gameState);
-            //_gameCycle.AddListener(_moveController);
-            //_gameCycle.AddListener(_inputHandler);
-            _gameCycle.AddListener(_player);
-            
-            GameCycleService.Register(_gameCycle);
+            Container.BindInterfacesAndSelfTo<GameCycle>()
+                .FromMethod(CreateGameCycle)
+                .AsSingle()
+                .NonLazy();
         }
         
-        private void Start()
+        private GameCycle CreateGameCycle(InjectContext context)
         {
-            _gameCycle.StartGame();
+            _gameCycle = new GameCycle();
+            foreach (var listener in context.Container.ResolveAll<IGameListener>())
+            {
+                _gameCycle.AddListener(listener);
+            }
+
+            return _gameCycle;
         }
-        
-        private void OnDestroy()
-        {
-            _gameCycle.FinishGame();
-            GameCycleService.Unregister();
-        }
+
         private void Update()
         {
             float deltaTime = Time.deltaTime;
-            
+
             _gameCycle.OnGameUpdate(deltaTime);
         }
-        
+
         private void FixedUpdate()
         {
             float fixedDeltaTime = Time.fixedDeltaTime;
-            
+
             _gameCycle.OnGameFixedUpdate(fixedDeltaTime);
         }
     }
