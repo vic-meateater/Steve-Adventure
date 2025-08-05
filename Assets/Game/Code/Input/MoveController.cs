@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-using Zenject;
+﻿using Zenject;
 
 namespace SteveAdventure
 {
-    public sealed class MoveController : 
-        IGameStartListener,
+    public sealed class MoveController :
         IGamePauseListener,
         IGameResumeListener,
         IGameFinishListener
@@ -15,36 +13,29 @@ namespace SteveAdventure
         [Inject]
         public void Construct(InputHandler inputHandler, Player player)
         {
-            Debug.Log("MoveController Constructed");
             _inputHandler = inputHandler;
             _player = player;
-
-            _inputHandler.MoveInputChanged += OnMoveInputChanged;
-            _inputHandler.AttackPressed += _player.OnAttackPressed;
-            _inputHandler.InteractPressed += _player.OnInteractPressed;
-            _inputHandler.SpacePressed += _player.OnSpacePressed;
-        }
-
-        private void OnMoveInputChanged(Vector2 direction)
-        {
-            Debug.Log("MoveController OnMoveInputChanged: " + direction);
-            _player.OnMoveInputChanged(direction);
-        }
-
-        public void OnGameStart()
-        {
-            //
+            
+            Subscribes();
         }
 
         public void OnGamePause()
         {
-            _inputHandler.MoveInputChanged -= _player.OnMoveInputChanged;
-            _inputHandler.AttackPressed -= _player.OnAttackPressed;
-            _inputHandler.InteractPressed -= _player.OnInteractPressed;
-            _inputHandler.SpacePressed -= _player.OnSpacePressed;
+            UnSubscribes();
         }
 
+
         public void OnGameResume()
+        {
+            Subscribes();
+        }
+
+        public void OnGameFinish()
+        {
+            UnSubscribes();
+        }
+
+        private void Subscribes()
         {
             _inputHandler.MoveInputChanged += _player.OnMoveInputChanged;
             _inputHandler.AttackPressed += _player.OnAttackPressed;
@@ -52,7 +43,7 @@ namespace SteveAdventure
             _inputHandler.SpacePressed += _player.OnSpacePressed;
         }
 
-        public void OnGameFinish()
+        private void UnSubscribes()
         {
             _inputHandler.MoveInputChanged -= _player.OnMoveInputChanged;
             _inputHandler.AttackPressed -= _player.OnAttackPressed;

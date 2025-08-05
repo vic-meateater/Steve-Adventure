@@ -28,8 +28,10 @@ namespace SteveAdventure
         private void BindPlayerDependencies()
         {
             Container.Bind<PlayerVision>()
-                .FromComponentInHierarchy() // Или FromComponentSibling() если на том же объекте
+                .FromComponentInHierarchy() 
                 .AsTransient();
+            
+            
         }
     }
 }

@@ -17,15 +17,6 @@ namespace SteveAdventure
         private float _directionX;
         private float _directionY;
         
-        [Inject]
-        public void Construct()
-        {
-            Debug.Log("InputHandler constructed");
-
-            //GameCycleService.Instance?.AddListener(this);
-        }
-
-        
         private bool IsPointerOverUI()
         {
             return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
@@ -49,7 +40,6 @@ namespace SteveAdventure
 
         public void OnGameFixedUpdate(float fixedDeltaTime)
         {
-            Debug.LogWarning("InputHandler magnitude: " + _moveInput.sqrMagnitude);
             if(_moveInput.sqrMagnitude > 0f)
                 MoveInputChanged?.Invoke(_moveInput);
         }

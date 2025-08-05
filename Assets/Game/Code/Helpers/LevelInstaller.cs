@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using SteveAdventure.Camera;
+using Zenject;
 
 namespace SteveAdventure.Helpers
 {
@@ -8,6 +9,7 @@ namespace SteveAdventure.Helpers
         {
             InputHandlerInstaller.Install(Container);
             MoveControllerInstaller.Install(Container);
+            //CameraInstaller.Install(Container);
         }
     }
 }
