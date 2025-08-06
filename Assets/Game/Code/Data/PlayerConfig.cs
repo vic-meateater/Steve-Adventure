@@ -1,16 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace SteveAdventure.Data
 {
     [CreateAssetMenu(fileName = "PlayerConfig", menuName = "SteveGame/PlayerConfig")]
-    public class PlayerConfig : ScriptableObject
+    public sealed class PlayerConfig : CharacterConfig
     {
-        [field: Header("Character info")]
-        [field: SerializeField] public GameObject Prefab { get; private set; }
-        
-        [field: Header("Character stats")]
-        [field: SerializeField] public int MoveSpeed { get; private set; }
-        [field: SerializeField] public int Damage { get; private set; }
-        [field: SerializeField] public int Health { get; private set; }
+        [field: Header("Player stats")]
+        [field: SerializeField] public int DashSpeed { get; private set; }
     }
 }

@@ -1,17 +1,18 @@
-﻿using Unity.Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 using Zenject;
 
-namespace SteveAdventure.Camera
+namespace SteveAdventure.Helpers
 {
-    public class CameraInstaller : MonoInstaller
+    public class SceneReferencesInstaller : MonoInstaller
     {
         [SerializeField] private CinemachineCamera _cinemachineCamera;
+
         public override void InstallBindings()
         {
-            Container.Bind<CameraController>()
+            Container.Bind<CinemachineCamera>()
+                .FromInstance(_cinemachineCamera)
                 .AsSingle()
-                .WithArguments(_cinemachineCamera)
                 .NonLazy();
         }
     }
