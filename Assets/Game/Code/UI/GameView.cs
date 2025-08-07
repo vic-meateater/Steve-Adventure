@@ -84,5 +84,13 @@ namespace SteveAdventure
                 _playerHealth.HealthChangedEvent -= OnHealthChanged;
             }
         }
+
+        public void Show(IViewModel viewModel)
+        {
+            if(viewModel is not GameViewModel gameViewModel)
+                throw new Exception("ViewModel is not of type IGameViewModel");
+            
+            
+        }
     }
 }

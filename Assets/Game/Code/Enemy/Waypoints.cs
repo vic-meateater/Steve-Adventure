@@ -9,5 +9,7 @@ namespace SteveAdventure
 
         [SerializeField] private Transform[] _waypoints;
         [SerializeField] private float _waitDuration;
+        
+        
     }
 }
