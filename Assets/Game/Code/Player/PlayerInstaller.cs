@@ -7,7 +7,7 @@ namespace SteveAdventure
     public sealed class PlayerInstaller : MonoInstaller
     {
         [SerializeField] private PlayerConfig _playerConfig;
-        [SerializeField] private Transform _spawnPoint;
+        [SerializeField] private Transform _playerSpawnPoint;
         
         public override void InstallBindings()
         {
@@ -20,7 +20,7 @@ namespace SteveAdventure
             Container.Bind<PlayerConfig>().FromInstance(_playerConfig).AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<Player>()
                 .FromComponentInNewPrefab(_playerConfig.Prefab)
-                .UnderTransform(_spawnPoint)
+                .UnderTransform(_playerSpawnPoint)
                 .AsSingle()
                 .NonLazy();
         }
@@ -30,8 +30,6 @@ namespace SteveAdventure
             Container.Bind<PlayerVision>()
                 .FromComponentInHierarchy() 
                 .AsTransient();
-            
-            
         }
     }
 }

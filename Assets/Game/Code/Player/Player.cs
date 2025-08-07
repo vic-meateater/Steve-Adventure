@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using SteveAdventure.Data;
+using UnityEngine;
+using Zenject;
 
 namespace SteveAdventure
 {
@@ -7,7 +9,8 @@ namespace SteveAdventure
     public sealed class Player : MonoBehaviour, IGamePauseListener, IGameResumeListener
     {
         [SerializeField] private AnimationHandler _animationHandler;
-        [SerializeField] private float _damage = 10f;
+        //[SerializeField] private float _damage = 10f;
+        private float _damage = 10f;
 
         private Mover _mover;
         private AnimatorController _animatorController;
@@ -17,16 +20,30 @@ namespace SteveAdventure
         private HealthComponent _health;
         private Vector2 _savedDirection;
 
-        private void Start()
+        [Inject]
+        public void Construct(CharacterConfig characterConfig)
         {
+            _damage = characterConfig.Damage;
             _mover = GetComponent<Mover>();
             _animatorController = GetComponent<AnimatorController>();
             _collisionHandler = GetComponent<CollisionHandler>();
             _playerVision = GetComponent<PlayerVision>();
+            _health = GetComponent<HealthComponent>();
 
             _playerAttackController =
                 new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage);
         }
+        
+        // private void Start()
+        // {
+        //     _mover = GetComponent<Mover>();
+        //     _animatorController = GetComponent<AnimatorController>();
+        //     _collisionHandler = GetComponent<CollisionHandler>();
+        //     _playerVision = GetComponent<PlayerVision>();
+        //
+        //     _playerAttackController =
+        //         new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage);
+        // }
 
         public void OnAttackPressed()
         {
@@ -47,8 +64,6 @@ namespace SteveAdventure
         public void OnMoveInputChanged(Vector2 direction)
         {
             _savedDirection = direction;
-            
-            Debug.Log("Player direction: " + _savedDirection);
             
             if(direction == Vector2.zero)
                 Debug.Log("Player move input zero: " + direction.sqrMagnitude);

@@ -2,8 +2,7 @@
 
 namespace SteveAdventure.Data
 {
-    [CreateAssetMenu(fileName = "PlayerConfig", menuName = "SteveGame/PlayerConfig")]
-    public class PlayerConfig : ScriptableObject
+    public class CharacterConfig : ScriptableObject
     {
         [field: Header("Character info")]
         [field: SerializeField] public GameObject Prefab { get; private set; }

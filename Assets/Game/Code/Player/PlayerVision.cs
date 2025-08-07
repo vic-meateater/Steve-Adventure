@@ -23,11 +23,6 @@ namespace SteveAdventure
             _inputHandler.MoveInputChanged += OnMoveInputChanged;
         }
 
-        private void Start()
-        {
-            //_inputHandler = GetComponent<InputHandler>();
-        }
-
         private void OnDestroy()
         {
             if (_inputHandler != null)

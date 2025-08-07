@@ -1,8 +1,9 @@
+using SteveAdventure.Data;
 using Unity.Cinemachine;
 using UnityEngine;
 using Zenject;
 
-namespace SteveAdventure.Helpers
+namespace SteveAdventure
 {
     public class SceneReferencesInstaller : MonoInstaller
     {

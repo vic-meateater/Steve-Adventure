@@ -1,4 +1,4 @@
-﻿using SteveAdventure.Camera;
+﻿using SteveAdventure.Data;
 using Zenject;
 
 namespace SteveAdventure.Helpers
@@ -9,7 +9,14 @@ namespace SteveAdventure.Helpers
         {
             InputHandlerInstaller.Install(Container);
             MoveControllerInstaller.Install(Container);
-            //CameraInstaller.Install(Container);
+            
+            NonMonoClassesInstaller();
+        }
+
+        private void NonMonoClassesInstaller()
+        {
+            Container.Bind<CameraController>().AsSingle().NonLazy();
+            Container.Bind<CharacterConfig>().AsSingle().NonLazy();
         }
     }
 }

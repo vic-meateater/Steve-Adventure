@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2217d30e7b24ad7ae8a3e216a6139bc, type: 3}
+  m_Script: {fileID: 11500000, guid: 6035a05eaed441fdb86552d1f8b38755, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
   <Prefab>k__BackingField: {fileID: 3358469808796422191, guid: de8e8442bf628814091bf0f6b616cd58, type: 3}
   <MoveSpeed>k__BackingField: 1
-  <Damage>k__BackingField: 1
+  <Damage>k__BackingField: 10
   <Health>k__BackingField: 100
+  <DashSpeed>k__BackingField: 5

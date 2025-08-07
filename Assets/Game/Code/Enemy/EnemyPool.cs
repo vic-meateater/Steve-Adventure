@@ -1,6 +1,8 @@
+using Zenject;
+
 namespace SteveAdventure
 {
-    public class EnemyPool
+    public class EnemyPool : SignalSubscription.Pool
     {
         
     }

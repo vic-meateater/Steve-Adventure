@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace SteveAdventure.Camera
+namespace SteveAdventure
 {
     public sealed class CameraController
     {
@@ -15,6 +15,7 @@ namespace SteveAdventure.Camera
             Debug.Log("CameraController created");
             _cinemachineCamera = cinemachineCamera;
             _player = player;
+            
             _cinemachineCamera.Follow = player.transform;
         }
     }

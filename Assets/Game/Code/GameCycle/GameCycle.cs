@@ -36,6 +36,7 @@ namespace SteveAdventure
             }
 
             _gameState = GameState.Running;
+            Debug.Log("GameCycle Started : "  + _gameState);
         }
 
         public void PauseGame()
