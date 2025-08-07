@@ -52,12 +52,12 @@ namespace SteveAdventure
             _isInitialized = true;
         }
 
-        [Inject]
-        public void Construct(GameCycle gameCycle)
-        {
-            _gameCycle = gameCycle;
-            _gameCycle.AddListener(this);
-        }
+        // [Inject]
+        // public void Construct(GameCycle gameCycle)
+        // {
+        //     _gameCycle = gameCycle;
+        //     _gameCycle.AddListener(this);
+        // }
 
         void IGameFixedUpdateListener.OnGameFixedUpdate(float fixedDeltaTime)
         {

@@ -1,5 +1,4 @@
 using SteveAdventure.Data;
-using UnityEngine;
 using Zenject;
 
 namespace SteveAdventure
@@ -27,7 +26,7 @@ namespace SteveAdventure
             enemy.Initialize(config);
         }
     }
-    
+
     public class EnemyPoolFactory : PlaceholderFactory<EnemyConfig, Enemy>
     {
     }

@@ -11,9 +11,12 @@ namespace SteveAdventure
         [SerializeField] private Button _pauseButton;
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _exitButton;
+        [SerializeField] private Button _spawnEnemyButton;
         [SerializeField] private Canvas _pauseCanvas;
         [SerializeField] private Slider _hpBar;
         private HealthComponent _playerHealth;
+        
+        private IGameViewModel _gameViewModel;
 
         private void Start()
         {
@@ -42,6 +45,12 @@ namespace SteveAdventure
             _pauseButton.onClick.AddListener(OnPauseButtonClicked);
             _restartButton.onClick.AddListener(OnRestartButtonClicked);
             _exitButton.onClick.AddListener(OnExitButtonClicked);
+            _spawnEnemyButton.onClick.AddListener(OnSpawnEnemyButtonClicked);
+        }
+
+        private void OnSpawnEnemyButtonClicked()
+        {
+            _gameViewModel.SpawnEnemy();
         }
 
         private void OnPlayButtonClicked()
@@ -89,8 +98,8 @@ namespace SteveAdventure
         {
             if(viewModel is not GameViewModel gameViewModel)
                 throw new Exception("ViewModel is not of type IGameViewModel");
-            
-            
+
+            _gameViewModel = gameViewModel;
         }
     }
 }
