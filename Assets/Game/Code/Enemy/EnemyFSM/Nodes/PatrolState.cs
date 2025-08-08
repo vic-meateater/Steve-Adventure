@@ -8,7 +8,7 @@ namespace SteveAdventure
         private const int WAYPOINT_STEP = 1;
 
         private readonly Mover _mover;
-        private readonly Transform[] _waypoints;
+        private readonly Vector3[] _waypoints;
         private readonly Collider2D _collider;
         private readonly EnemyVision _enemyVision;
         private readonly AnimatorController _animatorController;
@@ -17,7 +17,7 @@ namespace SteveAdventure
         private bool _waypointShouldChange = false;
         private Vector2 _savedDirection;
 
-        public PatrolState(Mover mover, Transform[] waypoints, Collider2D collider,
+        public PatrolState(Mover mover, Vector3[] waypoints, Collider2D collider,
             EnemyVision enemyVision, AnimatorController animatorController, Transform enemyTransform)
         {
             _mover = mover;
@@ -68,7 +68,7 @@ namespace SteveAdventure
 
         public bool WayPointReached()
         {
-            float sqrDistance = (_waypoints[_currentWaypointIndex].position - _collider.bounds.center).sqrMagnitude;
+            float sqrDistance = (_waypoints[_currentWaypointIndex] - _collider.bounds.center).sqrMagnitude;
             bool reached = sqrDistance < _wayPointReachedOffset * _wayPointReachedOffset;
 
             if (reached && !_waypointShouldChange)
@@ -81,8 +81,8 @@ namespace SteveAdventure
 
         private void WayPointsMover()
         {
-            Transform currentWaypoint = _waypoints[_currentWaypointIndex];
-            Vector2 direction = (currentWaypoint.position - _collider.bounds.center).normalized;
+            Vector3 currentWaypoint = _waypoints[_currentWaypointIndex];
+            Vector2 direction = (currentWaypoint - _collider.bounds.center).normalized;
 
             _savedDirection = direction;
             _enemyVision.SetVisionDirection(direction);
@@ -107,7 +107,7 @@ namespace SteveAdventure
 
             for (int i = 0; i < _waypoints.Length; i++)
             {
-                float distance = Vector2.SqrMagnitude(currentPosition - (Vector2)_waypoints[i].position);
+                float distance = Vector2.SqrMagnitude(currentPosition - (Vector2)_waypoints[i]);
                 if (distance < minDistance)
                 {
                     minDistance = distance;

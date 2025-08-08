@@ -1,9 +1,8 @@
-using SteveAdventure.Data;
 using Zenject;
 
 namespace SteveAdventure
 {
-    public class EnemyPool : MonoMemoryPool<EnemyConfig, Enemy>
+    public class EnemyPool : MonoMemoryPool<EnemyConfig, IMemoryPool, Enemy>
     {
         protected override void OnCreated(Enemy enemy)
         {
@@ -20,10 +19,10 @@ namespace SteveAdventure
             enemy.gameObject.SetActive(false);
         }
 
-        protected override void Reinitialize(EnemyConfig config, Enemy enemy)
+        protected override void Reinitialize(EnemyConfig config, IMemoryPool pool, Enemy enemy)
         {
             enemy.transform.position = config.EnemySpawnConfig.SpawnPoint;
-            enemy.Initialize(config);
+            enemy.OnSpawned(config, pool);
         }
     }
 

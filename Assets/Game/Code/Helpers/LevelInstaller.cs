@@ -1,5 +1,4 @@
-﻿using SteveAdventure.Data;
-using Zenject;
+﻿using Zenject;
 
 namespace SteveAdventure.Helpers
 {

@@ -24,12 +24,12 @@ namespace SteveAdventure
 
         private void Start()
         {
-            GameCycleService.Instance?.AddListener(this);
+            //GameCycleService.Instance?.AddListener(this);
         }
 
         private void OnDestroy()
         {
-            GameCycleService.Instance?.RemoveListener(this);
+            //GameCycleService.Instance?.RemoveListener(this);
         }
 
         public void OnGameFixedUpdate(float deltaTime)

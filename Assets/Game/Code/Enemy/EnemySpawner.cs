@@ -1,5 +1,4 @@
-﻿using SteveAdventure.Data;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SteveAdventure
 {

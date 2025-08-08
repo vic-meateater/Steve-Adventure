@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SteveAdventure.Data
+namespace SteveAdventure
 {
     [CreateAssetMenu(fileName = "EnemyConfig", menuName = "SteveGame/EnemyConfig")]
     public sealed class EnemyConfig : CharacterConfig

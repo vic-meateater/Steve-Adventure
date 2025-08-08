@@ -17,4 +17,4 @@ MonoBehaviour:
   <Damage>k__BackingField: 1
   <Health>k__BackingField: 111
   <AttackCooldown>k__BackingField: 1
-  <EnemySpawnConfig>k__BackingField: {fileID: 0}
+  <EnemySpawnConfig>k__BackingField: {fileID: 11400000, guid: a8a114e58421f6e47bbf54cc019ffafd, type: 2}

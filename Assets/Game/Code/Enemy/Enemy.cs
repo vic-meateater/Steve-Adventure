@@ -1,5 +1,4 @@
 using System;
-using SteveAdventure.Data;
 using UnityEngine;
 using Zenject;
 
@@ -13,7 +12,7 @@ namespace SteveAdventure
 
         private Mover _mover;
         private Waypoints _waypoints;
-        private EnemyVision _enemyVision;
+        [Inject] private EnemyVision _enemyVision;
         private AnimatorController _animatorController;
         private HealthComponent _health;
         private EnemyBrain _enemyBrain;
@@ -32,22 +31,28 @@ namespace SteveAdventure
         {
             _mover = GetComponent<Mover>();
             _waypoints = GetComponent<Waypoints>();
-            _enemyVision = GetComponent<EnemyVision>();
+            //_enemyVision = GetComponent<EnemyVision>();
             _animatorController = GetComponent<AnimatorController>();
             _health = GetComponent<HealthComponent>();
             _enemyTransform = transform;
             _collider = GetComponent<Collider2D>();
-            _enemyBrain = new EnemyBrain(_mover, _waypoints.WayPoints, _enemyVision, _animatorController,
+            _enemyBrain = new EnemyBrain(_mover, _config.EnemySpawnConfig.Waypoints, _enemyVision, _animatorController,
                 _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
 
             //GameCycleService.Instance?.AddListener(this);
         }
-
-        public void Initialize(EnemyConfig config)
+        
+        // [Inject]
+        // public void Construct(EnemyVision enemyVision)
+        // {
+        //     _enemyVision = enemyVision;
+        // }
+        private void Initialize(EnemyConfig config)
         {
             _config = config;
             _damage = _config.Damage;
             _attackCooldown = _config.AttackCooldown;
+
 
             _isInitialized = true;
         }

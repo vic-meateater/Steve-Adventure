@@ -1,4 +1,3 @@
-using SteveAdventure.Data;
 using UnityEngine;
 using Zenject;
 
@@ -9,18 +8,18 @@ namespace SteveAdventure
         [SerializeField] private GameView _gameView;
         [SerializeField] private GameViewConfig _gameViewConfig;
         
-        private GameViewPresenterFactory _gameViewPresenterFactory;
+        private GameViewPresenterFactory _gameViewFactory;
         private IGameViewModel _gameViewModel;
 
         [Inject]
         private void Construct(GameViewPresenterFactory factory)
         {
-            _gameViewPresenterFactory = factory;
+            _gameViewFactory = factory;
         }
 
-        private void Start()
+        private void Awake()
         {
-            _gameViewModel ??= _gameViewPresenterFactory.Create();
+            _gameViewModel ??= _gameViewFactory.Create();
             _gameView.Show(_gameViewModel);
         }
     }

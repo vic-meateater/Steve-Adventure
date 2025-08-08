@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SteveAdventure.Data
+namespace SteveAdventure
 {
     public sealed class GameViewConfig : ScriptableObject
     {
