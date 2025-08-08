@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Zenject;
 
 namespace SteveAdventure
 {
@@ -21,6 +22,7 @@ namespace SteveAdventure
         private GameObject _target;
         private float _lastTargetSeenTime;
         private float _lastSearchTime;
+        private GameCycle _gameCycle;
 
         private void Start()
         {
@@ -30,6 +32,19 @@ namespace SteveAdventure
         private void OnDestroy()
         {
             //GameCycleService.Instance?.RemoveListener(this);
+        }
+
+        [Inject]
+        public void Construct(GameCycle gameCycle)
+        {
+            Debug.Log("EnemyVision.Construct");
+            _gameCycle = gameCycle;
+            
+        }
+
+        private void OnEnable()
+        {
+            _gameCycle.AddListener(this);
         }
 
         public void OnGameFixedUpdate(float deltaTime)

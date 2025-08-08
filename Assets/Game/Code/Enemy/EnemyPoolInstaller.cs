@@ -12,21 +12,42 @@ namespace SteveAdventure
         public override void InstallBindings()
         {
             Container.Bind<EnemyConfig>().FromInstance(_enemyConfig).AsSingle().NonLazy();
+
+            PoolBinding();
+            FactoryBinding();
+        }
+
+        private void PoolBinding()
+        {
             Container.BindMemoryPool<Enemy, EnemyPool>()
                 .WithInitialSize(_initialPoolSize)
                 .WithMaxSize(_maxPoolSize)
+                // .FromSubContainerResolve()
+                // .ByNewPrefabMethod(_enemyConfig.Prefab, sub =>
+                // {
+                //     sub.Bind<Enemy>().FromComponentOnRoot().AsTransient();
+                //     sub.Bind<EnemyVision>().FromComponentOnRoot().AsTransient();
+                //     sub.Bind<Mover>().FromComponentOnRoot().AsTransient();
+                // })
                 .FromComponentInNewPrefab(_enemyConfig.Prefab)
                 .UnderTransformGroup("Enemy Pool");
-            
+        }
+
+        private void FactoryBinding()
+        {
             Container.BindFactory<EnemyConfig, Enemy, EnemyPoolFactory>()
-                .FromPoolableMemoryPool<EnemyConfig, Enemy, EnemyPool>(
-                    poolConfig => poolConfig 
-                        .WithInitialSize(_initialPoolSize)
-                        .WithMaxSize(_maxPoolSize)
-                        .FromComponentInNewPrefab(_enemyConfig.Prefab)
-                        .UnderTransformGroup("Enemy Pool"));
-            
-            Container.Bind<EnemyVision>().FromComponentOnRoot().AsTransient();
+                .FromPoolableMemoryPool<EnemyConfig, Enemy, EnemyPool>(poolConfig => poolConfig
+                    .WithInitialSize(_initialPoolSize)
+                    .WithMaxSize(_maxPoolSize)
+                    // .FromSubContainerResolve()
+                    // .ByNewPrefabMethod(_enemyConfig.Prefab, sub =>
+                    // {
+                    //     sub.Bind<Enemy>().FromComponentOnRoot().AsTransient();
+                    //     sub.Bind<EnemyVision>().FromComponentOnRoot().AsTransient();
+                    //     sub.Bind<Mover>().FromComponentOnRoot().AsTransient();
+                    // })
+                    .FromComponentInNewPrefab(_enemyConfig.Prefab)
+                    .UnderTransformGroup("Enemy Pool"));
         }
     }
 }

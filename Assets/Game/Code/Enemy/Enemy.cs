@@ -12,7 +12,7 @@ namespace SteveAdventure
 
         private Mover _mover;
         private Waypoints _waypoints;
-        [Inject] private EnemyVision _enemyVision;
+        private EnemyVision _enemyVision;
         private AnimatorController _animatorController;
         private HealthComponent _health;
         private EnemyBrain _enemyBrain;
@@ -21,7 +21,7 @@ namespace SteveAdventure
         private GameCycle _gameCycle;
         private float _attackCooldown = 1f;
         private float _damage = 10f;
-        
+
         private IMemoryPool _pool;
         private EnemyConfig _config;
         private bool _isInitialized;
@@ -31,22 +31,23 @@ namespace SteveAdventure
         {
             _mover = GetComponent<Mover>();
             _waypoints = GetComponent<Waypoints>();
-            //_enemyVision = GetComponent<EnemyVision>();
+            _enemyVision = GetComponent<EnemyVision>();
             _animatorController = GetComponent<AnimatorController>();
             _health = GetComponent<HealthComponent>();
             _enemyTransform = transform;
             _collider = GetComponent<Collider2D>();
+
             _enemyBrain = new EnemyBrain(_mover, _config.EnemySpawnConfig.Waypoints, _enemyVision, _animatorController,
                 _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
-
-            //GameCycleService.Instance?.AddListener(this);
         }
-        
-        // [Inject]
-        // public void Construct(EnemyVision enemyVision)
-        // {
-        //     _enemyVision = enemyVision;
-        // }
+
+        [Inject]
+        public void Construct(GameCycle gameCycle)
+        {
+            _gameCycle = gameCycle;
+            //_enemyVision = enemyVision;
+        }
+
         private void Initialize(EnemyConfig config)
         {
             _config = config;
@@ -57,22 +58,20 @@ namespace SteveAdventure
             _isInitialized = true;
         }
 
-        // [Inject]
-        // public void Construct(GameCycle gameCycle)
-        // {
-        //     _gameCycle = gameCycle;
-        //     _gameCycle.AddListener(this);
-        // }
 
         void IGameFixedUpdateListener.OnGameFixedUpdate(float fixedDeltaTime)
         {
-            if(_isInitialized)
+            if (_isInitialized)
                 _enemyBrain.Update();
         }
 
-        private void OnDestroy()
+        public void OnSpawned(EnemyConfig config, IMemoryPool pool)
         {
-            //GameCycleService.Instance?.RemoveListener(this);
+            _pool = pool;
+            transform.position = config.EnemySpawnConfig.SpawnPoint;
+            Initialize(config);
+
+            _gameCycle.AddListener(this);
         }
 
         public void OnDespawned()
@@ -83,18 +82,12 @@ namespace SteveAdventure
             _gameCycle.RemoveListener(this);
         }
 
-        public void OnSpawned(EnemyConfig config, IMemoryPool pool)
-        {
-            _pool = pool;
-            transform.position = config.EnemySpawnConfig.SpawnPoint;
-            Initialize(config);
-        }
 
         public void ReturnToPool()
         {
             _pool?.Despawn(this);
         }
-        
+
         private void OnDeath()
         {
             _gameCycle?.RemoveListener(this);
