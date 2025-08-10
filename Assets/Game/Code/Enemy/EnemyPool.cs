@@ -25,8 +25,8 @@ namespace SteveAdventure
             enemy.OnSpawned(config, pool);
         }
     }
-
-    public class EnemyPoolFactory : PlaceholderFactory<EnemyConfig, Enemy>
-    {
-    }
+    //
+    // public class EnemyPoolFactory : PlaceholderFactory<EnemyConfig, Enemy>
+    // {
+    // }
 }

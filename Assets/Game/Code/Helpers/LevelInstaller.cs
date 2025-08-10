@@ -19,7 +19,7 @@ namespace SteveAdventure.Helpers
         {
             Container.Bind<CameraController>().AsSingle().NonLazy();
             Container.Bind<CharacterConfig>().AsSingle().NonLazy();
-            Container.Bind<EnemySpawner>().AsSingle().NonLazy();
+            //Container.Bind<EnemySpawner>().AsSingle().NonLazy();
             
         }
     }

@@ -15,8 +15,8 @@ namespace SteveAdventure
         }
         public void SpawnEnemy()
         {
-            var enemy = _enemySpawner.SpawnEnemy();
-            Debug.Log($"Enemy spawned: {enemy.name}");
+            //var enemy = _enemySpawner.SpawnEnemy();
+            //Debug.Log($"Enemy spawned: {enemy.name}");
         }
     }
 }
