@@ -2,7 +2,7 @@
 
 namespace SteveAdventure
 {
-    public sealed class EnemiesFactory : IFactory<EnemyConfig, Enemy>
+    public sealed class EnemyFactory : IFactory<EnemyConfig, Enemy>
     {
         private DiContainer _container;
         
@@ -14,7 +14,7 @@ namespace SteveAdventure
         
         public Enemy Create(EnemyConfig config)
         {
-            EnemyPool pool = _container.ResolveId<EnemyPool>(config);
+            EnemyPool pool = _container.ResolveId<EnemyPool>(config.name);
             return pool.Spawn(config, pool);
         }
     }

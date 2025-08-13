@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -6,56 +6,47 @@ namespace SteveAdventure
 {
     public class EnemyPoolInstaller : MonoInstaller
     {
-        [SerializeField] private EnemyConfig _enemyConfig;
-        [SerializeField] private EnemyConfig[] _enemyConfigs;
+        [SerializeField] private EnemyConfig[] _enemiesConfigs;
         [SerializeField] private int _initialPoolSize = 10;
         [SerializeField] private int _maxPoolSize = 20;
 
         public override void InstallBindings()
         {
-            Container.Bind<EnemyConfig>().FromInstance(_enemyConfig).AsSingle().NonLazy();
+            Container.Bind<EnemyConfig[]>().FromInstance(_enemiesConfigs).AsSingle();
 
-            foreach (var enemyConfig in _enemyConfigs)
-            {
-                PoolBinding(enemyConfig);
-            }
-            //FactoryBinding();
-            Container.Bind<EnemiesFactory>()
-                .AsSingle()
-                .NonLazy();
+            CreateEnemyPool();
+            
+            Container.Bind<EnemyFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle().NonLazy();
+            Container.Bind<MonoBehaviour>().FromComponentInHierarchy().AsSingle();
+
+
         }
 
-        private void PoolBinding(EnemyConfig enemyConfig)
+        private void CreateEnemyPool()
+        {
+            var configs = new HashSet<string>();
+            
+            foreach (var config in _enemiesConfigs)
+            {
+                var enemyConfigName = config.name;
+                
+                if (!configs.Contains(enemyConfigName))
+                {
+                    CreateEnemy(config);
+                    configs.Add(enemyConfigName);
+                }
+            }
+        }
+
+        private void CreateEnemy(EnemyConfig enemyConfig)
         {
             Container.BindMemoryPool<Enemy, EnemyPool>()
+                .WithId(enemyConfig.name)
                 .WithInitialSize(_initialPoolSize)
                 .WithMaxSize(_maxPoolSize)
-                // .FromSubContainerResolve()
-                // .ByNewPrefabMethod(_enemyConfig.Prefab, sub =>
-                // {
-                //     sub.Bind<Enemy>().FromComponentOnRoot().AsTransient();
-                //     sub.Bind<EnemyVision>().FromComponentOnRoot().AsTransient();
-                //     sub.Bind<Mover>().FromComponentOnRoot().AsTransient();
-                // })
                 .FromComponentInNewPrefab(enemyConfig.Prefab)
-                .UnderTransformGroup("Enemy Pool");
+                .UnderTransformGroup($"Enemy Pool - {enemyConfig.name}");
         }
-
-        // private void FactoryBinding()
-        // {
-        //     Container.BindFactory<EnemyConfig, Enemy, EnemyPoolFactory>()
-        //         .FromPoolableMemoryPool<EnemyConfig, Enemy, EnemyPool>(poolConfig => poolConfig
-        //             .WithInitialSize(_initialPoolSize)
-        //             .WithMaxSize(_maxPoolSize)
-        //             // .FromSubContainerResolve()
-        //             // .ByNewPrefabMethod(_enemyConfig.Prefab, sub =>
-        //             // {
-        //             //     sub.Bind<Enemy>().FromComponentOnRoot().AsTransient();
-        //             //     sub.Bind<EnemyVision>().FromComponentOnRoot().AsTransient();
-        //             //     sub.Bind<Mover>().FromComponentOnRoot().AsTransient();
-        //             // })
-        //             .FromComponentInNewPrefab(_enemyConfig.Prefab)
-        //             .UnderTransformGroup("Enemy Pool"));
-        // }
     }
 }

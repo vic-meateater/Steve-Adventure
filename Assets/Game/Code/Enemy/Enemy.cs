@@ -8,6 +8,8 @@ namespace SteveAdventure
     [RequireComponent(typeof(Collider2D), typeof(EnemyVision), typeof(HealthComponent))]
     public sealed class Enemy : MonoBehaviour, IGameFixedUpdateListener, IPoolable<EnemyConfig, IMemoryPool>
     {
+        public event Action Died;
+        
         [SerializeField] private AnimationHandler _animationHandler;
 
         private Mover _mover;
@@ -27,7 +29,7 @@ namespace SteveAdventure
         private bool _isInitialized;
 
 
-        private void Start()
+        private void Awake()
         {
             _mover = GetComponent<Mover>();
             _waypoints = GetComponent<Waypoints>();
@@ -37,15 +39,13 @@ namespace SteveAdventure
             _enemyTransform = transform;
             _collider = GetComponent<Collider2D>();
 
-            _enemyBrain = new EnemyBrain(_mover, _config.EnemySpawnConfig.Waypoints, _enemyVision, _animatorController,
-                _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
+
         }
 
         [Inject]
         public void Construct(GameCycle gameCycle)
         {
             _gameCycle = gameCycle;
-            //_enemyVision = enemyVision;
         }
 
         private void Initialize(EnemyConfig config)
@@ -54,6 +54,8 @@ namespace SteveAdventure
             _damage = _config.Damage;
             _attackCooldown = _config.AttackCooldown;
 
+            _enemyBrain = new EnemyBrain(_mover, _config.EnemySpawnConfig.Waypoints, _enemyVision, _animatorController,
+                _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
 
             _isInitialized = true;
         }
@@ -88,7 +90,7 @@ namespace SteveAdventure
             _pool?.Despawn(this);
         }
 
-        private void OnDeath()
+        private void OnDied()
         {
             _gameCycle?.RemoveListener(this);
             ReturnToPool();

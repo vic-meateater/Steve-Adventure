@@ -21,12 +21,7 @@ namespace SteveAdventure
 
         protected override void Reinitialize(EnemyConfig config, IMemoryPool pool, Enemy enemy)
         {
-            enemy.transform.position = config.EnemySpawnConfig.SpawnPoint;
             enemy.OnSpawned(config, pool);
         }
     }
-    //
-    // public class EnemyPoolFactory : PlaceholderFactory<EnemyConfig, Enemy>
-    // {
-    // }
 }

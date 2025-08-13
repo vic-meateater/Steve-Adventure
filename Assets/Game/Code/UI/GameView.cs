@@ -45,12 +45,11 @@ namespace SteveAdventure
             _pauseButton.onClick.AddListener(OnPauseButtonClicked);
             _restartButton.onClick.AddListener(OnRestartButtonClicked);
             _exitButton.onClick.AddListener(OnExitButtonClicked);
-            _spawnEnemyButton.onClick.AddListener(OnSpawnEnemyButtonClicked);
         }
 
         private void OnSpawnEnemyButtonClicked()
         {
-            _gameViewModel.SpawnEnemy();
+            //
         }
 
         private void OnPlayButtonClicked()
