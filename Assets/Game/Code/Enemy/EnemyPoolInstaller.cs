@@ -6,6 +6,7 @@ namespace SteveAdventure
 {
     public class EnemyPoolInstaller : MonoInstaller
     {
+        [SerializeField] private Transform _enemyPoolRoot;
         [SerializeField] private EnemyConfig[] _enemiesConfigs;
         [SerializeField] private int _initialPoolSize = 10;
         [SerializeField] private int _maxPoolSize = 20;
@@ -46,7 +47,9 @@ namespace SteveAdventure
                 .WithInitialSize(_initialPoolSize)
                 .WithMaxSize(_maxPoolSize)
                 .FromComponentInNewPrefab(enemyConfig.Prefab)
-                .UnderTransformGroup($"Enemy Pool - {enemyConfig.name}");
+                .UnderTransform(_enemyPoolRoot);
+            //.UnderTransformGroup($"Enemy Pool - {enemyConfig.name}");
+
         }
     }
 }

@@ -10,11 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b54663772f549a88a13e0bfe9b0223a, type: 3}
-  m_Name: EnemyConfig
+  m_Name: Enemy_2Config
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 3034274375882245920, guid: 120307b443b5012469dd6fd9912b69e5, type: 3}
+  <Prefab>k__BackingField: {fileID: 2007303439707407703, guid: 81fc3d9cf201a224e933282ec0407122, type: 3}
+  <SpawnPoint>k__BackingField: {x: -3, y: 13.34, z: 0}
   <MoveSpeed>k__BackingField: 1
-  <Damage>k__BackingField: 1
-  <Health>k__BackingField: 111
+  <Damage>k__BackingField: 0
+  <Health>k__BackingField: 50
   <AttackCooldown>k__BackingField: 1
-  <EnemySpawnConfig>k__BackingField: {fileID: 11400000, guid: a8a114e58421f6e47bbf54cc019ffafd, type: 2}
+  <RespawnDuration>k__BackingField: 1
+  <Waypoints>k__BackingField:
+  - {x: -3, y: 15, z: 0}
+  - {x: -3, y: 11, z: 0}
+  <WaitDuration>k__BackingField: 1

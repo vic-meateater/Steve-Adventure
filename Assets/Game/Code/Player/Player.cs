@@ -9,7 +9,7 @@ namespace SteveAdventure
     {
         [SerializeField] private AnimationHandler _animationHandler;
         //[SerializeField] private float _damage = 10f;
-        private float _damage = 10f;
+        private float _damage;
 
         private Mover _mover;
         private AnimatorController _animatorController;
@@ -18,11 +18,14 @@ namespace SteveAdventure
         private PlayerAttackController _playerAttackController;
         private HealthComponent _health;
         private Vector2 _savedDirection;
+        
+        private IHealthViewModel _healthViewModel;
 
         [Inject]
-        public void Construct(CharacterConfig characterConfig)
+        public void Construct(PlayerConfig playerConfig, IFactory<PlayerConfig, IHealthViewModel> healthFactory)
         {
-            _damage = characterConfig.Damage;
+            _healthViewModel = healthFactory.Create(playerConfig);
+            _damage = playerConfig.Damage;
             _mover = GetComponent<Mover>();
             _animatorController = GetComponent<AnimatorController>();
             _collisionHandler = GetComponent<CollisionHandler>();

@@ -4,16 +4,15 @@ using Zenject;
 
 namespace SteveAdventure
 {
-    [RequireComponent(typeof(Mover), typeof(Waypoints), typeof(AnimatorController))]
+    [RequireComponent(typeof(Mover), typeof(AnimatorController))]
     [RequireComponent(typeof(Collider2D), typeof(EnemyVision), typeof(HealthComponent))]
     public sealed class Enemy : MonoBehaviour, IGameFixedUpdateListener, IPoolable<EnemyConfig, IMemoryPool>
     {
         public event Action Died;
-        
+
         [SerializeField] private AnimationHandler _animationHandler;
 
         private Mover _mover;
-        private Waypoints _waypoints;
         private EnemyVision _enemyVision;
         private AnimatorController _animatorController;
         private HealthComponent _health;
@@ -32,14 +31,11 @@ namespace SteveAdventure
         private void Awake()
         {
             _mover = GetComponent<Mover>();
-            _waypoints = GetComponent<Waypoints>();
             _enemyVision = GetComponent<EnemyVision>();
             _animatorController = GetComponent<AnimatorController>();
             _health = GetComponent<HealthComponent>();
             _enemyTransform = transform;
             _collider = GetComponent<Collider2D>();
-
-
         }
 
         [Inject]
@@ -54,8 +50,8 @@ namespace SteveAdventure
             _damage = _config.Damage;
             _attackCooldown = _config.AttackCooldown;
 
-            _enemyBrain = new EnemyBrain(_mover, _config.EnemySpawnConfig.Waypoints, _enemyVision, _animatorController,
-                _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
+            _enemyBrain = new EnemyBrain(_mover, _config.Waypoints, _enemyVision, _animatorController,
+                _config.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
 
             _isInitialized = true;
         }
@@ -70,7 +66,7 @@ namespace SteveAdventure
         public void OnSpawned(EnemyConfig config, IMemoryPool pool)
         {
             _pool = pool;
-            transform.position = config.EnemySpawnConfig.SpawnPoint;
+            transform.position = config.SpawnPoint;
             Initialize(config);
 
             _gameCycle.AddListener(this);

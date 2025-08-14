@@ -24,7 +24,7 @@ namespace SteveAdventure
             if (_currentHealth <= 0f)
                 DeathEvent?.Invoke();
             ChangeValue(-damage);
-            Debug.LogWarning($"Taking damage {damage} now {_currentHealth} HP left");
+            //Debug.LogWarning($"Taking damage {damage} now {_currentHealth} HP left");
         }
 
         public void Heal(float healAmount)

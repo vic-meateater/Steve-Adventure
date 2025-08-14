@@ -9,11 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e645acecea34a1ab33f6412a165c155, type: 3}
-  m_Name: EnemySpawnConfig
+  m_Script: {fileID: 11500000, guid: 0b54663772f549a88a13e0bfe9b0223a, type: 3}
+  m_Name: Orc_1_Config
   m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 3034274375882245920, guid: 120307b443b5012469dd6fd9912b69e5, type: 3}
   <SpawnPoint>k__BackingField: {x: 0.82, y: -2.23, z: 0}
-  <ReSpawnDuration>k__BackingField: 0
+  <MoveSpeed>k__BackingField: 1
+  <Damage>k__BackingField: 1
+  <Health>k__BackingField: 111
+  <AttackCooldown>k__BackingField: 1
+  <RespawnDuration>k__BackingField: 0
   <Waypoints>k__BackingField:
   - {x: -1.26, y: 1.17, z: 0}
   - {x: 2.96, y: 2.09, z: 0}

@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049090af02864b08aaf230c7d1cf0644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _waypoints:
+  _waypointTransforms:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -162,8 +162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8260913797e515747baebb84370c3948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 20
-  _attackCooldown: 1
   _animationHandler: {fileID: 8846451324214796930}
 --- !u!114 &6376230328853123925
 MonoBehaviour:

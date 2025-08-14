@@ -8,7 +8,6 @@ namespace SteveAdventure
     {
         public event Action<float> HealthChangedEvent;
         
-        
         [SerializeField] private float _maxHealth = 100f;
         private Health _health;
 

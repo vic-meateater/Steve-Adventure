@@ -3,24 +3,25 @@ using UnityEngine;
 
 namespace SteveAdventure
 {
-    public sealed class HealthModel : IHealthModel
+    public sealed class HealthViewModel : IHealthViewModel
     {
         public ReadOnlyReactiveProperty<float> CurrentHealth => _currentHealth;
         private readonly ReactiveProperty<float> _currentHealth;
         public ReadOnlyReactiveProperty<float> MaxHealth => _maxHealth;
         private readonly ReactiveProperty<float> _maxHealth;
 
-        public HealthModel(float maxHealth)
+        public HealthViewModel(CharacterConfig config)
         {
-            _maxHealth = new ReactiveProperty<float>(maxHealth);
-            _currentHealth = new ReactiveProperty<float>(maxHealth);
+            Debug.Log("HealthViewModel created with config: " + config);
+            _maxHealth = new ReactiveProperty<float>(config.Health);
+            _currentHealth = new ReactiveProperty<float>(config.Health);
         }
 
         public void TakeDamage(float damage)
         {
             ChangeValue(-damage);
         }
-        
+
         public void Heal(float amount)
         {
             ChangeValue(amount);

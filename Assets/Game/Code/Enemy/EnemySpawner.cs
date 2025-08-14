@@ -46,7 +46,7 @@ namespace SteveAdventure
         {
             _activeEnemies[configIndex] = null;
 
-            var respawnDelay = _enemyConfigs[configIndex].EnemySpawnConfig.ReSpawnDuration;
+            var respawnDelay = _enemyConfigs[configIndex].RespawnDuration;
             _coroutineRunner.StartCoroutine(RespawnAfterDelay(configIndex, respawnDelay));
         }
 
