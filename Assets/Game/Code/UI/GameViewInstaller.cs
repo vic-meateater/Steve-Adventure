@@ -6,7 +6,11 @@ namespace SteveAdventure
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<GameViewPresenterFactory>().AsSingle().NonLazy();
+            //Container.BindInterfacesAndSelfTo<GameViewPresenterFactory>().AsSingle().NonLazy();
+            Container.Bind<IFactory<IGameViewModel>>()
+                .To<GameViewPresenterFactory>()
+                .AsSingle()
+                .NonLazy();
         }
     }
 }

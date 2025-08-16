@@ -6,6 +6,7 @@ namespace SteveAdventure
     {
         ReadOnlyReactiveProperty<float> CurrentHealth { get; }
         ReadOnlyReactiveProperty<float> MaxHealth { get; }
+        public ReadOnlyReactiveProperty<bool> IsDead { get; }
         
     }
 }

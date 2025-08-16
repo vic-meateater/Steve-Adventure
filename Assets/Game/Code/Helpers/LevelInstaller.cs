@@ -9,7 +9,7 @@ namespace SteveAdventure.Helpers
             InputHandlerInstaller.Install(Container);
             MoveControllerInstaller.Install(Container);
             
-            GameViewInstaller.Install(Container);
+            UIInstaller.Install(Container);
             
             
             NonMonoClassesInstaller();

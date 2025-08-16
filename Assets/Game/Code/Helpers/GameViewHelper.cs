@@ -8,11 +8,11 @@ namespace SteveAdventure
         [SerializeField] private GameView _gameView;
         [SerializeField] private GameViewConfig _gameViewConfig;
         
-        private GameViewPresenterFactory _gameViewFactory;
+        private IFactory<IGameViewModel> _gameViewFactory;
         private IGameViewModel _gameViewModel;
 
         [Inject]
-        private void Construct(GameViewPresenterFactory factory)
+        private void Construct(IFactory<IGameViewModel> factory)
         {
             _gameViewFactory = factory;
         }

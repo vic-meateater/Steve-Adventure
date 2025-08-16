@@ -8,10 +8,11 @@ namespace SteveAdventure
     public enum GameState
     {
         None,
-        Starting,
+        //Starting,
         Running,
         Paused,
-        Finished
+        Finished,
+        GameOver
     }
 
     public class GameCycle : IInitializable, IDisposable
@@ -67,6 +68,19 @@ namespace SteveAdventure
 
             _gameState = GameState.Running;
         }
+        
+        public void GameOver()
+        {
+            foreach (var listener in _gameListeners)
+            {
+                if (listener is IGameOverListener gameOverListener)
+                {
+                    gameOverListener.OnGameOver();
+                }
+            }
+
+            _gameState = GameState.GameOver;
+        }
 
         public void FinishGame()
         {
@@ -112,7 +126,7 @@ namespace SteveAdventure
 
         public void OnGameUpdate(float deltaTime)
         {
-            if (_gameState is not (GameState.Starting or GameState.Running)) return;
+            if (_gameState is not (GameState.Running)) return;
 
             foreach (IGameUpdateListener gameUpdateListener in _gameUpdateListeners)
             {
@@ -122,7 +136,7 @@ namespace SteveAdventure
 
         public void OnGameFixedUpdate(float fixedDeltaTime)
         {
-            if (_gameState is not (GameState.Starting or GameState.Running)) return;
+            if (_gameState is not (GameState.Running)) return;
 
             foreach (IGameFixedUpdateListener gameFixedUpdateListener in _gameFixedUpdateListeners)
             {
@@ -133,7 +147,7 @@ namespace SteveAdventure
         public void Initialize()
         {
             Debug.Log("GameCycle Initialized");
-            _gameState = GameState.Starting;
+            _gameState = GameState.Running;
             StartGame();
         }
 

@@ -2,19 +2,20 @@ using Zenject;
 
 namespace SteveAdventure
 {
-    public sealed class GameViewPresenterFactory : IFactory<GameViewModel>
+    public sealed class GameViewPresenterFactory : IFactory<IGameViewModel>
     {
-        private readonly DiContainer _container;
+        private readonly IFactory<IGamePausedViewModel> _gamePausedPresenterFactory;
 
-        [Inject]
-        public GameViewPresenterFactory(DiContainer container)
+        public GameViewPresenterFactory(
+            IFactory<IGamePausedViewModel> gamePausedPresenterFactory)
         {
-            _container = container;
+            _gamePausedPresenterFactory = gamePausedPresenterFactory;
         }
-
-        public GameViewModel Create()
+        
+        public IGameViewModel Create()
         {
-            return _container.Instantiate<GameViewModel>();
+            var gamePausedViewModel = _gamePausedPresenterFactory.Create();
+            return new GameViewModel(gamePausedViewModel);
         }
     }
 }

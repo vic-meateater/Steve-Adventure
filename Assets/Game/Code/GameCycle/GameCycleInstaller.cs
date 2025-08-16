@@ -19,6 +19,9 @@ namespace SteveAdventure
         private GameCycle CreateGameCycle(InjectContext context)
         {
             _gameCycle = new GameCycle();
+            
+            GameCycleService.Register(_gameCycle);
+            
             foreach (var listener in context.Container.ResolveAll<IGameListener>())
             {
                 _gameCycle.AddListener(listener);

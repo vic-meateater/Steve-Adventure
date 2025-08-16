@@ -15,7 +15,7 @@ MonoBehaviour:
   <Prefab>k__BackingField: {fileID: 3034274375882245920, guid: 120307b443b5012469dd6fd9912b69e5, type: 3}
   <SpawnPoint>k__BackingField: {x: 0.82, y: -2.23, z: 0}
   <MoveSpeed>k__BackingField: 1
-  <Damage>k__BackingField: 1
+  <Damage>k__BackingField: 50
   <Health>k__BackingField: 111
   <AttackCooldown>k__BackingField: 1
   <RespawnDuration>k__BackingField: 0

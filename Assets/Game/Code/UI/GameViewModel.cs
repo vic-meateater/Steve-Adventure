@@ -5,10 +5,12 @@ namespace SteveAdventure
 {
     public sealed class GameViewModel : IGameViewModel
     {
-        [Inject]
-        public void Construct()
+        public IGamePausedViewModel GamePausedViewModel => _gamePausedViewModel;
+        private IGamePausedViewModel _gamePausedViewModel;
+
+        public GameViewModel(IGamePausedViewModel gamePausedViewModel)
         {
-            Debug.Log("GameViewModel Constructed");
+            _gamePausedViewModel = gamePausedViewModel;
         }
     }
 }

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1755763069937060889}
   - component: {fileID: 3195674699814440286}
   - component: {fileID: 3550244975731665675}
-  - component: {fileID: 3652375612921871666}
   - component: {fileID: 5429746224435605183}
   - component: {fileID: 2062983994358900680}
   - component: {fileID: 6376230328853123925}
@@ -119,24 +118,6 @@ MonoBehaviour:
   _moveSpeed: 1
   _dashSpeed: 3
   _dashDuration: 0.5
---- !u!114 &3652375612921871666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3034274375882245920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 049090af02864b08aaf230c7d1cf0644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waypointTransforms:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _waitDuration: 1.5
 --- !u!114 &5429746224435605183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,6 +229,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -269,6 +252,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0

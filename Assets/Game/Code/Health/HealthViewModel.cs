@@ -10,16 +10,24 @@ namespace SteveAdventure
         public ReadOnlyReactiveProperty<float> MaxHealth => _maxHealth;
         private readonly ReactiveProperty<float> _maxHealth;
 
+        public ReadOnlyReactiveProperty<bool> IsDead => _isDead;
+        private readonly ReactiveProperty<bool> _isDead;
+
+        private GameCycle _gameCycle;
+
         public HealthViewModel(CharacterConfig config)
         {
             Debug.Log("HealthViewModel created with config: " + config);
             _maxHealth = new ReactiveProperty<float>(config.Health);
             _currentHealth = new ReactiveProperty<float>(config.Health);
+            _isDead = new ReactiveProperty<bool>(false);
+            _currentHealth.Subscribe(health => _isDead.Value = health <= 0);
         }
 
         public void TakeDamage(float damage)
         {
             ChangeValue(-damage);
+            Debug.Log(_currentHealth.Value);
         }
 
         public void Heal(float amount)

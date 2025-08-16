@@ -1,14 +1,19 @@
-﻿using UnityEngine;
+﻿using R3;
+using UnityEngine;
 using Zenject;
 
 namespace SteveAdventure
 {
     [RequireComponent(typeof(Mover), typeof(AnimatorController))]
-    [RequireComponent(typeof(PlayerVision), typeof(CollisionHandler), typeof(HealthComponent))]
-    public sealed class Player : MonoBehaviour, IGamePauseListener, IGameResumeListener
+    [RequireComponent(typeof(PlayerVision), typeof(CollisionHandler))]
+    public sealed class Player : 
+        MonoBehaviour,
+        IDamageable, 
+        IGamePauseListener, 
+        IGameResumeListener, 
+        IGameOverListener
     {
         [SerializeField] private AnimationHandler _animationHandler;
-        //[SerializeField] private float _damage = 10f;
         private float _damage;
 
         private Mover _mover;
@@ -16,13 +21,16 @@ namespace SteveAdventure
         private CollisionHandler _collisionHandler;
         private PlayerVision _playerVision;
         private PlayerAttackController _playerAttackController;
-        private HealthComponent _health;
         private Vector2 _savedDirection;
         
         private IHealthViewModel _healthViewModel;
 
         [Inject]
-        public void Construct(PlayerConfig playerConfig, IFactory<PlayerConfig, IHealthViewModel> healthFactory)
+        public void Construct(
+            PlayerConfig playerConfig, 
+            IFactory<PlayerConfig, IHealthViewModel> healthFactory,
+            PlayerUIView playerUIView
+            )
         {
             _healthViewModel = healthFactory.Create(playerConfig);
             _damage = playerConfig.Damage;
@@ -30,22 +38,13 @@ namespace SteveAdventure
             _animatorController = GetComponent<AnimatorController>();
             _collisionHandler = GetComponent<CollisionHandler>();
             _playerVision = GetComponent<PlayerVision>();
-            _health = GetComponent<HealthComponent>();
 
             _playerAttackController =
                 new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage);
+
+            playerUIView.Show(_healthViewModel);
+            _healthViewModel.IsDead.Subscribe(OnDeath).AddTo(this);
         }
-        
-        // private void Start()
-        // {
-        //     _mover = GetComponent<Mover>();
-        //     _animatorController = GetComponent<AnimatorController>();
-        //     _collisionHandler = GetComponent<CollisionHandler>();
-        //     _playerVision = GetComponent<PlayerVision>();
-        //
-        //     _playerAttackController =
-        //         new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage);
-        // }
 
         public void OnAttackPressed()
         {
@@ -86,5 +85,29 @@ namespace SteveAdventure
             _mover.Moving(_savedDirection);
             _animatorController.MoveAnimation(_savedDirection);
         }
+        
+        
+        public void OnGameOver()
+        {
+            Debug.Log("Game Over triggered, stopping player movement.");
+            var moveInputZero = Vector2.zero;
+            _mover.Moving(moveInputZero);
+            _animatorController.MoveAnimation(moveInputZero);
+        }
+
+        public void TakeDamage(float damage)
+        {
+            _healthViewModel.TakeDamage(damage);
+        }
+
+        private void OnDeath(bool isDead)
+        {
+            if (isDead)
+            {
+                Debug.Log("Player is Dead");
+                GameCycleService.Instance?.GameOver();
+            }
+        }
+
     }
 }

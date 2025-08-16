@@ -23,6 +23,11 @@
     {
         void OnGameFinish();
     }
+    
+    public interface IGameOverListener : IGameListener
+    {
+        void OnGameOver();
+    }
 
     public interface IGameUpdateListener : IGameListener
     {
