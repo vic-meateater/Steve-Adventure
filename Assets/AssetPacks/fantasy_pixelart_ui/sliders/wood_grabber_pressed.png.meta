@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      wood_grabber_pressed_0: -683435431446817224
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

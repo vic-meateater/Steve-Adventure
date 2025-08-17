@@ -42,7 +42,7 @@ namespace SteveAdventure
             _playerAttackController =
                 new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage);
 
-            playerUIView.Show(_healthViewModel);
+            playerUIView.Init(_healthViewModel);
             _healthViewModel.IsDead.Subscribe(OnDeath).AddTo(this);
         }
 

@@ -9,9 +9,10 @@ namespace SteveAdventure
         private readonly ReactiveProperty<float> _currentHealth;
         public ReadOnlyReactiveProperty<float> MaxHealth => _maxHealth;
         private readonly ReactiveProperty<float> _maxHealth;
-
         public ReadOnlyReactiveProperty<bool> IsDead => _isDead;
         private readonly ReactiveProperty<bool> _isDead;
+        
+        public string HealthText => $"{CurrentHealth} / {MaxHealth}";
 
         private GameCycle _gameCycle;
 

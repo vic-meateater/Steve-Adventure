@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      wood_scrollbar_0: 7883129555424582096
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
