@@ -1,13 +1,12 @@
-﻿using R3;
+using R3;
 
 namespace SteveAdventure
 {
-    public interface IGamePausedViewModel : IViewModel
+    public interface IGameOverViewModel : IViewModel
     {
         public string TitleText { get; }
         public ReadOnlyReactiveProperty<bool> IsVisible { get; }
         public void PauseGame();
-        public void ResumeGame();
         public void ExitGame();
         void RestartGame();
     }

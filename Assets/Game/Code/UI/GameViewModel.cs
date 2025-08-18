@@ -1,6 +1,3 @@
-using UnityEngine;
-using Zenject;
-
 namespace SteveAdventure
 {
     public sealed class GameViewModel : IGameViewModel

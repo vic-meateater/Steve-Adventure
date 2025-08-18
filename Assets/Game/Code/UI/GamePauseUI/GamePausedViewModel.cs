@@ -11,19 +11,24 @@ namespace SteveAdventure
 
         public GamePausedViewModel()
         {
-            _isVisible = new ReactiveProperty<bool>(true);
+            _isVisible = new ReactiveProperty<bool>(false);
         }
         
         public void PauseGame()
         {
             GameCycleService.Instance?.PauseGame();
-            _isVisible.Value = false;
+            _isVisible.Value = true;
         }
 
         public void ResumeGame()
         {
             GameCycleService.Instance?.ResumeGame();
-            _isVisible.Value = true;
+            _isVisible.Value = false;
+        }
+
+        public void RestartGame()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         public void ExitGame()

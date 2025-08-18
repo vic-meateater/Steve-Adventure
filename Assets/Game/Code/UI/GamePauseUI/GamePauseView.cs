@@ -32,6 +32,7 @@ namespace SteveAdventure
         private void OnEnable()
         {
             _resumeButton.onClick.AddListener(OnResumeButtonClicked);
+            _restartButton.onClick.AddListener(OnRestartButtonClicked);
             _exitButton.onClick.AddListener(OnExitButtonClicked);
         }
 
@@ -46,10 +47,17 @@ namespace SteveAdventure
             _viewModel.ResumeGame();
             gameObject.SetActive(false);
         }
+        
+        private void OnRestartButtonClicked()
+        {
+            _viewModel.RestartGame();
+            gameObject.SetActive(false);
+        }
 
         private void OnExitButtonClicked()
         {
             _viewModel.ExitGame();
         }
+
     }
 }

@@ -26,7 +26,7 @@ namespace SteveAdventure
            
             _pauseView.Init(_gamePausedViewModel);
 
-            _gamePausedViewModel.IsVisible.Subscribe(isVisible => _pauseButton.gameObject.SetActive(isVisible))
+            _gamePausedViewModel.IsVisible.Subscribe(isVisible => _pauseButton.gameObject.SetActive(!isVisible))
                 .AddTo(this);
         }
 
