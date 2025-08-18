@@ -5,48 +5,40 @@ using UnityEngine.UI;
 
 namespace SteveAdventure
 {
-    public sealed class GamePauseView : MonoBehaviour, IGamePauseView
+    public sealed class GameOverView : MonoBehaviour, IGameOverView, IGameOverListener
     {
         public ReadOnlyReactiveProperty<bool> IsVisible => _viewModel.IsVisible;
 
         [SerializeField] public TMP_Text _titleText;
-        [SerializeField] private Button _resumeButton;
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _exitButton;
 
-        private IGamePausedViewModel _viewModel;
+        private IGameOverViewModel _viewModel;
 
-        public void Init(IGamePausedViewModel viewModel)
+        public void Init(IGameOverViewModel viewModel)
         {
             _viewModel = viewModel;
             gameObject.SetActive(false);
+            GameCycleService.Instance.AddListener(this);
         }
 
         public void Show()
         {
-            _viewModel.PauseGame();
+            Debug.Log("Game Over View Show");
+            _viewModel.GameOver();
             _titleText.text = _viewModel.TitleText;
             gameObject.SetActive(true);
         }
 
         private void OnEnable()
         {
-            _resumeButton.onClick.AddListener(OnResumeButtonClicked);
             _restartButton.onClick.AddListener(OnRestartButtonClicked);
             _exitButton.onClick.AddListener(OnExitButtonClicked);
-        }
-
-
-        private void OnResumeButtonClicked()
-        {
-            _viewModel.ResumeGame();
-            gameObject.SetActive(false);
         }
 
         private void OnRestartButtonClicked()
         {
             _viewModel.RestartGame();
-            gameObject.SetActive(false);
         }
 
         private void OnExitButtonClicked()
@@ -54,10 +46,10 @@ namespace SteveAdventure
             _viewModel.ExitGame();
         }
 
-        private void OnDisable()
+        public void OnGameOver()
         {
-            _resumeButton.onClick.RemoveListener(OnResumeButtonClicked);
-            _exitButton.onClick.RemoveListener(OnExitButtonClicked);
+            Debug.Log("GAme Over View Is here");
+            Show();
         }
     }
 }

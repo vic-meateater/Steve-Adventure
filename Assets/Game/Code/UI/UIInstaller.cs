@@ -7,6 +7,7 @@ namespace SteveAdventure
         public override void InstallBindings()
         {
             GamePausedViewInstaller.Install(Container);
+            GameOverViewInstaller.Install(Container);
             GameViewInstaller.Install(Container);
         }
     }

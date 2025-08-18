@@ -1,30 +1,32 @@
 using R3;
+using UnityEngine.SceneManagement;
 
 namespace SteveAdventure
 {
     public sealed class GameOverViewModel : IGameOverViewModel
     {
         public string TitleText => "Game Over";
-        public ReadOnlyReactiveProperty<bool> IsVisible { get; }
+        public ReadOnlyReactiveProperty<bool> IsVisible => _isVisible;
+        private readonly ReactiveProperty<bool> _isVisible;
 
-        public void PauseGame()
+        public GameOverViewModel()
         {
-            //throw new System.NotImplementedException();
+            _isVisible = new ReactiveProperty<bool>(false);
         }
-
-        public void ResumeGame()
+        
+        public void RestartGame()
         {
-            //throw new System.NotImplementedException();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         public void ExitGame()
         {
-            //throw new System.NotImplementedException();
+            SceneManager.LoadScene(sceneBuildIndex: 0);
         }
 
-        public void RestartGame()
+        public void GameOver()
         {
-            //throw new System.NotImplementedException();
+            _isVisible.Value = true;
         }
     }
 }

@@ -6,8 +6,8 @@ namespace SteveAdventure
     {
         public string TitleText { get; }
         public ReadOnlyReactiveProperty<bool> IsVisible { get; }
-        public void PauseGame();
+        public void RestartGame();
         public void ExitGame();
-        void RestartGame();
+        public void GameOver();
     }
 }
