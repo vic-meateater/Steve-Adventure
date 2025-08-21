@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6389477024741677439}
   - component: {fileID: 8495176820551813528}
   - component: {fileID: 1364317184123814083}
-  - component: {fileID: 8245321326615023763}
   - component: {fileID: 8207970497849026568}
   - component: {fileID: 249978770919424362}
   - component: {fileID: 1682658941517383343}
@@ -118,24 +117,6 @@ MonoBehaviour:
   _moveSpeed: 1
   _dashSpeed: 3
   _dashDuration: 0.5
---- !u!114 &8245321326615023763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2007303439707407703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 049090af02864b08aaf230c7d1cf0644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _waitDuration: 0.5
 --- !u!114 &8207970497849026568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8260913797e515747baebb84370c3948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animationHandler: {fileID: 7314231396283984943}
 --- !u!114 &1682658941517383343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +159,8 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 64
+  _attackRange: 0
+  _targetLostDelay: 0.5
 --- !u!1 &2607033276616527565
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,6 +172,7 @@ GameObject:
   - component: {fileID: 1571655953623870187}
   - component: {fileID: 2039295648762598004}
   - component: {fileID: 7566002313987870530}
+  - component: {fileID: 7314231396283984943}
   m_Layer: 0
   m_Name: model
   m_TagString: Untagged
@@ -230,6 +215,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -251,6 +238,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -287,3 +275,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7314231396283984943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2607033276616527565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a41c6d742ad7463a9b472d9c5af1c7d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -13,24 +13,26 @@ namespace SteveAdventure
         [SerializeField] private float _dashDuration = 0.5f;
 
         private Rigidbody2D _rb2D;
-        private float _playerSpeed;
+        private float _characterSpeed;
         private float _directionX;
         private float _directionY;
         private bool _isDashing;
+        private Vector2 _direction;
 
         private void Start()
         {
             _rb2D = GetComponent<Rigidbody2D>();
             _moveSpeed *= MOVE_SPEED_MULTIPLER;
             _dashSpeed *= MOVE_SPEED_MULTIPLER;
-            _playerSpeed = _moveSpeed;
+            _characterSpeed = _moveSpeed;
         }
 
         public void Moving(Vector2 moveInput)
         {
-            if (moveInput.sqrMagnitude > 0.01f)
+            _direction = moveInput;
+            if (_direction.sqrMagnitude > 0.01f)
             {
-                _rb2D.linearVelocity = moveInput * (_playerSpeed * Time.fixedDeltaTime);
+                _rb2D.linearVelocity = _direction * (_characterSpeed * Time.fixedDeltaTime);
             }
             else
             {
@@ -47,10 +49,10 @@ namespace SteveAdventure
         private IEnumerator Dash()
         {
             _isDashing = true;
-            _playerSpeed = _dashSpeed;
+            _characterSpeed = _dashSpeed;
             yield return new WaitForSeconds(_dashDuration);
             _isDashing = false;
-            _playerSpeed = _moveSpeed;
+            _characterSpeed = _moveSpeed;
         }
 
     }

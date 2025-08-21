@@ -8,15 +8,16 @@ namespace SteveAdventure
         private const int WAYPOINT_STEP = 1;
 
         private readonly Mover _mover;
-        private readonly Transform[] _waypoints;
+        private readonly Vector3[] _waypoints;
         private readonly Collider2D _collider;
         private readonly EnemyVision _enemyVision;
         private readonly AnimatorController _animatorController;
         private readonly float _wayPointReachedOffset = .1f;
         private int _currentWaypointIndex = 0;
         private bool _waypointShouldChange = false;
+        private Vector2 _savedDirection;
 
-        public PatrolState(Mover mover, Transform[] waypoints, Collider2D collider,
+        public PatrolState(Mover mover, Vector3[] waypoints, Collider2D collider,
             EnemyVision enemyVision, AnimatorController animatorController, Transform enemyTransform)
         {
             _mover = mover;
@@ -45,16 +46,33 @@ namespace SteveAdventure
             WayPointsMover();
         }
 
+        public override void OnGamePause()
+        {
+            Debug.Log("Game Paused, stopping movement in Patrol State");
+            ResetMovement();
+        }
+
+        public override void OnGameOver()
+        {
+            Debug.Log("Game Over, stopping movement in Patrol State");
+            ResetMovement();
+        }
+
+        public override void OnGameResume()
+        {
+            _mover.Moving(_savedDirection);
+            _animatorController.MoveAnimation(_savedDirection);
+        }
+
         public override void Exit()
         {
-            Debug.Log("Exiting Patrol State");
             _mover.Moving(Vector2.zero);
             _animatorController.MoveAnimation(Vector2.zero);
         }
 
         public bool WayPointReached()
         {
-            float sqrDistance = (_waypoints[_currentWaypointIndex].position - _collider.bounds.center).sqrMagnitude;
+            float sqrDistance = (_waypoints[_currentWaypointIndex] - _collider.bounds.center).sqrMagnitude;
             bool reached = sqrDistance < _wayPointReachedOffset * _wayPointReachedOffset;
 
             if (reached && !_waypointShouldChange)
@@ -67,9 +85,10 @@ namespace SteveAdventure
 
         private void WayPointsMover()
         {
-            Transform currentWaypoint = _waypoints[_currentWaypointIndex];
-            Vector2 direction = (currentWaypoint.position - _collider.bounds.center).normalized;
+            Vector3 currentWaypoint = _waypoints[_currentWaypointIndex];
+            Vector2 direction = (currentWaypoint - _collider.bounds.center).normalized;
 
+            _savedDirection = direction;
             _enemyVision.SetVisionDirection(direction);
             _animatorController.MoveAnimation(direction);
             _mover.Moving(direction);
@@ -92,7 +111,7 @@ namespace SteveAdventure
 
             for (int i = 0; i < _waypoints.Length; i++)
             {
-                float distance = Vector2.SqrMagnitude(currentPosition - (Vector2)_waypoints[i].position);
+                float distance = Vector2.SqrMagnitude(currentPosition - (Vector2)_waypoints[i]);
                 if (distance < minDistance)
                 {
                     minDistance = distance;
@@ -101,6 +120,13 @@ namespace SteveAdventure
             }
 
             _currentWaypointIndex = nearestIndex;
+        }
+
+        private void ResetMovement()
+        {
+            var zeroDirection = Vector2.zero;
+            _mover.Moving(zeroDirection);
+            _animatorController.MoveAnimation(zeroDirection);
         }
     }
 }

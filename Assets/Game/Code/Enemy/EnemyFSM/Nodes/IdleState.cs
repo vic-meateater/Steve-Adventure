@@ -13,13 +13,7 @@ namespace SteveAdventure
 
         public override void Enter()
         {
-            Debug.Log("Enter to Idle State");
             _endTime = Time.time + _waitDuration;
-        }
-
-        public override void Exit()
-        {
-            Debug.Log("Exit from Idle State");
         }
 
         public bool IsTimeOver()

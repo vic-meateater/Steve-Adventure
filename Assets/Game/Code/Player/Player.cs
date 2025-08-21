@@ -1,31 +1,39 @@
-﻿using System;
+﻿using R3;
 using UnityEngine;
+using Zenject;
 
 namespace SteveAdventure
 {
-    [RequireComponent(typeof(InputHandler), typeof(Mover), typeof(AnimatorController))]
-    [RequireComponent(typeof(PlayerVision), typeof(CollisionHandler), typeof(HealthComponent))]
-    public sealed class Player : MonoBehaviour
+    [RequireComponent(typeof(Mover), typeof(AnimatorController))]
+    [RequireComponent(typeof(PlayerVision), typeof(CollisionHandler))]
+    public sealed class Player :
+        MonoBehaviour,
+        IDamageable,
+        IGamePauseListener,
+        IGameResumeListener,
+        IGameOverListener
     {
         [SerializeField] private AnimationHandler _animationHandler;
-        [SerializeField] private float _damage = 10f;
+        private float _damage;
 
-        private InputHandler _inputHandler;
         private Mover _mover;
         private AnimatorController _animatorController;
         private CollisionHandler _collisionHandler;
         private PlayerVision _playerVision;
         private PlayerAttackController _playerAttackController;
-        private HealthComponent _health;
+        private Vector2 _savedDirection;
 
-        private void Start()
+        private IHealthViewModel _healthViewModel;
+
+        [Inject]
+        public void Construct(
+            PlayerConfig playerConfig,
+            IFactory<CharacterConfig, IHealthViewModel> healthFactory,
+            PlayerUIView playerUIView
+        )
         {
-            _inputHandler = GetComponent<InputHandler>();
-            _inputHandler.OnSpacePressed += OnSpacePressedHandler;
-            _inputHandler.OnMoveInputChanged += OnMoveInputHandler;
-            _inputHandler.OnInteractPressed += OnInteractPressedHandler;
-            _inputHandler.OnAttackPressed += OnAttackPressedHandler;
-
+            _healthViewModel = healthFactory.Create(playerConfig);
+            _damage = playerConfig.Damage;
             _mover = GetComponent<Mover>();
             _animatorController = GetComponent<AnimatorController>();
             _collisionHandler = GetComponent<CollisionHandler>();
@@ -33,36 +41,72 @@ namespace SteveAdventure
 
             _playerAttackController =
                 new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage);
+
+            playerUIView.Init(_healthViewModel);
+            _healthViewModel.IsDead.Subscribe(OnDeath).AddTo(this);
         }
 
-        private void OnDestroy()
-        {
-            _inputHandler.OnSpacePressed -= OnSpacePressedHandler;
-            _inputHandler.OnMoveInputChanged -= OnMoveInputHandler;
-            _inputHandler.OnInteractPressed -= OnInteractPressedHandler;
-            _inputHandler.OnAttackPressed -= OnAttackPressedHandler;
-        }
-
-        private void OnAttackPressedHandler()
+        public void OnAttackPressed()
         {
             _playerAttackController.AttackRequest();
         }
 
-        private void OnInteractPressedHandler()
+        public void OnInteractPressed()
         {
             if (_collisionHandler.CanInteract)
                 _collisionHandler.TryInteract();
         }
 
-        private void OnSpacePressedHandler()
+        public void OnSpacePressed()
         {
             _mover.Dashing();
         }
 
-        private void OnMoveInputHandler(Vector2 moveInput)
+        public void OnMoveInputChanged(Vector2 direction)
         {
-            _mover.Moving(moveInput);
-            _animatorController.MoveAnimation(moveInput);
+            _savedDirection = direction;
+
+            if (direction == Vector2.zero)
+                Debug.Log("Player move input zero: " + direction.sqrMagnitude);
+
+            _mover.Moving(direction);
+            _animatorController.MoveAnimation(direction);
+        }
+
+        public void OnGamePause()
+        {
+            var moveInputZero = Vector2.zero;
+            _mover.Moving(moveInputZero);
+            _animatorController.MoveAnimation(moveInputZero);
+        }
+
+        public void OnGameResume()
+        {
+            _mover.Moving(_savedDirection);
+            _animatorController.MoveAnimation(_savedDirection);
+        }
+
+
+        public void OnGameOver()
+        {
+            Debug.Log("Game Over triggered, stopping player movement.");
+            var moveInputZero = Vector2.zero;
+            _mover.Moving(moveInputZero);
+            _animatorController.MoveAnimation(moveInputZero);
+        }
+
+        public void TakeDamage(float damage)
+        {
+            _healthViewModel.TakeDamage(damage);
+        }
+
+        private void OnDeath(bool isDead)
+        {
+            if (isDead)
+            {
+                Debug.Log("Player is Dead");
+                GameCycleService.Instance?.GameOver();
+            }
         }
     }
 }

@@ -1,19 +1,20 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Zenject;
 
 namespace SteveAdventure
 {
-    public sealed class EnemyVision : MonoBehaviour
+    public sealed class EnemyVision : MonoBehaviour, IGameFixedUpdateListener
     {
         private const float VISION_OFFSET_MULTIPLIER = 2f;
         private const float SEARCH_INTERVAL = 0.1f;
-        
+
         [SerializeField] private Vector2 _visionAreaSize;
         [SerializeField] private LayerMask _playerLayer;
         [SerializeField] private float _attackRange;
         [SerializeField] private float _targetLostDelay = .5f;
-        
+
         private Vector2 _directionOffset = Vector2.down;
         private Vector2 _targetPosition;
         private bool _isTargetInRange;
@@ -21,8 +22,32 @@ namespace SteveAdventure
         private GameObject _target;
         private float _lastTargetSeenTime;
         private float _lastSearchTime;
+        private GameCycle _gameCycle;
 
-        private void FixedUpdate()
+        private void Start()
+        {
+            //GameCycleService.Instance?.AddListener(this);
+        }
+
+        private void OnDestroy()
+        {
+            //GameCycleService.Instance?.RemoveListener(this);
+        }
+
+        [Inject]
+        public void Construct(GameCycle gameCycle)
+        {
+            Debug.Log("EnemyVision.Construct");
+            _gameCycle = gameCycle;
+            
+        }
+
+        private void OnEnable()
+        {
+            _gameCycle.AddListener(this);
+        }
+
+        public void OnGameFixedUpdate(float deltaTime)
         {
             if (Time.time - _lastSearchTime > SEARCH_INTERVAL)
             {
@@ -74,7 +99,7 @@ namespace SteveAdventure
         public bool CanAttack()
         {
             return CanSeeTargetDirectly() &&
-                   (_targetPosition - (Vector2)transform.position).magnitude < _attackRange;
+                   (_targetPosition - (Vector2) transform.position).magnitude < _attackRange;
         }
 
         private void FindTarget()
@@ -100,7 +125,7 @@ namespace SteveAdventure
                     _target = hit.transform.gameObject;
                     _lastTargetSeenTime = Time.time;
                 }
-                
+
                 Debug.DrawLine(transform.position, visionHit.point,
                     visionHit.collider == hit ? Color.red : Color.yellow);
             }
@@ -113,7 +138,6 @@ namespace SteveAdventure
                     _targetPosition = Vector2.zero;
                 }
             }
-
         }
 
         private Vector2 GetLookAreaOrigin()

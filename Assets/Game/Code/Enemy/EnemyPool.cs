@@ -1,0 +1,27 @@
+using Zenject;
+
+namespace SteveAdventure
+{
+    public sealed class EnemyPool : MonoMemoryPool<EnemyConfig, IMemoryPool, Enemy>
+    {
+        protected override void OnCreated(Enemy enemy)
+        {
+            enemy.gameObject.SetActive(false);
+        }
+
+        protected override void OnSpawned(Enemy enemy)
+        {
+            enemy.gameObject.SetActive(true);
+        }
+
+        protected override void OnDespawned(Enemy enemy)
+        {
+            enemy.gameObject.SetActive(false);
+        }
+
+        protected override void Reinitialize(EnemyConfig config, IMemoryPool pool, Enemy enemy)
+        {
+            enemy.OnSpawned(config, pool);
+        }
+    }
+}

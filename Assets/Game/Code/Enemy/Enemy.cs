@@ -1,41 +1,121 @@
+using System;
+using R3;
 using UnityEngine;
+using Zenject;
 
 namespace SteveAdventure
 {
-    [RequireComponent(typeof(Mover), typeof(Waypoints), typeof(AnimatorController))]
-    [RequireComponent(typeof(Collider2D), typeof(EnemyVision), typeof(HealthComponent))]
-    public sealed class Enemy : MonoBehaviour
+    [RequireComponent(typeof(Mover), typeof(AnimatorController))]
+    [RequireComponent(typeof(Collider2D), typeof(EnemyVision))]
+    public sealed class Enemy :
+        MonoBehaviour,
+        IDamageable,
+        IGameFixedUpdateListener,
+        IPoolable<EnemyConfig,
+            IMemoryPool>
     {
-        [SerializeField] private float _damage = 10f;
-        [SerializeField] private float _attackCooldown = 1f;
+        private event Action<float> _onDeadRespawnRequested;
+
         [SerializeField] private AnimationHandler _animationHandler;
-        
+
         private Mover _mover;
-        private Waypoints _waypoints;
         private EnemyVision _enemyVision;
         private AnimatorController _animatorController;
-        private HealthComponent _health;
         private EnemyBrain _enemyBrain;
         private Transform _enemyTransform;
         private Collider2D _collider;
+        private GameCycle _gameCycle;
+        private float _attackCooldown = 1f;
+        private float _damage = 10f;
+
+        private IMemoryPool _pool;
+        private EnemyConfig _config;
+        private bool _isInitialized;
+
+        private IHealthViewModel _healthViewModel;
+        private IFactory<CharacterConfig, IHealthViewModel> _healthFactory;
+        private EnemyUIView _enemyUIView;
+
+        private DisposableBag _disposables;
 
 
-        private void Start()
+        private void Awake()
         {
             _mover = GetComponent<Mover>();
-            _waypoints = GetComponent<Waypoints>();
             _enemyVision = GetComponent<EnemyVision>();
             _animatorController = GetComponent<AnimatorController>();
-            _health = GetComponent<HealthComponent>();
             _enemyTransform = transform;
             _collider = GetComponent<Collider2D>();
-            _enemyBrain = new EnemyBrain(_mover, _waypoints.WayPoints, _enemyVision, _animatorController,
-                _waypoints.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
         }
 
-        private void FixedUpdate()
+        [Inject]
+        public void Construct(
+            GameCycle gameCycle,
+            IFactory<CharacterConfig, IHealthViewModel> healthFactory,
+            EnemyUIView enemyUIView)
         {
-            _enemyBrain.Update();
+            _gameCycle = gameCycle;
+            _healthFactory = healthFactory;
+            _enemyUIView = enemyUIView;
+        }
+
+        private void Initialize(EnemyConfig config)
+        {
+            _config = config;
+            _damage = _config.Damage;
+            _attackCooldown = _config.AttackCooldown;
+            _healthViewModel = _healthFactory.Create(config);
+            _enemyUIView.Init(_healthViewModel);
+
+            _enemyBrain = new EnemyBrain(_mover, _config.Waypoints, _enemyVision, _animatorController,
+                _config.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
+
+            _healthViewModel.IsDead
+                .Where(dead => dead)
+                .Subscribe(_ =>
+                {
+                    _onDeadRespawnRequested?.Invoke(_config.RespawnDuration);
+                    _pool.Despawn(this);
+                })
+                .AddTo(ref _disposables);
+
+            _isInitialized = true;
+        }
+
+        public void SetOnDiedCallback(Action<float> callback)
+        {
+            _onDeadRespawnRequested = callback;
+        }
+
+        void IGameFixedUpdateListener.OnGameFixedUpdate(float fixedDeltaTime)
+        {
+            if (_isInitialized)
+                _enemyBrain.Update();
+        }
+
+        public void OnSpawned(EnemyConfig config, IMemoryPool pool)
+        {
+            _pool = pool;
+            transform.position = config.SpawnPoint;
+            Initialize(config);
+
+            _gameCycle.AddListener(this);
+        }
+
+        public void OnDespawned()
+        {
+            _pool = null;
+            _isInitialized = false;
+            _enemyBrain = null;
+            _healthViewModel = null;
+            _onDeadRespawnRequested = null;
+            _gameCycle.RemoveListener(this);
+            _disposables.Dispose();
+        }
+
+        public void TakeDamage(float damage)
+        {
+            _healthViewModel.TakeDamage(damage);
         }
     }
 }

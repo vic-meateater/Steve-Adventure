@@ -34,8 +34,11 @@ namespace SteveAdventure
             {
                 foreach (var target in targets)
                 {
-                    if(target.TryGetComponent(out IDamageable damageable))
+                    if (target.TryGetComponent(out IDamageable damageable))
+                    {
+                        Debug.LogWarning("Attacked target: " + target.name + " with damage: " + _damage);
                         damageable.TakeDamage(_damage);
+                    }
 
                     if (target.TryGetComponent(out IAnimator animator))
                         animator.HitAnimation();

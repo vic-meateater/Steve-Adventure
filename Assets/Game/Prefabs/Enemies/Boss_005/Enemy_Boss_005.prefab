@@ -53,6 +53,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -74,6 +76,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -122,7 +125,6 @@ GameObject:
   - component: {fileID: 705787500000460201}
   - component: {fileID: 3131258470258518853}
   - component: {fileID: 4721971789900755135}
-  - component: {fileID: 2357749659214644355}
   - component: {fileID: 5022602931920500736}
   - component: {fileID: 1723172989973992278}
   - component: {fileID: 4245782292213778394}
@@ -228,23 +230,6 @@ MonoBehaviour:
   _moveSpeed: 1
   _dashSpeed: 3
   _dashDuration: 0.5
---- !u!114 &2357749659214644355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5466636130692752254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 049090af02864b08aaf230c7d1cf0644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _waitDuration: 2
 --- !u!114 &5022602931920500736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,7 +243,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 1587696231741779262}
-  _direction: {x: 0, y: 0}
 --- !u!114 &1723172989973992278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8260913797e515747baebb84370c3948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animationHandler: {fileID: 0}
 --- !u!114 &4245782292213778394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,3 +272,5 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 64
+  _attackRange: 0
+  _targetLostDelay: 0.5

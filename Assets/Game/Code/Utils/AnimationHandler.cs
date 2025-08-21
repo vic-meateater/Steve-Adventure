@@ -33,6 +33,5 @@ namespace SteveAdventure
         {
             HitAnimationEnd?.Invoke(true);
         }
-
     }
 }

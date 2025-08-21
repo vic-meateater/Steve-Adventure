@@ -8,7 +8,7 @@ namespace SteveAdventure
         private bool _canAttack;
         private bool _targetInRange;
 
-        public EnemyBrain(Mover mover, Transform[] waypoints, EnemyVision enemyVision,
+        public EnemyBrain(Mover mover, Vector3[] waypoints, EnemyVision enemyVision,
             AnimatorController animatorController, float waitDuration, float damage, float attackCooldown,
             Transform enemyTransform, Collider2D collider, AnimationHandler animationHandler)
         {
