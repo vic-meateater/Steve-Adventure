@@ -7,8 +7,6 @@ namespace SteveAdventure
 {
     public sealed class GamePauseView : MonoBehaviour, IGamePauseView
     {
-        public ReadOnlyReactiveProperty<bool> IsVisible => _viewModel.IsVisible;
-
         [SerializeField] public TMP_Text _titleText;
         [SerializeField] private Button _resumeButton;
         [SerializeField] private Button _restartButton;
@@ -57,6 +55,7 @@ namespace SteveAdventure
         private void OnDisable()
         {
             _resumeButton.onClick.RemoveListener(OnResumeButtonClicked);
+            _restartButton.onClick.RemoveListener(OnRestartButtonClicked);
             _exitButton.onClick.RemoveListener(OnExitButtonClicked);
         }
     }

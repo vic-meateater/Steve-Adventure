@@ -6,11 +6,11 @@ namespace SteveAdventure
 {
     [RequireComponent(typeof(Mover), typeof(AnimatorController))]
     [RequireComponent(typeof(PlayerVision), typeof(CollisionHandler))]
-    public sealed class Player : 
+    public sealed class Player :
         MonoBehaviour,
-        IDamageable, 
-        IGamePauseListener, 
-        IGameResumeListener, 
+        IDamageable,
+        IGamePauseListener,
+        IGameResumeListener,
         IGameOverListener
     {
         [SerializeField] private AnimationHandler _animationHandler;
@@ -22,15 +22,15 @@ namespace SteveAdventure
         private PlayerVision _playerVision;
         private PlayerAttackController _playerAttackController;
         private Vector2 _savedDirection;
-        
+
         private IHealthViewModel _healthViewModel;
 
         [Inject]
         public void Construct(
-            PlayerConfig playerConfig, 
+            PlayerConfig playerConfig,
             IFactory<CharacterConfig, IHealthViewModel> healthFactory,
             PlayerUIView playerUIView
-            )
+        )
         {
             _healthViewModel = healthFactory.Create(playerConfig);
             _damage = playerConfig.Damage;
@@ -65,10 +65,10 @@ namespace SteveAdventure
         public void OnMoveInputChanged(Vector2 direction)
         {
             _savedDirection = direction;
-            
-            if(direction == Vector2.zero)
+
+            if (direction == Vector2.zero)
                 Debug.Log("Player move input zero: " + direction.sqrMagnitude);
-            
+
             _mover.Moving(direction);
             _animatorController.MoveAnimation(direction);
         }
@@ -85,8 +85,8 @@ namespace SteveAdventure
             _mover.Moving(_savedDirection);
             _animatorController.MoveAnimation(_savedDirection);
         }
-        
-        
+
+
         public void OnGameOver()
         {
             Debug.Log("Game Over triggered, stopping player movement.");
@@ -108,6 +108,5 @@ namespace SteveAdventure
                 GameCycleService.Instance?.GameOver();
             }
         }
-
     }
 }
