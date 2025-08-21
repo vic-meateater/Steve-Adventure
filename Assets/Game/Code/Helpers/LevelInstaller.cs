@@ -8,6 +8,7 @@ namespace SteveAdventure.Helpers
         {
             InputHandlerInstaller.Install(Container);
             MoveControllerInstaller.Install(Container);
+            HealthFactoryInstaller.Install(Container);
             
             UIInstaller.Install(Container);
             

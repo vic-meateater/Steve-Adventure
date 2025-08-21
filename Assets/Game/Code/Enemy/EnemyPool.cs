@@ -2,7 +2,7 @@ using Zenject;
 
 namespace SteveAdventure
 {
-    public class EnemyPool : MonoMemoryPool<EnemyConfig, IMemoryPool, Enemy>
+    public sealed class EnemyPool : MonoMemoryPool<EnemyConfig, IMemoryPool, Enemy>
     {
         protected override void OnCreated(Enemy enemy)
         {

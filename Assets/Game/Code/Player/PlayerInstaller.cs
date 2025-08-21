@@ -19,8 +19,6 @@ namespace SteveAdventure
         {
             Container.Bind<PlayerConfig>().FromInstance(_playerConfig).AsSingle().NonLazy();
             Container.Bind<PlayerUIView>().FromInstance(_playerUIView).AsSingle().NonLazy();
-            Container.BindIFactory<PlayerConfig, IHealthViewModel>()
-                .FromFactory<HealthPresenterFactory>();
             
             Container.BindInterfacesAndSelfTo<Player>()
                 .FromComponentInNewPrefab(_playerConfig.Prefab)

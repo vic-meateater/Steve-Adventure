@@ -15,7 +15,7 @@ namespace SteveAdventure
         GameOver
     }
 
-    public class GameCycle : IInitializable, IDisposable
+    public sealed class GameCycle : IInitializable, IDisposable
     {
         private List<IGameListener> _gameListeners = new();
         private List<IGameUpdateListener> _gameUpdateListeners = new();
@@ -126,7 +126,7 @@ namespace SteveAdventure
 
         public void OnGameUpdate(float deltaTime)
         {
-            if (_gameState is not (GameState.Running)) return;
+            if (_gameState is not GameState.Running) return;
 
             foreach (IGameUpdateListener gameUpdateListener in _gameUpdateListeners)
             {

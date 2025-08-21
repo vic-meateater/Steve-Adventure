@@ -20,8 +20,6 @@ namespace SteveAdventure
             _mover = mover;
             _enemyVision = enemyVision;
             _animatorController = animatorController;
-
-            //GameCycleService.Instance?.AddListener(this);
         }
 
         public override void Enter()
@@ -38,9 +36,13 @@ namespace SteveAdventure
         public override void OnGamePause()
         {
             Debug.Log("Game Paused, stopping movement in Follow State");
-            var directionZero = Vector2.zero;
-            _mover.Moving(directionZero);
-            _animatorController.MoveAnimation(directionZero);
+            ResetMovement();
+        }
+
+
+        public override void OnGameOver()
+        {
+            ResetMovement();
         }
 
         public override void OnGameResume()
@@ -90,6 +92,13 @@ namespace SteveAdventure
             {
                 _mover.Moving(Vector2.zero);
             }
+        }
+        
+        private void ResetMovement()
+        {
+            var directionZero = Vector2.zero;
+            _mover.Moving(directionZero);
+            _animatorController.MoveAnimation(directionZero);
         }
     }
 }

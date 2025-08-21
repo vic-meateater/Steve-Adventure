@@ -28,7 +28,7 @@ namespace SteveAdventure
         [Inject]
         public void Construct(
             PlayerConfig playerConfig, 
-            IFactory<PlayerConfig, IHealthViewModel> healthFactory,
+            IFactory<CharacterConfig, IHealthViewModel> healthFactory,
             PlayerUIView playerUIView
             )
         {

@@ -7,7 +7,6 @@ namespace SteveAdventure
     public class SceneReferencesInstaller : MonoInstaller
     {
         [SerializeField] private CinemachineCamera _cinemachineCamera;
-
         public override void InstallBindings()
         {
             Container.Bind<CinemachineCamera>()

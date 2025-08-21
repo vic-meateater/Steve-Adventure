@@ -49,9 +49,13 @@ namespace SteveAdventure
         public override void OnGamePause()
         {
             Debug.Log("Game Paused, stopping movement in Patrol State");
-            var zeroDirection = Vector2.zero;
-            _mover.Moving(zeroDirection);
-            _animatorController.MoveAnimation(zeroDirection);
+            ResetMovement();
+        }
+
+        public override void OnGameOver()
+        {
+            Debug.Log("Game Over, stopping movement in Patrol State");
+            ResetMovement();
         }
 
         public override void OnGameResume()
@@ -116,6 +120,13 @@ namespace SteveAdventure
             }
 
             _currentWaypointIndex = nearestIndex;
+        }
+
+        private void ResetMovement()
+        {
+            var zeroDirection = Vector2.zero;
+            _mover.Moving(zeroDirection);
+            _animatorController.MoveAnimation(zeroDirection);
         }
     }
 }

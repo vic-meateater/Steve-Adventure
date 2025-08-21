@@ -4,7 +4,7 @@ using Zenject;
 
 namespace SteveAdventure
 {
-    public class EnemyPoolInstaller : MonoInstaller
+    public sealed class EnemyPoolInstaller : MonoInstaller
     {
         [SerializeField] private Transform _enemyPoolRoot;
         [SerializeField] private EnemyConfig[] _enemiesConfigs;
@@ -14,24 +14,22 @@ namespace SteveAdventure
         public override void InstallBindings()
         {
             Container.Bind<EnemyConfig[]>().FromInstance(_enemiesConfigs).AsSingle();
-
             CreateEnemyPool();
-            
+
             Container.Bind<EnemyFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle().NonLazy();
-            Container.Bind<MonoBehaviour>().FromComponentInHierarchy().AsSingle();
-
-
+            
+            BindEnemyDependencies();
         }
 
         private void CreateEnemyPool()
         {
             var configs = new HashSet<string>();
-            
+
             foreach (var config in _enemiesConfigs)
             {
                 var enemyConfigName = config.name;
-                
+
                 if (!configs.Contains(enemyConfigName))
                 {
                     CreateEnemy(config);
@@ -48,8 +46,13 @@ namespace SteveAdventure
                 .WithMaxSize(_maxPoolSize)
                 .FromComponentInNewPrefab(enemyConfig.Prefab)
                 .UnderTransform(_enemyPoolRoot);
-            //.UnderTransformGroup($"Enemy Pool - {enemyConfig.name}");
-
+        }
+        
+        private void BindEnemyDependencies()
+        {
+            Container.Bind<EnemyUIView>()
+                .FromComponentInHierarchy() 
+                .AsTransient();
         }
     }
 }

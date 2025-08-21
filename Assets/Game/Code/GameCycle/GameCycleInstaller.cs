@@ -3,7 +3,7 @@ using Zenject;
 
 namespace SteveAdventure
 {
-    public class GameCycleInstaller : MonoInstaller<GameCycleInstaller>
+    public sealed class GameCycleInstaller : MonoInstaller<GameCycleInstaller>
     {
         [SerializeField] private GameState _gameState = GameState.None;
         private GameCycle _gameCycle;

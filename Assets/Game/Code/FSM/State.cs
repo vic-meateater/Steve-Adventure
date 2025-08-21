@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SteveAdventure
 {
-    public abstract class State : IGamePauseListener, IGameResumeListener, IDisposable
+    public abstract class State : IGamePauseListener, IGameResumeListener, IGameOverListener, IDisposable
     {
         private readonly List<Transition> _transitions = new();
 
@@ -33,6 +33,7 @@ namespace SteveAdventure
         public virtual void Update() { }
         public virtual void OnGamePause() { }
         public virtual void OnGameResume() { }
+        public virtual void OnGameOver() { }
 
         public void Dispose()
         {
