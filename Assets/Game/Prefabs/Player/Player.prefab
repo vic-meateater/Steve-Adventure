@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 1633281454021790708}
   - component: {fileID: 3152771064404159483}
   - component: {fileID: 2443928224256600839}
-  - component: {fileID: 6703565525751647746}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -95,7 +94,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animationHandler: {fileID: 4978415753626250527}
-  _damage: 20
 --- !u!114 &6805580973775189684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,20 +172,6 @@ MonoBehaviour:
   _targetLayer:
     serializedVersion: 2
     m_Bits: 128
-  _inputHandler: {fileID: 0}
---- !u!114 &6703565525751647746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3358469808796422191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 464279d796684abdb1072e7e15bdbeea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 100
 --- !u!1 &6892120065653573402
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,6 +226,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -263,6 +249,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 111

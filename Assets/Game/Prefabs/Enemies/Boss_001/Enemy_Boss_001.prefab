@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 8207970497849026568}
   - component: {fileID: 249978770919424362}
   - component: {fileID: 1682658941517383343}
-  - component: {fileID: 2947376322477821348}
   m_Layer: 7
   m_Name: Enemy_Boss_001
   m_TagString: Untagged
@@ -162,19 +161,6 @@ MonoBehaviour:
     m_Bits: 64
   _attackRange: 0
   _targetLostDelay: 0.5
---- !u!114 &2947376322477821348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2007303439707407703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 464279d796684abdb1072e7e15bdbeea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 100
 --- !u!1 &2607033276616527565
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,6 +215,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -250,6 +238,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0

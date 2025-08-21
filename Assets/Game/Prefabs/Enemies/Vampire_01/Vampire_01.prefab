@@ -12,11 +12,9 @@ GameObject:
   - component: {fileID: 7943782781728262349}
   - component: {fileID: 5836138369413939868}
   - component: {fileID: 120737323058462828}
-  - component: {fileID: 382987699485057436}
   - component: {fileID: 8350731016663246061}
   - component: {fileID: 1726613281688010882}
   - component: {fileID: 6556837369853996199}
-  - component: {fileID: 1025399200505383478}
   m_Layer: 7
   m_Name: Vampire_01
   m_TagString: Untagged
@@ -119,24 +117,6 @@ MonoBehaviour:
   _moveSpeed: 1
   _dashSpeed: 3
   _dashDuration: 0.5
---- !u!114 &382987699485057436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 286836449616621600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 049090af02864b08aaf230c7d1cf0644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _waitDuration: 0.5
 --- !u!114 &8350731016663246061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,8 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8260913797e515747baebb84370c3948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 10
-  _attackCooldown: 2
+  _animationHandler: {fileID: 0}
 --- !u!114 &6556837369853996199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,19 +160,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _attackRange: 1
---- !u!114 &1025399200505383478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 286836449616621600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 464279d796684abdb1072e7e15bdbeea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 100
+  _targetLostDelay: 0.5
 --- !u!1 &8449300276913961358
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,6 +214,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -268,6 +237,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
