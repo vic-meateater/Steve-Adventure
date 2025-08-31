@@ -22,18 +22,24 @@ namespace SteveAdventure
         private PlayerVision _playerVision;
         private PlayerAttackController _playerAttackController;
         private Vector2 _savedDirection;
+        private PlayerAudioConfig _audio;
 
         private IHealthViewModel _healthViewModel;
+        private IAudioManager _audioManager;
 
         [Inject]
         public void Construct(
             PlayerConfig playerConfig,
+            PlayerAudioConfig playerAudioConfig,
+            IAudioManager audioManager,
             IFactory<CharacterConfig, IHealthViewModel> healthFactory,
             PlayerUIView playerUIView
         )
         {
             _healthViewModel = healthFactory.Create(playerConfig);
             _damage = playerConfig.Damage;
+            _audio = playerAudioConfig;
+            _audioManager = audioManager;
             _mover = GetComponent<Mover>();
             _animatorController = GetComponent<AnimatorController>();
             _collisionHandler = GetComponent<CollisionHandler>();
@@ -49,6 +55,7 @@ namespace SteveAdventure
         public void OnAttackPressed()
         {
             _playerAttackController.AttackRequest();
+            _audioManager.PlaySound(_audio.HitSound);
         }
 
         public void OnInteractPressed()
@@ -98,6 +105,7 @@ namespace SteveAdventure
         public void TakeDamage(float damage)
         {
             _healthViewModel.TakeDamage(damage);
+            _audioManager.PlaySound(_audio.PainSound);
         }
 
         private void OnDeath(bool isDead)
