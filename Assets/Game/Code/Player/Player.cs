@@ -22,15 +22,14 @@ namespace SteveAdventure
         private PlayerVision _playerVision;
         private PlayerAttackController _playerAttackController;
         private Vector2 _savedDirection;
-        private PlayerAudioConfig _audio;
+        private IPlayerSounds _sounds;
 
         private IHealthViewModel _healthViewModel;
-        private IAudioManager _audioManager;
 
         [Inject]
         public void Construct(
             PlayerConfig playerConfig,
-            PlayerAudioConfig playerAudioConfig,
+            IPlayerSounds sounds,
             IAudioManager audioManager,
             IFactory<CharacterConfig, IHealthViewModel> healthFactory,
             PlayerUIView playerUIView
@@ -38,15 +37,14 @@ namespace SteveAdventure
         {
             _healthViewModel = healthFactory.Create(playerConfig);
             _damage = playerConfig.Damage;
-            _audio = playerAudioConfig;
-            _audioManager = audioManager;
+            _sounds = sounds;
             _mover = GetComponent<Mover>();
             _animatorController = GetComponent<AnimatorController>();
             _collisionHandler = GetComponent<CollisionHandler>();
             _playerVision = GetComponent<PlayerVision>();
 
             _playerAttackController =
-                new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage);
+                new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage, _sounds);
 
             playerUIView.Init(_healthViewModel);
             _healthViewModel.IsDead.Subscribe(OnDeath).AddTo(this);
@@ -55,7 +53,6 @@ namespace SteveAdventure
         public void OnAttackPressed()
         {
             _playerAttackController.AttackRequest();
-            _audioManager.PlaySound(_audio.HitSound);
         }
 
         public void OnInteractPressed()
@@ -67,6 +64,7 @@ namespace SteveAdventure
         public void OnSpacePressed()
         {
             _mover.Dashing();
+            _sounds.PlayDashSound();
         }
 
         public void OnMoveInputChanged(Vector2 direction)
@@ -78,6 +76,8 @@ namespace SteveAdventure
 
             _mover.Moving(direction);
             _animatorController.MoveAnimation(direction);
+            if(!_mover.IsDashing)
+                _sounds.PlayFootstepSound();
         }
 
         public void OnGamePause()
@@ -105,7 +105,7 @@ namespace SteveAdventure
         public void TakeDamage(float damage)
         {
             _healthViewModel.TakeDamage(damage);
-            _audioManager.PlaySound(_audio.PainSound);
+            _sounds.PlayPainSound();
         }
 
         private void OnDeath(bool isDead)

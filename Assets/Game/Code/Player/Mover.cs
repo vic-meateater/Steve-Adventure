@@ -6,6 +6,8 @@ namespace SteveAdventure
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class Mover : MonoBehaviour
     {
+        public bool IsDashing => _isDashing;
+        
         private const float MOVE_SPEED_MULTIPLER = 50f;
 
         [SerializeField] private float _moveSpeed = 1f;
