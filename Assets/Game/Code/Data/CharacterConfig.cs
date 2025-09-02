@@ -16,8 +16,8 @@ namespace SteveAdventure
         
         [field: Header("Character audio")]
         [field: SerializeField] public List<AudioClip> FootstepSounds { get; private set; }
-        [field: SerializeField] public AudioClip DashSound { get; private set; }
         [field: SerializeField] public AudioClip HitSound { get; private set; }
         [field: SerializeField] public AudioClip PainSound { get; private set; }
+        [field: SerializeField] public AudioClip DeathSound { get; private set; }
     }
 }

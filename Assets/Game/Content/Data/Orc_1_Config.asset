@@ -17,6 +17,11 @@ MonoBehaviour:
   <MoveSpeed>k__BackingField: 1
   <Damage>k__BackingField: 20
   <Health>k__BackingField: 60
+  <FootstepSounds>k__BackingField:
+  - {fileID: 8300000, guid: ae764f8c0f1c8734286fff765fcbb1e2, type: 3}
+  <HitSound>k__BackingField: {fileID: 8300000, guid: 27f720724d8a70c48a12e549d476091a, type: 3}
+  <PainSound>k__BackingField: {fileID: 8300000, guid: 9c6ab91ccb202af438336d0c2d99a8dc, type: 3}
+  <DeathSound>k__BackingField: {fileID: 0}
   <AttackCooldown>k__BackingField: 1
   <RespawnDuration>k__BackingField: 3
   <Waypoints>k__BackingField:

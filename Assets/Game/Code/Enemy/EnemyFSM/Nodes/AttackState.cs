@@ -8,22 +8,24 @@ namespace SteveAdventure
         private readonly EnemyVision _enemyVision;
         private readonly AnimatorController _animatorController;
         private readonly AnimationHandler _animatorHandler;
+        private readonly IEnemySounds _sounds;
         private readonly float _attackCooldown;
         private readonly float _damage;
-        private float _endTime;
         private IDamageable _damageable;
+        private float _endTime;
         private bool _inAttackAnimation;
         private Vector2 _savedDirection;
 
 
         public AttackState(Mover mover, EnemyVision enemyVision, AnimatorController animatorController, float damage,
-            float attackCooldown, AnimationHandler animationHandler)
+            float attackCooldown, AnimationHandler animationHandler, IEnemySounds enemySounds)
 
         {
             _mover = mover;
             _enemyVision = enemyVision;
             _animatorController = animatorController;
             _animatorHandler = animationHandler;
+            _sounds = enemySounds;
             _attackCooldown = attackCooldown;
             _damage = damage;
         }
@@ -64,6 +66,7 @@ namespace SteveAdventure
 
         private void OnMeleeAttackStart()
         {
+            _sounds.PlayHitSound();
             if (_damageable != null)
             {
                 _damageable.TakeDamage(_damage);

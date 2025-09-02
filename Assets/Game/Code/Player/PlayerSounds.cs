@@ -2,7 +2,7 @@
 
 namespace SteveAdventure
 {
-    public class PlayerSounds : IPlayerSounds
+    public sealed class PlayerSounds : IPlayerSounds
     {
         private readonly PlayerConfig _playerConfig;
         private readonly IAudioManager _audioManager;
@@ -39,6 +39,11 @@ namespace SteveAdventure
         {
             _audioManager.PlaySound(_playerConfig.PainSound);
         }
+
+        public void DeathSound()
+        {
+            //
+        }
     }
 
     public interface IPlayerSounds
@@ -47,5 +52,6 @@ namespace SteveAdventure
         void PlayDashSound();
         void PlayHitSound();
         void PlayPainSound();
+        void DeathSound();
     }
 }

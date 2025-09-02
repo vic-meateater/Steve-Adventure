@@ -11,15 +11,17 @@ namespace SteveAdventure
         private readonly Mover _mover;
         private readonly EnemyVision _enemyVision;
         private readonly AnimatorController _animatorController;
+        private readonly IEnemySounds _sounds;
         private float _lastTargetSeenTime;
         private Vector2 _savedDirection;
 
         public FollowState(Mover mover, EnemyVision enemyVision,
-            AnimatorController animatorController)
+            AnimatorController animatorController, IEnemySounds enemySounds)
         {
             _mover = mover;
             _enemyVision = enemyVision;
             _animatorController = animatorController;
+            _sounds = enemySounds;
         }
 
         public override void Enter()
@@ -86,6 +88,8 @@ namespace SteveAdventure
                     _mover.Moving(direction);
                     _enemyVision.SetVisionDirection(direction);
                     _animatorController.MoveAnimation(direction);
+                    if(direction.magnitude > 0.1f)
+                        _sounds.PlayFootstepSound();
                 }
             }
             else
