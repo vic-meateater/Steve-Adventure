@@ -6,5 +6,6 @@ namespace SteveAdventure
     {
         public IGamePausedViewModel GamePausedViewModel { get; }
         public IGameOverViewModel GameOverViewModel { get; }
+        public ISettingsViewModel SettingsViewModel { get; }
     }
 }

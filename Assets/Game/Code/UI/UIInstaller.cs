@@ -8,6 +8,7 @@ namespace SteveAdventure
         {
             GamePausedViewInstaller.Install(Container);
             GameOverViewInstaller.Install(Container);
+            SettingsViewInstaller.Install(Container);
             GameViewInstaller.Install(Container);
         }
     }
