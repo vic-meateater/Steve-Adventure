@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using UnityEngine;
+using Zenject;
 
 namespace SteveAdventure
 {
@@ -10,14 +12,17 @@ namespace SteveAdventure
         private readonly AnimatorController _animatorController;
         private readonly PlayerVision _playerVision;
         private readonly float _damage;
+        private IPlayerSounds _sounds;
+        private IAudioManager _audioManager;
 
         public PlayerAttackController(AnimationHandler animationHandler, AnimatorController animatorController,
-            PlayerVision playerVision, float damage)
+            PlayerVision playerVision, float damage, IPlayerSounds sounds)
         {
             _animationHandler = animationHandler;
             _animatorController = animatorController;
             _playerVision = playerVision;
             _damage = damage;
+            _sounds = sounds;
 
             _animationHandler.MeleeAttackStart += OnMeleeAttackStart;
             _animationHandler.AttackEnd += OnAttackEnd;
@@ -30,6 +35,7 @@ namespace SteveAdventure
 
         private void OnMeleeAttackStart()
         {
+            _sounds.PlayHitSound();
             if (_playerVision.TryGetTargets(out List<GameObject> targets))
             {
                 foreach (var target in targets)

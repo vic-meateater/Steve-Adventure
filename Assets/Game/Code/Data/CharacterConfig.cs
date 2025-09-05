@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace SteveAdventure
 {
@@ -12,5 +13,11 @@ namespace SteveAdventure
         [field: SerializeField] public int MoveSpeed { get; private set; }
         [field: SerializeField] public int Damage { get; private set; }
         [field: SerializeField] public int Health { get; private set; }
+        
+        [field: Header("Character audio")]
+        [field: SerializeField] public List<AudioClip> FootstepSounds { get; private set; }
+        [field: SerializeField] public AudioClip HitSound { get; private set; }
+        [field: SerializeField] public AudioClip PainSound { get; private set; }
+        [field: SerializeField] public AudioClip DeathSound { get; private set; }
     }
 }

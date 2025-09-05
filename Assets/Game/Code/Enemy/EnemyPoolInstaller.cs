@@ -15,6 +15,9 @@ namespace SteveAdventure
         {
             Container.Bind<EnemyConfig[]>().FromInstance(_enemiesConfigs).AsSingle();
             CreateEnemyPool();
+            
+            Container.BindFactory<EnemyConfig, EnemySounds, EnemySoundsFactory>()
+                .AsSingle();
 
             Container.Bind<EnemyFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle().NonLazy();

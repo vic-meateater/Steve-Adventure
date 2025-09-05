@@ -17,4 +17,12 @@ MonoBehaviour:
   <MoveSpeed>k__BackingField: 1
   <Damage>k__BackingField: 20
   <Health>k__BackingField: 100
+  <FootstepSounds>k__BackingField:
+  - {fileID: 8300000, guid: 27abb4cf8e0d1b34d8153a5099add2e9, type: 3}
+  - {fileID: 8300000, guid: e733d75bc3836b6459530a9b25a1dec5, type: 3}
+  - {fileID: 8300000, guid: ae764f8c0f1c8734286fff765fcbb1e2, type: 3}
+  <HitSound>k__BackingField: {fileID: 8300000, guid: f0e7875a78221994f9a1261f33214288, type: 3}
+  <PainSound>k__BackingField: {fileID: 8300000, guid: c354644152382a34c83385d4535408d4, type: 3}
+  <DeathSound>k__BackingField: {fileID: 8300000, guid: 9e9728a16ab6ad940b25aea8bc13e79f, type: 3}
+  <DashSound>k__BackingField: {fileID: 8300000, guid: 61b0b6d99338eb044a5033530c3d98ea, type: 3}
   <DashSpeed>k__BackingField: 5

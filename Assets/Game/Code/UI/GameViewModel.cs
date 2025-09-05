@@ -8,12 +8,17 @@ namespace SteveAdventure
         public IGameOverViewModel GameOverViewModel => _gameOverViewModel;
         private IGameOverViewModel _gameOverViewModel;
 
+        public ISettingsViewModel SettingsViewModel => _settingsViewModel;
+        private ISettingsViewModel _settingsViewModel;
+
         public GameViewModel(
             IGamePausedViewModel gamePausedViewModel,
-            IGameOverViewModel gameOverViewModel)
+            IGameOverViewModel gameOverViewModel,
+            ISettingsViewModel settingsViewModel)
         {
             _gamePausedViewModel = gamePausedViewModel;
             _gameOverViewModel = gameOverViewModel;
+            _settingsViewModel = settingsViewModel;
         }
     }
 }

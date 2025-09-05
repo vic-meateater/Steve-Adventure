@@ -22,25 +22,29 @@ namespace SteveAdventure
         private PlayerVision _playerVision;
         private PlayerAttackController _playerAttackController;
         private Vector2 _savedDirection;
+        private IPlayerSounds _sounds;
 
         private IHealthViewModel _healthViewModel;
 
         [Inject]
         public void Construct(
             PlayerConfig playerConfig,
+            IPlayerSounds sounds,
+            IAudioManager audioManager,
             IFactory<CharacterConfig, IHealthViewModel> healthFactory,
             PlayerUIView playerUIView
         )
         {
             _healthViewModel = healthFactory.Create(playerConfig);
             _damage = playerConfig.Damage;
+            _sounds = sounds;
             _mover = GetComponent<Mover>();
             _animatorController = GetComponent<AnimatorController>();
             _collisionHandler = GetComponent<CollisionHandler>();
             _playerVision = GetComponent<PlayerVision>();
 
             _playerAttackController =
-                new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage);
+                new PlayerAttackController(_animationHandler, _animatorController, _playerVision, _damage, _sounds);
 
             playerUIView.Init(_healthViewModel);
             _healthViewModel.IsDead.Subscribe(OnDeath).AddTo(this);
@@ -60,6 +64,7 @@ namespace SteveAdventure
         public void OnSpacePressed()
         {
             _mover.Dashing();
+            _sounds.PlayDashSound();
         }
 
         public void OnMoveInputChanged(Vector2 direction)
@@ -71,6 +76,8 @@ namespace SteveAdventure
 
             _mover.Moving(direction);
             _animatorController.MoveAnimation(direction);
+            if(!_mover.IsDashing)
+                _sounds.PlayFootstepSound();
         }
 
         public void OnGamePause()
@@ -98,12 +105,14 @@ namespace SteveAdventure
         public void TakeDamage(float damage)
         {
             _healthViewModel.TakeDamage(damage);
+            _sounds.PlayPainSound();
         }
 
         private void OnDeath(bool isDead)
         {
             if (isDead)
             {
+                _sounds.DeathSound();
                 Debug.Log("Player is Dead");
                 GameCycleService.Instance?.GameOver();
             }

@@ -13,18 +13,21 @@ namespace SteveAdventure
         private readonly EnemyVision _enemyVision;
         private readonly AnimatorController _animatorController;
         private readonly float _wayPointReachedOffset = .1f;
+        private readonly IEnemySounds _sounds;
         private int _currentWaypointIndex = 0;
         private bool _waypointShouldChange = false;
         private Vector2 _savedDirection;
 
         public PatrolState(Mover mover, Vector3[] waypoints, Collider2D collider,
-            EnemyVision enemyVision, AnimatorController animatorController, Transform enemyTransform)
+            EnemyVision enemyVision, AnimatorController animatorController,
+            IEnemySounds enemySounds)
         {
             _mover = mover;
             _waypoints = waypoints;
             _collider = collider;
             _enemyVision = enemyVision;
             _animatorController = animatorController;
+            _sounds = enemySounds;
         }
 
         public override void Enter()
@@ -92,6 +95,9 @@ namespace SteveAdventure
             _enemyVision.SetVisionDirection(direction);
             _animatorController.MoveAnimation(direction);
             _mover.Moving(direction);
+            
+            if(direction.magnitude > 0.1f)
+                _sounds.PlayFootstepSound();
         }
 
         private void ChangeWayPoint()
@@ -111,7 +117,7 @@ namespace SteveAdventure
 
             for (int i = 0; i < _waypoints.Length; i++)
             {
-                float distance = Vector2.SqrMagnitude(currentPosition - (Vector2)_waypoints[i]);
+                float distance = Vector2.SqrMagnitude(currentPosition - (Vector2) _waypoints[i]);
                 if (distance < minDistance)
                 {
                     minDistance = distance;

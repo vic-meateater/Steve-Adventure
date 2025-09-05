@@ -11,8 +11,7 @@ namespace SteveAdventure
         MonoBehaviour,
         IDamageable,
         IGameFixedUpdateListener,
-        IPoolable<EnemyConfig,
-            IMemoryPool>
+        IPoolable<EnemyConfig, IMemoryPool>
     {
         private event Action<float> _onDeadRespawnRequested;
 
@@ -34,6 +33,8 @@ namespace SteveAdventure
 
         private IHealthViewModel _healthViewModel;
         private IFactory<CharacterConfig, IHealthViewModel> _healthFactory;
+        private EnemySoundsFactory _soundsFactory;
+        private IEnemySounds _sounds;
         private EnemyUIView _enemyUIView;
 
         private DisposableBag _disposables;
@@ -52,10 +53,12 @@ namespace SteveAdventure
         public void Construct(
             GameCycle gameCycle,
             IFactory<CharacterConfig, IHealthViewModel> healthFactory,
+            EnemySoundsFactory soundsFactory,
             EnemyUIView enemyUIView)
         {
             _gameCycle = gameCycle;
             _healthFactory = healthFactory;
+            _soundsFactory = soundsFactory;
             _enemyUIView = enemyUIView;
         }
 
@@ -65,15 +68,18 @@ namespace SteveAdventure
             _damage = _config.Damage;
             _attackCooldown = _config.AttackCooldown;
             _healthViewModel = _healthFactory.Create(config);
+            _sounds = _soundsFactory.Create(config);
+            
             _enemyUIView.Init(_healthViewModel);
 
             _enemyBrain = new EnemyBrain(_mover, _config.Waypoints, _enemyVision, _animatorController,
-                _config.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler);
+                _config.WaitDuration, _damage, _attackCooldown, _enemyTransform, _collider, _animationHandler, _sounds);
 
             _healthViewModel.IsDead
                 .Where(dead => dead)
                 .Subscribe(_ =>
                 {
+                    _sounds.DeathSound();
                     _onDeadRespawnRequested?.Invoke(_config.RespawnDuration);
                     _pool.Despawn(this);
                 })
@@ -116,6 +122,7 @@ namespace SteveAdventure
         public void TakeDamage(float damage)
         {
             _healthViewModel.TakeDamage(damage);
+            _sounds.PlayPainSound();
         }
     }
 }

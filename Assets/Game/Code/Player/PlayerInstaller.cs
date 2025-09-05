@@ -18,6 +18,7 @@ namespace SteveAdventure
         private void BindPlayer()
         {
             Container.Bind<PlayerConfig>().FromInstance(_playerConfig).AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<PlayerSounds>().AsSingle().NonLazy();
             Container.Bind<PlayerUIView>().FromInstance(_playerUIView).AsSingle().NonLazy();
             
             Container.BindInterfacesAndSelfTo<Player>()
