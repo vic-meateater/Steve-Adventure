@@ -13,7 +13,7 @@ namespace SteveAdventure
         [SerializeField] private Button _backButton;
 
         private ISettingsViewModel _viewModel;
-        
+
         public void Init(ISettingsViewModel viewModel)
         {
             _viewModel = viewModel;
@@ -31,6 +31,7 @@ namespace SteveAdventure
 
         private void OnEnable()
         {
+            Start();
             _musicSlider.onValueChanged.AddListener(_viewModel.OnMusicVolumeChanged);
             _soundSlider.onValueChanged.AddListener(_viewModel.OnSoundVolumeChanged);
             _musicToggle.onValueChanged.AddListener(_viewModel.OnMusicToggleChanged);
@@ -41,6 +42,14 @@ namespace SteveAdventure
         private void OnBackButtonClicked()
         {
             Hide();
+        }
+
+        private void Start()
+        {
+            _musicSlider.value = _viewModel.GetMusicVolume();
+            _soundSlider.value = _viewModel.GetSoundVolume();
+            _musicToggle.isOn = _viewModel.IsMusicMuted();
+            _soundToggle.isOn = _viewModel.IsSoundMuted();
         }
 
         private void OnDisable()

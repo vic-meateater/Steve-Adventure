@@ -2,11 +2,11 @@
 
 namespace SteveAdventure
 {
-    public sealed class SettingsPresenterFactory : IFactory<ISettingsViewModel>
+    public sealed class SettingsPresenterFactory : IFactory<IAudioManager, ISettingsViewModel>
     {
-        public ISettingsViewModel Create()
+        public ISettingsViewModel Create(IAudioManager audioManager)
         {
-            return new SettingsViewModel();
+            return new SettingsViewModel(audioManager);
         }
     }
 }

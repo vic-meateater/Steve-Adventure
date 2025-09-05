@@ -6,5 +6,6 @@ namespace SteveAdventure
     {
         public void PlaySound(AudioClip clip);
         public void PlayMusic(AudioClip clip);
+        public void RefreshSettings();
     }
 }

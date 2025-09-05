@@ -6,5 +6,9 @@
         void OnSoundVolumeChanged(float value);
         void OnMusicToggleChanged(bool value);
         void OnSoundToggleChanged(bool value);
+        float GetMusicVolume();
+        float GetSoundVolume();
+        bool IsMusicMuted();
+        bool IsSoundMuted();
     }
 }

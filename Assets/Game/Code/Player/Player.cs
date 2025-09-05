@@ -112,6 +112,7 @@ namespace SteveAdventure
         {
             if (isDead)
             {
+                _sounds.DeathSound();
                 Debug.Log("Player is Dead");
                 GameCycleService.Instance?.GameOver();
             }

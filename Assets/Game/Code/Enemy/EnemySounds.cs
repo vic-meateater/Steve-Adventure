@@ -38,7 +38,7 @@ namespace SteveAdventure
 
         public void DeathSound()
         {
-            //
+            _audioManager.PlaySound(_enemyConfig.DeathSound);
         }
     }
 

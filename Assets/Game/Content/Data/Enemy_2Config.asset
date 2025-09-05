@@ -21,7 +21,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ae764f8c0f1c8734286fff765fcbb1e2, type: 3}
   <HitSound>k__BackingField: {fileID: 8300000, guid: 24ce7e787ba118e44b3aeabd7e0ffcc4, type: 3}
   <PainSound>k__BackingField: {fileID: 8300000, guid: d2831a1abea947d419a2bd00d93ed7fd, type: 3}
-  <DeathSound>k__BackingField: {fileID: 0}
+  <DeathSound>k__BackingField: {fileID: 8300000, guid: 5e0f2c07a3fa3b649b3c9668db152ade, type: 3}
   <AttackCooldown>k__BackingField: 1
   <RespawnDuration>k__BackingField: 1
   <Waypoints>k__BackingField:

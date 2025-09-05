@@ -7,7 +7,7 @@ namespace SteveAdventure
         public override void InstallBindings()
         {
             Container
-                .Bind<IFactory<ISettingsViewModel>>()
+                .Bind<IFactory<IAudioManager, ISettingsViewModel>>()
                 .To<SettingsPresenterFactory>()
                 .AsSingle();
         }

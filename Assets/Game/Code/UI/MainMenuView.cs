@@ -13,18 +13,20 @@ namespace SteveAdventure
         [SerializeField] private Button _settingsButton;
         [SerializeField] private SettingsView _settingsView;
 
-        private IFactory<ISettingsViewModel> _settingsViewModelFactory;
+        private IFactory<IAudioManager, ISettingsViewModel> _settingsViewModelFactory;
         private ISettingsViewModel _settingsViewModel;
-       
+        private IAudioManager _audioManager;
+
         [Inject]
-        private void Construct(IFactory<ISettingsViewModel> factory)
+        private void Construct(IFactory<IAudioManager, ISettingsViewModel> factory, IAudioManager audioManager)
         {
             _settingsViewModelFactory = factory;
+            _audioManager = audioManager;
         }
 
         private void Awake()
         {
-            _settingsViewModel ??= _settingsViewModelFactory.Create();
+            _settingsViewModel ??= _settingsViewModelFactory.Create(_audioManager);
             _settingsView.Init(_settingsViewModel);
         }
 

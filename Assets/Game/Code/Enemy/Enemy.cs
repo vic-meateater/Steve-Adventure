@@ -79,6 +79,7 @@ namespace SteveAdventure
                 .Where(dead => dead)
                 .Subscribe(_ =>
                 {
+                    _sounds.DeathSound();
                     _onDeadRespawnRequested?.Invoke(_config.RespawnDuration);
                     _pool.Despawn(this);
                 })
